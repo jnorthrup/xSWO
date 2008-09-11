@@ -1,0 +1,8 @@
+.DS_Store 
+./build 
+./Debug/build
+build
+Debug
+Release
+.DS_Store
+.#*
