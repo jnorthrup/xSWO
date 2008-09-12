@@ -1,6 +1,6 @@
 
 
-int test_sparql();
+extern int test_sparql();
 
 int main (int argc, char * const argv[]) {
     // insert code here...
