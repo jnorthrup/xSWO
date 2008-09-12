@@ -5,6 +5,7 @@
 <storageModule moduleId="org.eclipse.cdt.core.settings">
 <cconfiguration id="cdt.managedbuild.config.gnu.macosx.exe.debug.119754889">
 <storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="cdt.managedbuild.config.gnu.macosx.exe.debug.119754889" moduleId="org.eclipse.cdt.core.settings" name="Debug">
+
 <macros>
 <stringMacro name="BOOST_INC" type="VALUE_PATH_DIR" value="$(BOOST_PREFIX)/include/boost-$(BOOST_VER)/boost"/>
 <stringMacro name="BOOST_VER" type="VALUE_TEXT" value="1_36"/>
@@ -480,6 +481,7 @@
 </cconfiguration>
 <cconfiguration id="cdt.managedbuild.config.macosx.exe.release.1621850551">
 <storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="cdt.managedbuild.config.macosx.exe.release.1621850551" moduleId="org.eclipse.cdt.core.settings" name="Release">
+
 <macros>
 <stringMacro name="BOOST_PREFIX" type="VALUE_PATH_DIR" value="/usr/include"/>
 </macros>

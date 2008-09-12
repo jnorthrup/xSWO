@@ -68,12 +68,12 @@
  ; [46]    Expression    =       ConditionalOrExpression
  ; [47]    ConditionalOrExpression       =       ConditionalAndExpression ( '||' ConditionalAndExpression )*
  ; [48]    ConditionalAndExpression      =       ValueLogical ( '&&' ValueLogical )*
- ; [49]    ValueLogical      =       RelationalExpression
- ; [50]    RelationalExpression      =       NumericExpression ( '=' NumericExpression | '!=' NumericExpression | '<' NumericExpression | '>' NumericExpression | '<=' NumericExpression | '>=' NumericExpression )?
+ ; [49]    ValueLogical          = RelationalExpression
+ ; [50]    RelationalExpression =       NumericExpression ( '=' NumericExpression | '!=' NumericExpression | '<' NumericExpression | '>' NumericExpression | '<=' NumericExpression | '>=' NumericExpression )?
  ; [51]    NumericExpression     =       AdditiveExpression
  ; [52]    AdditiveExpression    =       MultiplicativeExpression ( '+' MultiplicativeExpression | '-' MultiplicativeExpression | NumericLiteralPositive | NumericLiteralNegative )*
- ; [53]    MultiplicativeExpression      =       UnaryExpression ( '*' UnaryExpression | '/' UnaryExpression )*
- ; [54]    UnaryExpression       =         '!' PrimaryExpression
+ ; [53]    MultiplicativeExpression = UnaryExpression ( '*' UnaryExpression | '/' UnaryExpression )*
+ ; [54]    UnaryExpression       = '!' PrimaryExpression
  | '+' PrimaryExpression
  | '-' PrimaryExpression
  | PrimaryExpression
@@ -167,148 +167,113 @@ namespace
 		template<typename ScannerT>
 		struct definition
 		{
+			
 			definition(sparql_parser const& /*self*/)
 			{
-				Query = Prologue >> (SelectQuery | ConstructQuery | DescribeQuery
-									 | AskQuery | Replace | Update | Manage);
+				/* */     
+				Query = Prologue >> (SelectQuery | ConstructQuery | DescribeQuery| AskQuery | Replace | Update | Manage) ;
 				Update = Insert | Delete | Load | Clear;
-				Replace = confix_p("REPLACE", WhereClause ,"WITH") >> GraphTemplate;
+				Replace = confix_p(str_p("REPLACE"), WhereClause, "WITH") >> GraphTemplate;
 				Delete = str_p("DELETE") >> GraphTemplate >> !WhereClause;
 				Insert = str_p("INSERT") >> GraphTemplate >> !WhereClause;
 				GraphIRI = str_p("GRAPH") >> IRIref;
 				Load = str_p("LOAD") >> +IRIref >> !(str_p("INTO") >> IRIref);
 				Clear = str_p("CLEAR") >> !GraphIRI;
 				Manage = Create | Drop;
-				Create = confix_p("CREATE", !str_p("SILENT") , GraphIRI);
+				Create = str_p("CREATE")>> !str_p("SILENT")>> GraphIRI;
 				Drop = confix_p("DROP", !str_p("SILENT"), GraphIRI);
 				Prologue = !BaseDecl >> *PrefixDecl;
 				BaseDecl = str_p("BASE") >> IRI_REF;
-				PrefixDecl = confix_p("PREFIX", PNAME_NS , IRI_REF);
-				SelectQuery = confix_p("SELECT", !(str_p("DISTINCT") | str_p(
-																			 "REDUCED")) >> (+Var | ch_p("*")) >> *DatasetClause
-									   >> WhereClause , SolutionModifier);
-				ConstructQuery = confix_p("CONSTRUCT", ConstructTemplate
-										  >> *DatasetClause >> WhereClause , SolutionModifier);
-				DescribeQuery = confix_p("DESCRIBE", (+VarOrIRIref | ch_p('*'))
-										 >> *DatasetClause >> !WhereClause, SolutionModifier);
-				AskQuery = confix_p("ASK", *DatasetClause , WhereClause);
-				DatasetClause = str_p("FROM") >> (DefaultGraphClause
-												  | NamedGraphClause);
+				PrefixDecl =str_p("PREFIX")>> PNAME_NS>> IRI_REF;
+				SelectQuery = str_p("SELECT") 
+				>> !(str_p("DISTINCT")| str_p("REDUCED")) 
+				>> (Var|'*')  
+				>> *DatasetClause 
+				>> WhereClause
+				>> SolutionModifier;
+				ConstructQuery = str_p("CONSTRUCT")>> ConstructTemplate >> *DatasetClause >> WhereClause>> SolutionModifier;
+				DescribeQuery = str_p("DESCRIBE")>> (VarOrIRIref | ch_p('*')) >> *DatasetClause >> !WhereClause>> SolutionModifier;
+				AskQuery = str_p("ASK")>> *DatasetClause>>WhereClause;
+				DatasetClause ="FROM" >> (DefaultGraphClause^ NamedGraphClause);  //TODO: address the spirit vs. spec issue
 				DefaultGraphClause = SourceSelector;
 				NamedGraphClause = str_p("NAMED") >> SourceSelector;
 				SourceSelector = IRIref;
 				WhereClause = !str_p("WHERE") >> GroupGraphPattern >> !BindingClause;
-				BindingClause = confix_p("BINDINGS" >> +(Var) >>"{", *(Binding) , "}");
-				Binding = confix_p('(', +(VarOrTerm | "NULL"), ')');
-				SolutionModifier = !OrderClause >> !LimitOffsetClauses;
-				LimitOffsetClauses = (LimitClause >> !OffsetClause | OffsetClause
-									  >> !LimitClause);
-				OrderClause = str_p("ORDER") >> str_p("BY") >> +OrderCondition;
-				OrderCondition = ((str_p("ASC") | str_p("DESC"))
-								  >> BrackettedExpression) | (Constraint | Var);
+				BindingClause	= str_p("BINDINGS") >> +(Var) >> "{">> *(Binding)>> "}";
+				Binding = ch_p('(')>> +(VarOrTerm | "NULL")>> ')';
+				SolutionModifier = OrderClause || LimitOffsetClauses;
+				LimitOffsetClauses = (LimitClause >> !OffsetClause) | (OffsetClause>> !LimitClause);
+				OrderClause = str_p("ORDER") >> "BY" >> +OrderCondition;
+				OrderCondition = ((str_p("ASC") | "DESC") >> BrackettedExpression)				| (Constraint | Var);
 				LimitClause = str_p("LIMIT") >> int_p;
 				OffsetClause = str_p("OFFSET") >> int_p;
-				GroupGraphPattern = confix_p('{', !TriplesBlock
-											 >> *((GraphPatternNotTriples | Filter) >> !ch_p('.')
-												  >> !TriplesBlock), '}');
-				GraphTemplate = confix_p('{', !TriplesBlock >> *((str_p("GRAPH")
-																  >> VarOrIRIref >> GraphTemplate) >> !ch_p('.') >> !TriplesBlock),
-										 '}');;
+				GroupGraphPattern = ch_p('{') >> !TriplesBlock>> *((GraphPatternNotTriples | Filter) >> !ch_p('.')>> !TriplesBlock) >> '}';
+				GraphTemplate = ch_p('{') >> !TriplesBlock >> *((str_p("GRAPH") >> VarOrIRIref >> GraphTemplate) >> !ch_p('.') >> !TriplesBlock)>> '}';;
 				TriplesBlock = TriplesSameSubject >> !(ch_p('.') >> !TriplesBlock);
-				GraphPatternNotTriples = OptionalGraphPattern
-				| GroupOrUnionGraphPattern | GraphGraphPattern;
+				GraphPatternNotTriples = OptionalGraphPattern| GroupOrUnionGraphPattern | GraphGraphPattern;
 				OptionalGraphPattern = str_p("OPTIONAL") >> GroupGraphPattern;
-				GraphGraphPattern = confix_p("GRAPH", VarOrIRIref, GroupGraphPattern);
-				GroupOrUnionGraphPattern = GroupGraphPattern >> *(str_p("UNION")
-																  >> GroupGraphPattern);
+				GraphGraphPattern = str_p("GRAPH") >> VarOrIRIref	>> GroupGraphPattern;
+				GroupOrUnionGraphPattern = GroupGraphPattern % str_p("UNION"); 
 				Filter = str_p("FILTER") >> Constraint;
 				Constraint = BrackettedExpression | BuiltInCall | FunctionCall;
 				FunctionCall = IRIref >> ArgList;
-				ArgList = NIL | confix_p('(', Expression
-										 >> *(ch_p(',') >> Expression), ')');
-				ConstructTemplate = confix_p('{', !ConstructTriples, '}');;
-				ConstructTriples = TriplesSameSubject >> !(ch_p('.')
-														   >> !ConstructTriples);;
-				TriplesSameSubject = VarOrTerm >> PropertyListNotEmpty | TriplesNode
-				>> PropertyList;
-				PropertyListNotEmpty = Verb >> ObjectList >> *(ch_p(';') >> !(Verb
-																			  >> ObjectList));
+				ArgList = NIL | ch_p('(') >> (Expression % ',') >> ')';
+				ConstructTemplate = ch_p('{') >> !ConstructTriples >> '}';;
+				ConstructTriples = TriplesSameSubject >> !(ch_p('.')  >> !ConstructTriples);;
+				TriplesSameSubject = VarOrTerm >> PropertyListNotEmpty | TriplesNode >> PropertyList;
+				PropertyListNotEmpty = (Verb >> ObjectList) % ';';
 				PropertyList = !PropertyListNotEmpty;
-				ObjectList = Object >> *(ch_p(',') >> Object);
+				ObjectList = Object % ',';
 				Object = GraphNode;
 				Verb = VarOrIRIref | ch_p('a');
 				TriplesNode = Collection | BlankNodePropertyList;
-				BlankNodePropertyList = confix_p('[', PropertyListNotEmpty, ']');;
+				BlankNodePropertyList = ch_p('[') >> PropertyListNotEmpty >> ']';
 				Collection = confix_p('(', +GraphNode, ')');
 				GraphNode = VarOrTerm | TriplesNode;
 				VarOrTerm = Var | GraphTerm;
 				VarOrIRIref = Var | IRIref;
-				Var = VAR1 | VAR2;
+				Var = VAR1 ^ VAR2;
 				GraphTerm = IRIref | RDFLiteral | NumericLiteral | BooleanLiteral
 				| BlankNode | NIL;
 				Expression = ConditionalOrExpression;
-				ConditionalOrExpression = ConditionalAndExpression >> *(str_p("||")
-																		>> ConditionalAndExpression);
-				ConditionalAndExpression = ValueLogical >> *(str_p("&&")
-															 >> ValueLogical);
+				ConditionalOrExpression = ConditionalAndExpression % "||";
+				ConditionalAndExpression = ValueLogical % "&&";
 				ValueLogical = RelationalExpression;
-				RelationalExpression = 
-				NumericExpression >> !(ch_p('=') 
-									   >> NumericExpression | str_p("!=") >> NumericExpression | ch_p(
-																									  '<') >> NumericExpression | ch_p('>') >> NumericExpression
-									   | str_p("<=") >> NumericExpression | str_p(">=")
-									   >> NumericExpression);
-				NumericExpression = AdditiveExpression;
-				AdditiveExpression = MultiplicativeExpression >> *(sign_p
-																   >> MultiplicativeExpression | NumericExpression);
-				MultiplicativeExpression = UnaryExpression >> *(ch_p('*')
-																>> UnaryExpression | ch_p('/') >> UnaryExpression);
-				UnaryExpression = !chset_p("!+-") >> PrimaryExpression ;
-				PrimaryExpression = BrackettedExpression | BuiltInCall
-				| IRIrefOrFunction | RDFLiteral | NumericLiteral | BooleanLiteral
-				| Var;
-				BrackettedExpression = ch_p('(') >> Expression >> ch_p(')');
-				BuiltInCall = str_p("STR") >> confix_p('(', Expression, ')') | str_p(
-																					 "LANG") >> confix_p('(', Expression, ')') | str_p("DATATYPE")
-				>> confix_p('(', Expression, ')') | str_p("BOUND") >> 
-				confix_p('(', Expression, ')') | str_p("isIRI") >> confix_p('(',Expression, ')') 
-				| str_p("isURI") >> confix_p('(', Expression,')') 
-				| str_p("isBLANK") >> confix_p('(', Expression, ')')
-				| str_p("isLITERAL") >> confix_p('(', Expression, ')') 
-				| str_p("LANGMATCHES") >> confix_p('(', Expression >> ch_p(',')
-												   >> Expression, ')') 
-				| str_p("sameTerm") >> confix_p('(',Expression >> ch_p(',') >> Expression, ')') 
-				| RegexExpression;
+				RelationalExpression = NumericExpression >> !(ch_p('=')>> NumericExpression | str_p("!=") >> NumericExpression | ch_p('<') >> NumericExpression | ch_p('>') >> NumericExpression| str_p("<=") >> NumericExpression | str_p(">=")>> NumericExpression);
 				
-				RegexExpression = confix_p( str_p("REGEX") >> '(',
-										   Expression >> ch_p(',') >> Expression >> !(ch_p(',') >> Expression),')');
+				NumericExpression = AdditiveExpression;
+				AdditiveExpression = MultiplicativeExpression >> *((sign_p>> MultiplicativeExpression) | NumericExpression);
+				MultiplicativeExpression = UnaryExpression % (ch_p('*') | '/');
+				UnaryExpression = PrimaryExpression % (ch_p('!') | sign_p);
+				PrimaryExpression = BrackettedExpression | BuiltInCall				| IRIrefOrFunction | RDFLiteral | NumericLiteral | BooleanLiteral				| Var;
+				BrackettedExpression = ch_p('(') >> Expression >> ')';
+				BuiltInCall = ((str_p("STR") | "LANG" | "DATATYPE" | "BOUND" | "isIRI" | "isURI" | "isBLANK" | "isLITERAL") >> BrackettedExpression) | ((str_p("LANGMATCHES") | "sameTerm") >> confix_p('(', Expression >> ch_p(',') >> Expression, ')')) | RegexExpression;
+				
+				RegexExpression = str_p("REGEX") >> '(' >> Expression >> ',' >> Expression >> !(ch_p(',') >> Expression) >> ')';
 				IRIrefOrFunction = IRIref >> !ArgList;
 				RDFLiteral = String >> !(LANGTAG | (str_p("^^") >> IRIref));
-				NumericLiteral = NumericLiteralUnsigned | NumericLiteralPositive
-				| NumericLiteralNegative;
-				NumericLiteralUnsigned = int_p | real_p;
-				NumericLiteralPositive = uint_p | ureal_p;
-				NumericLiteralNegative = ch_p('-') >> (NumericLiteralUnsigned);
-				BooleanLiteral = str_p("true") | str_p("false");
-				String = STRING_LITERAL1 | STRING_LITERAL2 | STRING_LITERAL_LONG1
-				| STRING_LITERAL_LONG2;
+				NumericLiteral = NumericLiteralUnsigned | NumericLiteralPositive | NumericLiteralNegative;
+				NumericLiteralUnsigned = INTEGER | DECIMAL|DOUBLE;
+				NumericLiteralPositive = INTEGER_POSITIVE| DECIMAL_POSITIVE|DOUBLE_POSITIVE;
+				NumericLiteralNegative = INTEGER_NEGATIVE|DECIMAL_NEGATIVE|DOUBLE_NEGATIVE;
+				BooleanLiteral = str_p("true") ^ "false";
+				String = STRING_LITERAL1 | STRING_LITERAL2 | STRING_LITERAL_LONG1				| STRING_LITERAL_LONG2;
 				IRIref = IRI_REF | PrefixedName;
-				PrefixedName = PNAME_LN | PNAME_NS;
+				PrefixedName = PNAME_LN ^ PNAME_NS;
 				BlankNode = BLANK_NODE_LABEL | ANON;
-				IRI_REF =confix_p( '<' , *((~ chset_p("<>\"{}|^`\\")) - range_p(0,0x20)) , '>');;
-				PNAME_NS = !PN_PREFIX >> ':';
-				PNAME_LN = PNAME_NS >> PN_LOCAL;
+				IRI_REF = ch_p('<')>>  *IRISYM >> '>';
+				PNAME_NS =  !(*(alnum_p|'_'|'.'|'-'|'#')) >> ':';
+				PNAME_LN = PNAME_NS >>PN_LOCAL;
 				BLANK_NODE_LABEL = str_p("_:") >> PN_LOCAL;
-				VAR1 = ch_p('?') >> VARNAME;
-				VAR2 = ch_p('$') >> VARNAME;
-				
-				LANGTAG = ch_p('@') >> +alpha_p >> *(ch_p('-') >> +alnum_p);
-				
+				PN_LOCAL =  alpha_p>>( VARNAME%'.') ;
+				VAR1 = ch_p('?') >> *alnum_p ;
+				VAR2 = ch_p('$') >> *alnum_p ;
+				VARNAME=*alnum_p;   /*alpha_p>>*///*((alnum_p|'_'|'.'|'-'|'#')-eol_p-space_p);
+ 				LANGTAG = ch_p('@') >> +alpha_p >> *(ch_p('-') >> +alnum_p);
+				IRISYM=print_p-'>';
 				INTEGER = +digit_p;
 				DECIMAL = +digit_p >> '.' >> *digit_p | '.' >> +digit_p;
-				DOUBLE = +digit_p >> '.' >> *digit_p >> EXPONENT | '.' >> +digit_p
-				>> EXPONENT | +digit_p >> EXPONENT;
-				
+				DOUBLE = +digit_p >> '.' >> *digit_p >> EXPONENT | '.' >> +digit_p >> EXPONENT | +digit_p >> EXPONENT;
 				INTEGER_POSITIVE = ch_p('+') >> INTEGER;
 				DECIMAL_POSITIVE = ch_p('+') >> DECIMAL;
 				DOUBLE_POSITIVE = ch_p('+') >> DOUBLE;
@@ -316,50 +281,14 @@ namespace
 				DECIMAL_NEGATIVE = ch_p('-') >> DECIMAL;
 				DOUBLE_NEGATIVE = ch_p('-') >> DOUBLE;
 				EXPONENT = (ch_p('E') | 'e') >> !sign_p >> +digit_p;
-				
-				STRING_LITERAL1 = ch_p('\'') >> *(anychar_p - chset_p(
-																	  "\x027\x05C\x0A\x0D") | ECHAR) >> '\'';
-				STRING_LITERAL2 = ch_p('"') >> *(anychar_p - chset_p(
-																	 "\x022\x05C\x0A\x0D") | ECHAR) >> '"';
-				STRING_LITERAL_LONG1 = str_p("'''") >> *(!(ch_p('\'') | str_p("''"))
-														 >> (anychar_p - chset_p("'\\") | ECHAR)) >> "'''";
-				STRING_LITERAL_LONG2 = str_p("\"\"\"") >> *(!(ch_p('"') | str_p(
-																				"\"\"")) >> (anychar_p - chset_p("\"\\") | ECHAR)) >> "\"\"\"";
-				ECHAR = lex_escape_ch_p; ////ch_p('\\') >> chset_p("tbnrf\"\\'");
-				NIL =confix_p('(', *space_p , ')');
+				STRING_LITERAL1 = ch_p('\'') >> *((print_p | lex_escape_ch_p) - (ch_p( 0x27))) >> '\'';
+				STRING_LITERAL2 = ch_p('"') >> *((print_p | lex_escape_ch_p) -  (ch_p(0x22))) >> '"';
+				STRING_LITERAL_LONG1 = str_p("'''") >> *(print_p | lex_escape_ch_p)	>> "'''";
+				STRING_LITERAL_LONG2 = str_p("\"\"\"") >> *(print_p | lex_escape_ch_p) >> "\"\"\"";
+				//ECHAR = lex_escape_ch_p; ////ch_p('\\') >> chset_p("tbnrf\"\\'");
+				NIL = confix_p('(', *(space_p | eol_p), ')');
 				//  WS = chset_p("\x20\x9\xD\xA");
-				ANON = confix_p('[', *space_p, ']');
-				PN_CHARS_BASE = alpha_p 
-				| range_p(0xC0, 0xD6)
-				| range_p(0xD8, 0xF6)
-				| range_p(0xF8, 0x2FF) 
-				| range_p(0x00370, 0x0037D) 
-				| range_p(0x37F, 0x1FFF) 
-				| range_p(0x200C, 0x200D)
-				| range_p(0x2070, 0x218F) 
-				| range_p(0x2C00, 0x2FEF) 
-				| range_p(0x3001, 0xD7FF) 
-				| range_p(0xF900, 0xFDCF)
-				| range_p(0xFDF0,0xFFFD) 
-				| range_p(0x10000, 0xEFFFF);
-				PN_CHARS_U = PN_CHARS_BASE | '_';
-				VARNAME = ( PN_CHARS_U|digit_p ) >> 
-				*(PN_CHARS_U 
-				   |digit_p
-				  | ch_p(0xB7)
-				  | range_p(0x0300,0x0036F) 
-				  | range_p(0x0203F,0x02040));    
-				PN_CHARS =	 PN_CHARS_U
-				|digit_p
-				|ch_p( '-' )
-				| ch_p(0xB7) 
-				| range_p(0x00300,0x0036F)
-				| range_p(		0x203F,0x02040) ; 
-				PN_PREFIX     =   PN_CHARS_BASE >> !(*(PN_CHARS|'.') -':' >>PN_CHARS) ;
-				PN_LOCAL      =       ( digit_p
-									   | PN_CHARS_U  )>>!(*(PN_CHARS|'.') >> PN_CHARS);
-				
-				
+				ANON = confix_p('[', *(space_p | eol_p), ']');
 				
 #if defined(BOOST_SPIRIT_DEBUG)
 				BOOST_SPIRIT_DEBUG_RULE(Query); // [0]
@@ -465,17 +394,22 @@ namespace
 				BOOST_SPIRIT_DEBUG_RULE(STRING_LITERAL2); // [100]
 				BOOST_SPIRIT_DEBUG_RULE(STRING_LITERAL_LONG1); // [101]
 				BOOST_SPIRIT_DEBUG_RULE(STRING_LITERAL_LONG2); // [102]
-				BOOST_SPIRIT_DEBUG_RULE(ECHAR); // [103]
+//				BOOST_SPIRIT_DEBUG_RULE(ECHAR); // [103]
 				BOOST_SPIRIT_DEBUG_RULE(NIL); // [104]
-				BOOST_SPIRIT_DEBUG_RULE(WS); // [105]
+				//BOOST_SPIRIT_DEBUG_RULE(WS); // [105]
 				BOOST_SPIRIT_DEBUG_RULE(ANON); // [106]
-				BOOST_SPIRIT_DEBUG_RULE(PN_CHARS_BASE); // [107]
-				BOOST_SPIRIT_DEBUG_RULE(PN_CHARS_U); // [108]
-				BOOST_SPIRIT_DEBUG_RULE(VARNAME); // [109]
-				BOOST_SPIRIT_DEBUG_RULE(PN_CHARS); // [110]
-				BOOST_SPIRIT_DEBUG_RULE(PN_PREFIX); // [111]
+//				BOOST_SPIRIT_DEBUG_RULE(PN_CHARS_BASE); // [107]
+//				BOOST_SPIRIT_DEBUG_RULE(PN_CHARS_U); // [108]
+//				BOOST_SPIRIT_DEBUG_RULE(VARNAME); // [109]
+//				BOOST_SPIRIT_DEBUG_RULE(PN_CHARS); // [110]
+//				BOOST_SPIRIT_DEBUG_RULE(PN_PREFIX); // [111]
 				BOOST_SPIRIT_DEBUG_RULE(PN_LOCAL); // [112]
-				
+//				BOOST_SPIRIT_DEBUG_RULE(BUZZKILL); // [112]
+//				BOOST_SPIRIT_DEBUG_RULE(SYMBOL); // [112]
+				//				BOOST_SPIRIT_DEBUG_RULE(MORPHEME); // [112]
+				BOOST_SPIRIT_DEBUG_RULE(VARNAME); // [112]
+				BOOST_SPIRIT_DEBUG_RULE(IRISYM); // [112]
+
 #endif
 			}
 			
@@ -582,18 +516,24 @@ namespace
 			rule<ScannerT> STRING_LITERAL2; // [100]
 			rule<ScannerT> STRING_LITERAL_LONG1; // [101]
 			rule<ScannerT> STRING_LITERAL_LONG2; // [102]
-			rule<ScannerT> ECHAR; // [103]
+			//rule<ScannerT> ECHAR; // [103]
 			rule<ScannerT> NIL; // [104]
-			rule<ScannerT> WS; // [105]
+//			rule<ScannerT> WS; // [105]
 			rule<ScannerT> ANON; // [106]
-			rule<ScannerT> PN_CHARS_BASE; // [107]
-			rule<ScannerT> PN_CHARS_U; // [108]
-			rule<ScannerT> VARNAME; // [109]
-			rule<ScannerT> PN_CHARS; // [110]
-			rule<ScannerT> PN_PREFIX; // [111]
+//			rule<ScannerT> PN_CHARS_BASE; // [107]
+//			rule<ScannerT> PN_CHARS_U; // [108]
+//			rule<ScannerT> VARNAME; // [109]
+//			rule<ScannerT> PN_CHARS; // [110]
+//			rule<ScannerT> PN_PREFIX; // [111]
 			rule<ScannerT> PN_LOCAL; // [112]
+//			
+//			rule<ScannerT> BUZZKILL			; // [112]
+//			rule<ScannerT> SYMBOL			; // [112]
+			//			rule<ScannerT> MORPHEME			; // [112]
+			rule<ScannerT> VARNAME			; // [112]
+			rule<ScannerT> IRISYM			; // [112]
 			
-			rule<ScannerT> const&
+	rule<ScannerT> const&
 			start() const
 			{
 				return Query;
