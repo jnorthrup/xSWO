@@ -7,10 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		38C1F1170E76740700FCDC3F /* sparql.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 38C1F1160E76740700FCDC3F /* sparql.cpp */; };
+		38CBCA250E7A68CA00EFBB9B /* sparql.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 38C1F1160E76740700FCDC3F /* sparql.cpp */; };
+		38CBCA3C0E7A6B4D00EFBB9B /* libSpiritSPARQL.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 38CBCA210E7A686E00EFBB9B /* libSpiritSPARQL.dylib */; };
 		8DD76F650486A84900D96B5E /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 08FB7796FE84155DC02AAC07 /* main.cpp */; settings = {ATTRIBUTES = (); }; };
 		8DD76F6A0486A84900D96B5E /* xSWO.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = C6859E8B029090EE04C91782 /* xSWO.1 */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		38CBCA420E7A6B8A00EFBB9B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 08FB7793FE84155DC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 38CBCA200E7A686E00EFBB9B;
+			remoteInfo = SpiritSPARQL;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		8DD76F690486A84900D96B5E /* CopyFiles */ = {
@@ -27,18 +38,26 @@
 
 /* Begin PBXFileReference section */
 		08FB7796FE84155DC02AAC07 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		38C1F10B0E76730E00FCDC3F /* prelim.xcclassmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcclassmodel; path = prelim.xcclassmodel; sourceTree = "<group>"; };
 		38C1F1150E76740700FCDC3F /* sparql.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sparql.h; sourceTree = "<group>"; };
 		38C1F1160E76740700FCDC3F /* sparql.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sparql.cpp; sourceTree = "<group>"; };
+		38CBCA210E7A686E00EFBB9B /* libSpiritSPARQL.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libSpiritSPARQL.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		8DD76F6C0486A84900D96B5E /* xSWO */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = xSWO; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6859E8B029090EE04C91782 /* xSWO.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = xSWO.1; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		38CBCA1F0E7A686E00EFBB9B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8DD76F660486A84900D96B5E /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				38CBCA3C0E7A6B4D00EFBB9B /* libSpiritSPARQL.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -51,7 +70,6 @@
 				08FB7795FE84155DC02AAC07 /* Source */,
 				C6859E8C029090F304C91782 /* Documentation */,
 				1AB674ADFE9D54B511CA2CBB /* Products */,
-				38C1F10B0E76730E00FCDC3F /* prelim.xcclassmodel */,
 			);
 			name = xSWO;
 			sourceTree = "<group>";
@@ -70,6 +88,7 @@
 			isa = PBXGroup;
 			children = (
 				8DD76F6C0486A84900D96B5E /* xSWO */,
+				38CBCA210E7A686E00EFBB9B /* libSpiritSPARQL.dylib */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -84,7 +103,51 @@
 		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		38CBCA1D0E7A686E00EFBB9B /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXLegacyTarget section */
+		38CBC9DF0E7A523200EFBB9B /* all */ = {
+			isa = PBXLegacyTarget;
+			buildArgumentsString = "tool test";
+			buildConfigurationList = 38CBC9E30E7A526A00EFBB9B /* Build configuration list for PBXLegacyTarget "all" */;
+			buildPhases = (
+			);
+			buildToolPath = /usr/bin/make;
+			buildWorkingDirectory = /Users/jim/work/xSWO;
+			dependencies = (
+			);
+			name = all;
+			passBuildSettingsInEnvironment = 1;
+			productName = all;
+		};
+/* End PBXLegacyTarget section */
+
 /* Begin PBXNativeTarget section */
+		38CBCA200E7A686E00EFBB9B /* SpiritSPARQL */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 38CBCA240E7A688D00EFBB9B /* Build configuration list for PBXNativeTarget "SpiritSPARQL" */;
+			buildPhases = (
+				38CBCA1D0E7A686E00EFBB9B /* Headers */,
+				38CBCA1E0E7A686E00EFBB9B /* Sources */,
+				38CBCA1F0E7A686E00EFBB9B /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SpiritSPARQL;
+			productName = SpiritSPARQL;
+			productReference = 38CBCA210E7A686E00EFBB9B /* libSpiritSPARQL.dylib */;
+			productType = "com.apple.product-type.library.dynamic";
+		};
 		8DD76F620486A84900D96B5E /* xSWO */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1DEB923108733DC60010E9CD /* Build configuration list for PBXNativeTarget "xSWO" */;
@@ -96,6 +159,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				38CBCA430E7A6B8A00EFBB9B /* PBXTargetDependency */,
 			);
 			name = xSWO;
 			productInstallPath = "$(HOME)/bin";
@@ -119,21 +183,38 @@
 			projectRoot = "";
 			targets = (
 				8DD76F620486A84900D96B5E /* xSWO */,
+				38CBC9DF0E7A523200EFBB9B /* all */,
+				38CBCA200E7A686E00EFBB9B /* SpiritSPARQL */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
+		38CBCA1E0E7A686E00EFBB9B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				38CBCA250E7A68CA00EFBB9B /* sparql.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8DD76F640486A84900D96B5E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				8DD76F650486A84900D96B5E /* main.cpp in Sources */,
-				38C1F1170E76740700FCDC3F /* sparql.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		38CBCA430E7A6B8A00EFBB9B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 38CBCA200E7A686E00EFBB9B /* SpiritSPARQL */;
+			targetProxy = 38CBCA420E7A6B8A00EFBB9B /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		1DEB923208733DC60010E9CD /* Debug */ = {
@@ -196,6 +277,63 @@
 			};
 			name = Release;
 		};
+		38CBC9E00E7A523200EFBB9B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				PRODUCT_NAME = tool;
+			};
+			name = Debug;
+		};
+		38CBC9E10E7A523200EFBB9B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				PRODUCT_NAME = all;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		38CBCA220E7A686F00EFBB9B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				EXECUTABLE_PREFIX = lib;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				INSTALL_PATH = /usr/local/lib;
+				PREBINDING = NO;
+				PRODUCT_NAME = SpiritSPARQL;
+				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = YES;
+				SKIP_INSTALL = NO;
+			};
+			name = Debug;
+		};
+		38CBCA230E7A686F00EFBB9B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				EXECUTABLE_PREFIX = lib;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = G5;
+				INSTALL_PATH = /usr/local/lib;
+				PREBINDING = NO;
+				PRODUCT_NAME = SpiritSPARQL;
+				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = YES;
+				SKIP_INSTALL = NO;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -213,6 +351,24 @@
 			buildConfigurations = (
 				1DEB923608733DC60010E9CD /* Debug */,
 				1DEB923708733DC60010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		38CBC9E30E7A526A00EFBB9B /* Build configuration list for PBXLegacyTarget "all" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				38CBC9E00E7A523200EFBB9B /* Debug */,
+				38CBC9E10E7A523200EFBB9B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		38CBCA240E7A688D00EFBB9B /* Build configuration list for PBXNativeTarget "SpiritSPARQL" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				38CBCA220E7A686F00EFBB9B /* Debug */,
+				38CBCA230E7A686F00EFBB9B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
