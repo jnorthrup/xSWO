@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3883A7600E7B399600730AF8 /* sparql.h in Headers */ = {isa = PBXBuildFile; fileRef = 38C1F1150E76740700FCDC3F /* sparql.h */; };
 		38CBCA250E7A68CA00EFBB9B /* sparql.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 38C1F1160E76740700FCDC3F /* sparql.cpp */; };
 		38CBCA3C0E7A6B4D00EFBB9B /* libSpiritSPARQL.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 38CBCA210E7A686E00EFBB9B /* libSpiritSPARQL.dylib */; };
 		8DD76F650486A84900D96B5E /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 08FB7796FE84155DC02AAC07 /* main.cpp */; settings = {ATTRIBUTES = (); }; };
@@ -108,6 +109,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3883A7600E7B399600730AF8 /* sparql.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
