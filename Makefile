@@ -1,17 +1,8 @@
-# $Id: Makefile,v 1.40 2008/09/08 08:16:35 eric Exp $
-# SWObjects build rules -- see http://www.w3.org/2008/04/SPARQLfed/
-
-# recipies:
-#   normal build:
-#     make SPARQLfed
-#   force the use of the tracing facilities (and redirect to stdout):
-#     make -W sample_RuleMap1.cpp test
-#   have valgrind start a debugger (works as M-x gdb invocation command):
-#     valgrind --db-attach=yes --leak-check=yes sample_RuleMap1 query_HealthCare1.rq ruleMap_HealthCare1.rq
-#   same, if you aren't working in gdb:
-#     make valgrind
-#   debugging in emacs:
-#     gdb --annotate=3 sample_RuleMap1    (set args query_HealthCare1.rq ruleMap_HealthCare1.rq)
+# drop a note and say hi once in a while! thanks
+#
+# -the authors
+#
+#
 
 
 LEX_?=flex
@@ -27,6 +18,27 @@ BASENAME ?= basename
 MV ?= mv
 RM ?= rm
 PWD ?= $(shell pwd -P)
+UNAME ?=uname
+OSTYPE ?=$(shell $(UNAME))
+
+$(info using  $(OSTYPE))
+#posix typically is and also default `lib%.so lib%.a'
+ifeq ($(OSTYPE),Darwin)
+override .LIBPATTERNS:=lib%.dylib lib%.a
+override LINKFLAGS:=-all_load		\
+-compatibility_version=$(VER:.%=)	\
+-current_version=$(VER)
+
+ 			
+else
+
+ifeq	($(OSTYPE:windows%=windows),windows)
+    override .LIBPATTERNS:=lib%.dll lib%.lib
+#a quaint bit of humorous abstraction
+endif    
+endif
+$(info OS lib patterns are $(.LIBPATTERNS))
+
 
 INCLUDES += -I${PWD}
 LIB_MODULES+= -L${PWD}
@@ -59,9 +71,6 @@ INCLUDES += $(I3:%=-I${PWD}/%)
 %.cpp : %.lpp
 	$(LEX) -o $@  $<
 
-#%.bin : %.o 
-#	$(CXX) $(CXXFLAGS) -o $@ $< $(LDFLAGS)
-
 
 #the gcc commands to make DEPS used in .d rules
 #if -M[M]D is also in the build-clause without -E it update .d's as needed
@@ -84,40 +93,43 @@ VER=0.1
 #LLVMLIBS= ` llvm-config --libs`
 # ... you get the idea...
 CFLAGS	+= $(LLVMCFLAGS)
-LIB_MODULES	+= -L$(PWD)
+LIB_MODULES+= -L$(PWD)
+
+PACKAGE_NAME?=$(shell $(BASENAME) $(PWD))
 
 ### dirt simple generic static module ###
-BISON_OBJ ?= $($(wildcard *.ypp):%.ypp=%.o)
-FLEX_OBJ  ?= $($(wildcard *.lpp):%.lpp=%.o)
-CXX_OBJ   ?= $(subst .cpp,.o,$(wildcard *.cpp))
-LIB_OBJ   ?= $(CXX_OBJ:%main.o=)
-LIB_NAME  ?= $(shell $(BASENAME) $(PWD))
-LIB_FINAL ?= lib$(LIB_NAME).a
-LIB_MODULES+=	 -l$(LIB_NAME)
-#$(shell $(BASENAME) $(PWD))
+BISON_OBJ = $($(wildcard *.ypp):%.ypp=%.o)
+FLEX_OBJ  = $($(wildcard *.lpp):%.lpp=%.o)
+CXX_OBJ   = $(subst .cpp,.o,$(wildcard *.cpp))
+LIB_OBJ   = $($($(FLEX BISON CXX ):=_OBJ):%main.o=)
+LIB_NAME  ?= $(PACKAGE_NAME)	
+LIB_MODULES+= -l$(LIB_NAME)
+    
+LINKFLAGS ?= --whole-archive			\
+	     --major-image-version=$(VER:.%=)	\
+	     --minor-image-version=$(VER:%.=)
 
-$(LIB_FINAL): $(DEPS)
+F1=$(LIB_NAME:%=$(.LIBPATTERNS))
+LIB_FINAL=$(LIB_NAME:%=$(F1))
+$(info building $(LIB_FINAL))
 
-$(LIB_FINAL): $(BISON_OBJ) $(FLEX_OBJ) $(LIB_OBJ)
-	$(AR) rcvs $@ $^
+LIB_SHARED=$(firstword $(LIB_FINAL))
 
-#TOOL_OBJ=$(subst .cpp,.o,$(wildcard *main.cpp))
-#TOOL_BIN=$(TOOLOBJ:.o=.bin)
+LIB_STATIC=$(lastword $(LIB_FINAL))
 
-#$(TOOL_BIN): dep lib
+$(LIB_FINAL) : $(LIB_OBJ)
+	$(info  linking $? into $(LIB_STATIC))
+	$(AR) rcvs $(LIB_STATIC) $?    
+	$(info  wrapping static lib in $(LIB_SHARED) )
+	$(LD) $(CXXFLAGS)					\
+	-o $(LIB_SHARED)$(LIB_STATIC)	    \
+	$(LIB_MODULES)						\
+	$(LINKFLAGS:%=-Wl,%)
 
-#TOOL_NAME_PREFIX=$(shell $(BASENAME) $(PWD))
+TOOL_FINAL = $(PACKAGE_NAME)
 
-#$(TOOL_NAME_PREFIX)% : %main.bin
-#	$(MV) $@ $<
-
-#TOOL_FINAL = $(TOOL_BIN:%main.bin=$(TOOL_NAME_PREFIX)%)
-
-TOOL_FINAL = $(shell $(BASENAME) $(PWD))
-
-$(TOOL_FINAL): main.o
+$(TOOL_FINAL): $(LIB_FINAL) main.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
-
 
 .PHONY: tool
 
@@ -155,40 +167,40 @@ release:
 # Clean - rm everything we remember to rm.
 .PHONY: clean cleaner
 clean:
-	$(RM) *.o */*.o *.a *.dylib *.so *.la */*.bak *.bak \
-        $(subst .lpp,.cpp,$(wildcard *.lpp)) \
-        $(subst .ypp,.cpp,$(wildcard */*.ypp)) \
-        $(subst .ypp,.hpp,$(wildcard */*.ypp)) \
-        $(TESTS) $(TEST_RESULTS) $(VALGRIND) \
-	$(TOOL_BIN) $(TOOL_FINAL)
+	$(RM) */*.bak *.bak                        \
+	$(TESTS) $(TEST_RESULTS) $(VALGRIND)	   \
+	$(TOOL_BIN) $(TOOL_FINAL)                  \
+	$(LIB_FINAL) $(LIB_OBJ)
 	
 
 cleaner: clean
-	 $(RM) *~ */*.d *.d $(BISON_HH:%=*/%)
+	 $(RM) *~ */*.d *.d $(BISON_HH:%=*/%)	    \
+        $(BISON_OBJ:.o=.hpp)			    \
+        $(BISON_OBJ:.o=.cpp)			    \
+        $(FLEX_OBJ:.o=.cpp)	
 
 DEPS=$(BISON_OBJ:.o=.d) $(FLEX_OBJ:.o=.d) $(LIB_OBJ:.o=.d) 
 
 dep: $(DEPS)
-
 BISON_HH=location.hh stack.hh position.hh
 #$(BISON_HH): $(BISON_OBJ)
 -include $(DEPS)
 
 .PHONY: all dep tool lib test
 
-tool: lib $(TOOL_FINAL)
+tool: $(LIB_FINAL) $(TOOL_FINAL)
 
-all: tool test
+all: dep lib tool test valgrind
 
 .PHONY: all tool test valgrind
 
 
-test: dep lib $(TEST_RESULTS)
+test:$(DEP) $(LIB_FINAL) $(TEST_RESULTS)
 
-valgrind: $(VALGRIND)
+valgrind: $(DEP) $(LIB_FINAL) $(VALGRIND)
 
 .PHONY: lib
 
-lib: dep $(LIB_FINAL)
+lib: $(DEP) $(LIB_FINAL)
 
 

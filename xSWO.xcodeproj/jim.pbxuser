@@ -1,11 +1,12 @@
 // !$*UTF8*$!
 {
 	08FB7793FE84155DC02AAC07 /* Project object */ = {
+		activeArchitecturePreference = i386;
 		activeBuildConfigurationName = Debug;
 		activeExecutable = 38AB2A060E7326830092C680 /* xSWO */;
-		activeTarget = 8DD76F620486A84900D96B5E /* xSWO */;
+		activeTarget = 38CBC9DF0E7A523200EFBB9B /* all */;
 		addToTargets = (
-			8DD76F620486A84900D96B5E /* xSWO */,
+			38CBC9DF0E7A523200EFBB9B /* all */,
 		);
 		codeSenseManager = 38AB2A0D0E7326A50092C680 /* Code sense */;
 		executables = (
@@ -18,7 +19,7 @@
 				PBXFileTableDataSourceColumnWidthsKey = (
 					22,
 					300,
-					328,
+					527,
 				);
 				PBXFileTableDataSourceColumnsKey = (
 					PBXExecutablesDataSource_ActiveFlagID,
@@ -160,7 +161,7 @@
 	08FB7796FE84155DC02AAC07 /* main.cpp */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {942, 1050}}";
-			sepNavSelRange = "{9, 0}";
+			sepNavSelRange = "{33, 4}";
 			sepNavVisRange = "{0, 124}";
 			sepNavWindowFrame = "{{217, 175}, {1001, 1178}}";
 		};
@@ -264,17 +265,17 @@
 	};
 	38C1F1150E76740700FCDC3F /* sparql.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {2932, 12348}}";
-			sepNavSelRange = "{16637, 0}";
-			sepNavVisRange = "{16563, 2850}";
-			sepNavWindowFrame = "{{17, 0}, {1046, 1658}}";
+			sepNavIntBoundsRect = "{{0, 0}, {2622, 6048}}";
+			sepNavSelRange = "{9767, 0}";
+			sepNavVisRange = "{0, 2941}";
+			sepNavWindowFrame = "{{4, 0}, {1046, 1658}}";
 		};
 	};
 	38C1F1160E76740700FCDC3F /* sparql.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {8302, 1530}}";
-			sepNavSelRange = "{0, 3}";
-			sepNavVisRange = "{0, 1871}";
+			sepNavIntBoundsRect = "{{0, 0}, {8312, 1530}}";
+			sepNavSelRange = "{336, 1}";
+			sepNavVisRange = "{0, 2506}";
 			sepNavWindowFrame = "{{-33, -185}, {1046, 1658}}";
 		};
 	};

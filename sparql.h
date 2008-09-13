@@ -156,7 +156,6 @@ struct sparql_parser : public grammar<sparql_parser>
             NCNAME = (NCCHAR1 | digit_p) >> !(*((NCCHAR | '.') - (NCCHAR >> ~eps_p(NCCHAR))) >> NCCHAR);
 			
 #if defined(BOOST_SPIRIT_DEBUG)
-			BOOST_S
             BOOST_SPIRIT_DEBUG_RULE(ANON);
             BOOST_SPIRIT_DEBUG_RULE(AdditiveExpression);
             BOOST_SPIRIT_DEBUG_RULE(ArgList);
