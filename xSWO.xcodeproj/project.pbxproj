@@ -120,7 +120,7 @@
 /* Begin PBXLegacyTarget section */
 		38CBC9DF0E7A523200EFBB9B /* all */ = {
 			isa = PBXLegacyTarget;
-			buildArgumentsString = all;
+			buildArgumentsString = tool;
 			buildConfigurationList = 38CBC9E30E7A526A00EFBB9B /* Build configuration list for PBXLegacyTarget "all" */;
 			buildPhases = (
 			);
