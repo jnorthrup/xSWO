@@ -207,11 +207,11 @@ struct sparql_parser : public grammar<sparql_parser>
             BOOST_SPIRIT_DEBUG_RULE(Load);
             BOOST_SPIRIT_DEBUG_RULE(Manage);
             BOOST_SPIRIT_DEBUG_RULE(MultiplicativeExpression);
-            BOOST_SPIRIT_DEBUG_RULE(NCCHAR);
-            BOOST_SPIRIT_DEBUG_RULE(NCCHAR1);
-            BOOST_SPIRIT_DEBUG_RULE(NCCHAR1p);
-            BOOST_SPIRIT_DEBUG_RULE(NCNAME);
-            BOOST_SPIRIT_DEBUG_RULE(NCNAME_PREFIX);
+            //BOOST_SPIRIT_DEBUG_RULE(NCCHAR);
+            //BOOST_SPIRIT_DEBUG_RULE(NCCHAR1);
+            //BOOST_SPIRIT_DEBUG_RULE(NCCHAR1p);
+            //BOOST_SPIRIT_DEBUG_RULE(NCNAME);
+            //BOOST_SPIRIT_DEBUG_RULE(NCNAME_PREFIX);
             BOOST_SPIRIT_DEBUG_RULE(NIL);
             BOOST_SPIRIT_DEBUG_RULE(NamedGraphClause);
             BOOST_SPIRIT_DEBUG_RULE(NumericExpression);
