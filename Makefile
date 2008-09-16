@@ -78,9 +78,12 @@ INCLUDES += $(I3:%=-I${PWD}/%)
 #the gcc commands to make DEPS used in .d rules
 #if -M[M]D is also in the build-clause without -E it update .d's as needed
 TOONOISEY=-ansi
-#for macports
+
+ifeq ($(OSTYPE),Linux)
+X64FLAGS += -fPIC
+endif
 CFLAGS += $(DEFS) $(OPT) $(DEBUG) $(WARN) $(INCLUDES) -pipe
-CXXFLAGS += $(CFLAGS)
+CXXFLAGS += $(CFLAGS) $(X64FLAGS)
 
 ### absolutely neccessry for c++ linking ###
 LD = $(CXX)
@@ -108,9 +111,7 @@ CXX_OBJ   = $(subst .cpp,.o,$(wildcard *.cpp))
 LIB_OBJ   = $(patsubst %main.o,,$(BISON_OBJ) $(FLEX_OBJ) $(CXX_OBJ))
 LIB_NAME  ?= $(PACKAGE_NAME)	
     
-LINKFLAGS ?= -shared 	\
-	     -Wl,--major-image-version=$(VER:.%=)	\
-	     -Wl,--minor-image-version=$(VER:%.=)
+LINKFLAGS ?= -shared -Ur
 
 #.PHONY: agenda
 #agenda::
@@ -139,6 +140,9 @@ $(LIB_SHARED): $(LIB_OBJ)
 	$(LD) $(LINKFLAGS) $(CXXFLAGS) $? $(LIB_MODULES) -o $(LIB_SHARED) 
 
 TOOL_LIB_MODULES+= -l$(LIB_NAME)
+
+$(TOOL_LIB_MODULES): $(LIB_FINAL)
+
 TOOL_FINAL = $(PACKAGE_NAME)
 
 $(TOOL_FINAL): main.o $(TOOL_LIB_MODULES) #$(LIB_FINAL) 
