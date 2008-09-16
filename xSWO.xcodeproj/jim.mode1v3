@@ -313,6 +313,8 @@
 							<string>0pt</string>
 						</dict>
 						<dict>
+							<key>BecomeActive</key>
+							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXBottomSmartGroupGIDs</key>
@@ -399,8 +401,6 @@
 					<key>Dock</key>
 					<array>
 						<dict>
-							<key>BecomeActive</key>
-							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
@@ -415,14 +415,9 @@
 										<string>1CE0B20406471E060097A5F4</string>
 										<key>PBXProjectModuleLabel</key>
 										<string>sparql.h</string>
-										<key>_historyCapacity</key>
-										<integer>0</integer>
-										<key>bookmark</key>
-										<string>383A93280E7B19CB00F2C187</string>
 										<key>history</key>
 										<array>
 											<string>38C1F0DA0E76697100FCDC3F</string>
-											<string>3823B3D50E7AEF7800A206E8</string>
 										</array>
 										<key>prevStack</key>
 										<array>
@@ -463,21 +458,14 @@
 										<string>1CE0B20406471E060097A5F4</string>
 										<key>PBXProjectModuleLabel</key>
 										<string>sparql.cpp</string>
-										<key>_historyCapacity</key>
-										<integer>0</integer>
-										<key>bookmark</key>
-										<string>383A93290E7B19CB00F2C187</string>
 										<key>history</key>
 										<array>
 											<string>38C1F0DA0E76697100FCDC3F</string>
-											<string>3823B3CB0E7AEF7800A206E8</string>
-											<string>3823B3D60E7AEF7800A206E8</string>
 										</array>
 										<key>prevStack</key>
 										<array>
 											<string>38C1F0DD0E76697100FCDC3F</string>
 											<string>38C1F0DE0E76697100FCDC3F</string>
-											<string>3823B3CD0E7AEF7800A206E8</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -538,11 +526,11 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>383A932A0E7B19CB00F2C187</string>
-				<string>383A932B0E7B19CB00F2C187</string>
+				<string>38881D6D0E7FB3B2005F2DB6</string>
+				<string>38881D6E0E7FB3B2005F2DB6</string>
 				<string>1CE0B1FE06471DED0097A5F4</string>
 				<string>1CE0B1FE06471DED0097A5F4</string>
-				<string>383A932C0E7B19CB00F2C187</string>
+				<string>38881D6F0E7FB3B2005F2DB6</string>
 				<string>1CE0B20306471E060097A5F4</string>
 				<string>1CE0B20306471E060097A5F4</string>
 				<string>1CE0B20506471E060097A5F4</string>
@@ -686,11 +674,7 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>3823B3CF0E7AEF7800A206E8</string>
-		<string>3823B3D20E7AEF7800A206E8</string>
-		<string>38AB2A5C0E7328A30092C680</string>
 		<string>1CD10A99069EF8BA00B06720</string>
-		<string>1C78EAAD065D492600B07095</string>
 		<string>/Users/jim/work/xSWO/xSWO.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
@@ -895,13 +879,13 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>1CD10A99069EF8BA00B06720</string>
-				<string>383A93030E7AF37200F2C187</string>
+				<string>38881D700E7FB3B2005F2DB6</string>
 				<string>1C162984064C10D400B95A72</string>
-				<string>383A93040E7AF37200F2C187</string>
-				<string>383A93050E7AF37200F2C187</string>
-				<string>383A93060E7AF37200F2C187</string>
-				<string>383A93070E7AF37200F2C187</string>
-				<string>383A93080E7AF37200F2C187</string>
+				<string>38881D710E7FB3B2005F2DB6</string>
+				<string>38881D720E7FB3B2005F2DB6</string>
+				<string>38881D730E7FB3B2005F2DB6</string>
+				<string>38881D740E7FB3B2005F2DB6</string>
+				<string>38881D750E7FB3B2005F2DB6</string>
 			</array>
 			<key>ToolbarConfiguration</key>
 			<string>xcode.toolbar.config.debugV3</string>

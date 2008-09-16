@@ -17,6 +17,7 @@ WARN?=-W -Wall -Wextra -Wnon-virtual-dtor
 BASENAME ?= basename
 MV ?= mv
 RM ?= rm
+FIND ?= find
 PWD ?= $(shell pwd -P)
 UNAME ?=uname
 OSTYPE ?=$(shell $(UNAME))
@@ -25,7 +26,7 @@ $(info using  $(OSTYPE))
 #posix typically is and also default `lib%.so lib%.a'
 ifeq ($(OSTYPE),Darwin)
 override .LIBPATTERNS:=lib%.dylib lib%.a
-override LINKFLAGS:=-all_load 
+override LINKFLAGS:= -dynamiclib  -Wl,-single_module 
 
 #llvm-ld says no
 #-current_version' '$(VER)
@@ -105,39 +106,43 @@ BISON_OBJ = $($(wildcard *.ypp):%.ypp=%.o)
 FLEX_OBJ  = $($(wildcard *.lpp):%.lpp=%.o)
 CXX_OBJ   = $(subst .cpp,.o,$(wildcard *.cpp))
 LIB_OBJ   = $(patsubst %main.o,,$(BISON_OBJ) $(FLEX_OBJ) $(CXX_OBJ))
-$(info found $(LIB_OBJ))
 LIB_NAME  ?= $(PACKAGE_NAME)	
-LIB_MODULES+= -l$(LIB_NAME)
     
-LINKFLAGS ?= --whole-archive			\
-	     --major-image-version=$(VER:.%=)	\
-	     --minor-image-version=$(VER:%.=)
+LINKFLAGS ?= -shared 	\
+	     -Wl,--major-image-version=$(VER:.%=)	\
+	     -Wl,--minor-image-version=$(VER:%.=)
 
+#.PHONY: agenda
+#agenda::
+#
+#$(LIB_OBJ): agenda
 
 
 F1=$(LIB_NAME:%=$(.LIBPATTERNS))
 LIB_FINAL=$(LIB_NAME:%=$(F1))
-$(info building $(LIB_FINAL))
 
 LIB_SHARED=$(firstword $(LIB_FINAL))
 
 LIB_STATIC=$(lastword $(LIB_FINAL))
 
-$(LIB_STATIC):  $(LIB_OBJ)
-	$(info  linking $? into $(LIB_STATIC))
-	$(AR) rcvs $(LIB_STATIC) $?   
+$(info compiler agenda: $(LIB_OBJ))
+$(info linker   agenda: $(LIB_FINAL))
+$(info runtime  agenda: $(TOOL_FINAL))
+$(info test     agenda: $(TEST))
 
-$(LIB_SHARED): $(LIB_STATIC)
-	$(info  wrapping static lib into $(LIB_SHARED))
-	$(LD) $(CXXFLAGS)					\
-	-o $(LIB_SHARED)$(LIB_STATIC)		\
-	$(LIB_MODULES)						\
-	$(LINKFLAGS:%=-Wl,%)
- 
+$(LIB_STATIC):  $(LIB_OBJ) 
+	$(info linking $? into $@)
+	$(AR) rcvs $(LIB_STATIC) $?
+
+$(LIB_SHARED): $(LIB_OBJ)
+	$(info linking $? into $@)
+	$(LD) $(LINKFLAGS) $(CXXFLAGS) $? $(LIB_MODULES) -o $(LIB_SHARED) 
+
+TOOL_LIB_MODULES+= -l$(LIB_NAME)
 TOOL_FINAL = $(PACKAGE_NAME)
 
-$(TOOL_FINAL): main.o -l$(LIB_NAME) #$(LIB_FINAL) 
-	$(CXX) $(CXXFLAGS) -o $@ $< $(LDFLAGS)
+$(TOOL_FINAL): main.o $(TOOL_LIB_MODULES) #$(LIB_FINAL) 
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
 
 .PHONY: tool
 
@@ -155,7 +160,7 @@ $(TOOL_FINAL): main.o -l$(LIB_NAME) #$(LIB_FINAL)
 
 ### named unit tests
 
-TEST_SRC?=$(wildcard tests/test_*.cpp)
+TEST_SRC ?= $(wildcard tests/test_*.cpp)
 
 TESTS=$($(TEST_SRC):.cpp=)
 
@@ -182,10 +187,10 @@ clean:
 	
 
 cleaner: clean
-	 $(RM) *~ */*.d *.d $(BISON_HH:%=*/%)	    \
-        $(BISON_OBJ:.o=.hpp)			    \
-        $(BISON_OBJ:.o=.cpp)			    \
-        $(FLEX_OBJ:.o=.cpp)	
+	$(RM) *~ */*.d *.d $(BISON_HH:%=*/%)	    \
+	$(BISON_OBJ:.o=.hpp) $(BISON_OBJ:.o=.cpp)   \
+	$(FLEX_OBJ:.o=.cpp)
+	-$(FIND) build Debug Release -delete	
 
 DEPS=$(BISON_OBJ:.o=.d) $(FLEX_OBJ:.o=.d) $(LIB_OBJ:.o=.d) 
 
@@ -196,7 +201,7 @@ BISON_HH=location.hh stack.hh position.hh
 
 .PHONY: all dep tool lib test
 
-tool: $(LIB_FINAL) $(TOOL_FINAL)
+tool: $(DEPS) $(LIB_FINAL) $(TOOL_FINAL)
 
 all: dep lib tool test valgrind
 
@@ -210,5 +215,3 @@ valgrind: $(DEP) $(LIB_FINAL) $(VALGRIND)
 .PHONY: lib
 
 lib: $(DEP) $(LIB_FINAL)
-
-
