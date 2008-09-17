@@ -3,6 +3,7 @@
 # -the authors
 #
 #
+-include config.mak
 
 VER=0.9999
 LEX_?=flex
@@ -120,6 +121,7 @@ LINKFLAGS ?= -shared -Ur
 
 
 F1=$(LIB_NAME:%=$(.LIBPATTERNS))
+
 LIB_FINAL=$(LIB_NAME:%=$(F1))
 
 LIB_SHARED=$(firstword $(LIB_FINAL))
@@ -140,8 +142,6 @@ $(LIB_SHARED): $(LIB_OBJ)
 	$(LD) $(LINKFLAGS) $(CXXFLAGS) $? $(LIB_MODULES) -o $(LIB_SHARED) 
 
 TOOL_LIB_MODULES+= $(LIB_STATIC)
-
-$(TOOL_LIB_MODULES): $(LIB_STATIC)
 
 TOOL_FINAL = $(PACKAGE_NAME)
 

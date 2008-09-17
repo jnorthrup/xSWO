@@ -11,3 +11,4 @@ xSWO
 ./Debug/**
 ./Release/**
 
+config.mak
