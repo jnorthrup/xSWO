@@ -12,3 +12,17 @@ xSWO
 ./Release/**
 
 config.mak
+docs/
+CVS/
+SPARQLfedParser/SPARQLfedParser.cpp
+SPARQLfedParser/SPARQLfedParser.hpp
+SPARQLfedParser/location.hh
+SPARQLfedParser/position.hh
+SPARQLfedParser/stack.hh
+TurtleSParser/location.hh
+TurtleSParser/position.hh
+TurtleSParser/stack.hh
+TurtleSParser/TurtleSParser.cpp
+TurtleSParser/TurtleSParser.hpp
+TurtleSScanner.cpp
+SPARQLfedScanner.cpp
