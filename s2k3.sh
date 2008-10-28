@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-t=$(mktemp) ;
+t=$(mktemp XXXXXXXX) ;
 z=(
 $(
 [[ -f sql2003.i ]]||./bnf2spirit.sh >sql2003.i ; cp sql2003.i $t 

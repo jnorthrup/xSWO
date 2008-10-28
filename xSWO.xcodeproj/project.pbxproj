@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		385D322A0EB70E4B00FB2626 /* sql2003.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 385D32280EB70E4B00FB2626 /* sql2003.cpp */; };
 		3883A7600E7B399600730AF8 /* sparql.h in Headers */ = {isa = PBXBuildFile; fileRef = 38C1F1150E76740700FCDC3F /* sparql.h */; };
 		38CBCA250E7A68CA00EFBB9B /* sparql.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 38C1F1160E76740700FCDC3F /* sparql.cpp */; };
 		38CBCA3C0E7A6B4D00EFBB9B /* libSpiritSPARQL.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 38CBCA210E7A686E00EFBB9B /* libSpiritSPARQL.dylib */; };
@@ -39,6 +40,9 @@
 
 /* Begin PBXFileReference section */
 		08FB7796FE84155DC02AAC07 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		385D321E0EB70C0600FB2626 /* sql-2003-2.bnf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "sql-2003-2.bnf"; sourceTree = "<group>"; };
+		385D321F0EB70C0600FB2626 /* sql2003.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = sql2003.hpp; sourceTree = "<group>"; };
+		385D32280EB70E4B00FB2626 /* sql2003.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sql2003.cpp; sourceTree = "<group>"; };
 		3883A7B40E7BBC9A00730AF8 /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
 		38C1F1150E76740700FCDC3F /* sparql.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sparql.h; sourceTree = "<group>"; };
 		38C1F1160E76740700FCDC3F /* sparql.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sparql.cpp; sourceTree = "<group>"; };
@@ -69,6 +73,7 @@
 		08FB7794FE84155DC02AAC07 /* xSWO */ = {
 			isa = PBXGroup;
 			children = (
+				385D321E0EB70C0600FB2626 /* sql-2003-2.bnf */,
 				3883A7B40E7BBC9A00730AF8 /* Makefile */,
 				08FB7795FE84155DC02AAC07 /* Source */,
 				C6859E8C029090F304C91782 /* Documentation */,
@@ -80,6 +85,8 @@
 		08FB7795FE84155DC02AAC07 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				385D321F0EB70C0600FB2626 /* sql2003.hpp */,
+				385D32280EB70E4B00FB2626 /* sql2003.cpp */,
 				38C1F1150E76740700FCDC3F /* sparql.h */,
 				38C1F1160E76740700FCDC3F /* sparql.cpp */,
 				08FB7796FE84155DC02AAC07 /* main.cpp */,
@@ -199,6 +206,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				38CBCA250E7A68CA00EFBB9B /* sparql.cpp in Sources */,
+				385D322A0EB70E4B00FB2626 /* sql2003.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
