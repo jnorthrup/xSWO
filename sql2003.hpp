@@ -32,71 +32,68 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			//SQLSpecialCharacter = chset_p( "\"%&'()*+,-./:;<^=>? {}_|[]")	 ;;;
 			
 			
-			Token = NondelimiterToken  
+			Token =NondelimiterToken  
 			| DelimiterToken;;;
-			NondelimiterToken = RegularIdentifier  
+			NondelimiterToken =  RegularIdentifier  
 			| KeyWord  
 			| UnsignedNumericLiteral  
 			| NationalCharacterStringLiteral  
-			| BitStringLiteral  
-			| HexStringLiteral  
+			| BinaryStringLiteral	
+			| (str_p("0x")>> +(xdigit_p	) )  
 			| LargeObjectLengthToken  
-			| Multiplier;;;
+			| Multiplier ;;;
 			RegularIdentifier = IdentifierBody;;;
-			IdentifierBody = (IdentifierStart >> *IdentifierPart);;;
+			IdentifierBody = lexeme_d[(IdentifierStart >> *IdentifierPart)];;;
 			IdentifierPart = IdentifierStart  
 			| IdentifierExtend;;;
-			IdentifierStart = nothing_p;;;
-			IdentifierExtend = nothing_p;;;
+			IdentifierStart = alpha_p;;;
+			IdentifierExtend = alnum_p|'_';;;
 			LargeObjectLengthToken = +digit_p >> Multiplier;;;
 			Multiplier =ch_p('K')  
 			|('M')  
 			|('G');;;
-			UnicodeDelimitedIdentifier = (U  >> '&'   >> '"'  >> +UnicodeDelimiterBody  >> '"'  >> !(str_p("ESCAPE")) >> EscapeCharacter);;;
+			UnicodeDelimitedIdentifier = lexeme_d[  "U&\""  >> +UnicodeDelimiterBody  >> '"'  ]>> !(str_p("ESCAPE")) >> lex_escape_ch_p		;;;
 			UnicodeDelimiterBody = +UnicodeIdentifierPart;;;
-			UnicodeIdentifierPart = DelimitedIdentifierPart  
-			| UnicodeEscapeValue;;;
-			UnicodeEscapeValue = Unicode4DigitEscapeValue  
-			| Unicode6DigitEscapeValue;;;
-			Unicode4DigitEscapeValue = EscapeCharacter >> xdigit_p >> xdigit_p >> xdigit_p >> xdigit_p;;;
-			Unicode6DigitEscapeValue = EscapeCharacter  >> '+'  >> xdigit_p >> xdigit_p >> xdigit_p >> xdigit_p >> xdigit_p >> xdigit_p;;;
-			EscapeCharacter = nothing_p;;;
-			NondoublequoteCharacter = nothing_p;;;
+			UnicodeIdentifierPart =lexeme_d[ DelimitedIdentifier  
+			| UnicodeEscapeValue];;;
+			UnicodeEscapeValue = lexeme_d[ Unicode4DigitEscapeValue  
+			| Unicode6DigitEscapeValue];;;
+			Unicode4DigitEscapeValue = lex_escape_ch_p		>> xdigit_p >> xdigit_p >> xdigit_p >> xdigit_p;;;
+			Unicode6DigitEscapeValue = lex_escape_ch_p		 >> '+'  >> xdigit_p >> xdigit_p >> xdigit_p >> xdigit_p >> xdigit_p >> xdigit_p;;;
+ 			NondoublequoteCharacter = ~(ch_p('"'));;;
 			DoublequoteSymbol = str_p("\"\"");;;
-			DelimiterToken = CharacterStringLiteral  
+			DelimiterToken =   CharacterStringLiteral  
 			| DateString  
 			| TimeString  
 			| TimestampString  
-			| IntervalString  
-			| DelimitedIdentifier  
+			| IntervalString 												  
+			|  DelimitedIdentifier
+			
+			
 			| UnicodeDelimitedIdentifier  
 			| SqlSpecialCharacters		 
 			| NotEqualsOperator  
 			| GreaterThanOrEqualsOperator  
 			| LessThanOrEqualsOperator  
 			| ConcatenationOperator  
-			| RightArrow  
-			| LeftBracketTrigraph  
-			| RightBracketTrigraph  
-			| DoubleColon  
-			| DoublePeriod;;;
+			| "->"  
+			//			| LeftBracketTrigraph  
+			//			| RightBracketTrigraph  
+			| "::"  
+			| ".." ;;;
 			NotEqualsOperator = ch_p('<')  >> '>' ;;;
 			GreaterThanOrEqualsOperator = ch_p('>')  >> '=' ;;;
 			LessThanOrEqualsOperator = ch_p('<')  >> '=' ;;;
 			ConcatenationOperator = ch_p('|')  >> '|' ;;;
-			RightArrow = str_p("->");;;
-			DoubleColon = str_p("::");;;
-			DoublePeriod = str_p("..");;;
-			
-			Separator = +(Comment  
-						  | WhiteSpace);;;
+ 			Separator = +(Comment  
+						  | space_p);;;
 			Comment = SimpleComment  
 			| BracketedComment;;;
 			SimpleComment = (SimpleCommentIntroducer >> *CommentCharacter >> eol_p);;;
-			SimpleCommentIntroducer = (str_p("--")>>*ch_p('-'));;;
+			SimpleCommentIntroducer = lexeme_d[ch_p('-') >> +ch_p('-')];;;
 			BracketedComment = BracketedCommentIntroducer >> BracketedCommentContents >> BracketedCommentTerminator;;;
-			BracketedCommentIntroducer = Slash  >> '*' ;;;
-			BracketedCommentTerminator = ch_p('*') >> Slash;;;
+			BracketedCommentIntroducer ="/*";;;
+			BracketedCommentTerminator ="*/";
 			BracketedCommentContents = *((CommentCharacter  
 										  | Separator));;;
 			CommentCharacter = NonquoteCharacter  
@@ -106,7 +103,7 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			NonReservedWord =ch_p('A')  
 			| "ABS"   
 			| "ABSOLUTE"   
-			| "ACTION"   
+			| "ACTION"
 			| "ADA"   
 			| "ADMIN"   
 			| "AFTER"   
@@ -616,21 +613,19 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			| QuoteSymbol;;;
 			NonquoteCharacter = nothing_p;;;
 			QuoteSymbol = ch_p('\'') >> ch_p('\'');;;
-			NationalCharacterStringLiteral = (N >> ch_p('\'') >> *CharacterRepresentation >> ch_p('\'') >> *((Separator >> ch_p('\'') >> *CharacterRepresentation >> ch_p('\''))));;;
-			UnicodeCharacterStringLiteral = !(Introducer >> CharacterSetSpecification >> U  >> '&'  >> ch_p('\'') >> *UnicodeRepresentation >> ch_p('\'') >> *((Separator >> ch_p('\'') >> *UnicodeRepresentation >> ch_p('\''))) >> !(str_p("ESCAPE")) >> EscapeCharacter);;;
-			UnicodeRepresentation = CharacterRepresentation  
-			| UnicodeEscapeValue;;;
-			BinaryStringLiteral = (X >> ch_p('\'') >> *(xdigit_p >> xdigit_p) >> ch_p('\'') >> *((Separator >> ch_p('\'') >> *(xdigit_p >> xdigit_p) >> ch_p('\''))) >> !(str_p("ESCAPE")) >> EscapeCharacter);;;
+			NationalCharacterStringLiteral =lexeme_d[ "N'" >> *CharacterRepresentation >> ch_p('\'') >> *((Separator >> ch_p('\'') >> *CharacterRepresentation >> ch_p('\'')))];;;
+			UnicodeCharacterStringLiteral = !(Introducer >> CharacterSetSpecification  >> lexeme_d["U&'" >> *UnicodeRepresentation >> ch_p('\'') >> *((Separator >> ch_p('\'') >> *UnicodeRepresentation >> ch_p('\'')))] >> !(str_p("ESCAPE")) >> lex_escape_ch_p ;;;
+			UnicodeRepresentation = CharacterRepresentation  | UnicodeEscapeValue;;;
+			BinaryStringLiteral = lexeme_d["X" >> ch_p('\'') >> *(xdigit_p >> xdigit_p) >> ch_p('\'') >> *((Separator >> ch_p('\'') >> *(xdigit_p >> xdigit_p) >> ch_p('\'')))] >> !str_p("ESCAPE")>> lex_escape_ch_p		;;;
 			SignedNumericLiteral = !(sign_p >> UnsignedNumericLiteral);;;
-			UnsignedNumericLiteral = ExactNumericLiteral  
-			| ApproximateNumericLiteral;;;
+			UnsignedNumericLiteral = ExactNumericLiteral  			| ApproximateNumericLiteral;;;
 			ExactNumericLiteral = (uint_p >> !(ch_p('.') >> !uint_p))  
 			| '.'  >> uint_p;;;
 			sign_p = ch_p('+')  
 			| '-' ;;;
-			ApproximateNumericLiteral = Mantissa >> E >> Exponent;;;
+			ApproximateNumericLiteral = Mantissa >> "E" >> Exponent;;;
 			Mantissa = ExactNumericLiteral;;;
-			Exponent = SignedInteger;;;
+			Exponent = int_p ;;;
 			SignedInteger = !(sign_p >> uint_p);;;
 			DatetimeLiteral = DateLiteral  
 			| TimeLiteral  
@@ -638,12 +633,12 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			DateLiteral =(str_p("DATE")) >> DateString;;;
 			TimeLiteral =(str_p("TIME")) >> TimeString;;;
 			TimestampLiteral =(str_p("TIMESTAMP")) >> TimestampString;;;
-			DateString = ch_p('\'') >> UnquotedDateString >> ch_p('\'');;;
+			DateString =ch_p('\'') >> UnquotedDateString >> ch_p('\'');;;
 			TimeString = ch_p('\'') >> UnquotedTimeString >> ch_p('\'');;;
 			TimestampString = ch_p('\'') >> UnquotedTimestampString >> ch_p('\'');;;
-			TimeZoneInterval = sign_p >> HoursValue  >> ':'  >> MinutesValue;;;
-			DateValue = YearsValue  >> '-'  >> MonthsValue  >> '-'  >> DaysValue;;;
-			TimeValue = HoursValue  >> ':'  >> MinutesValue  >> ':'  >> SecondsValue;;;
+			TimeZoneInterval=lexeme_d[ sign_p >> HoursValue  >> ':'  >> MinutesValue];;;
+			DateValue =lexeme_d[ YearsValue  >> '-'  >> MonthsValue  >> '-'  >> DaysValue];;;
+			TimeValue =lexeme_d[ HoursValue  >> ':'  >> MinutesValue  >> ':'  >> SecondsValue];;;
 			IntervalLiteral = ((str_p("INTERVAL")) >> !sign_p >> IntervalString >> IntervalQualifier);;;
 			IntervalString = ch_p('\'') >> UnquotedIntervalString >> ch_p('\'');;;
 			UnquotedDateString = DateValue;;;
@@ -651,20 +646,20 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			UnquotedTimestampString = UnquotedDateString >> space_p >> UnquotedTimeString;;;
 			UnquotedIntervalString = !(sign_p >> YearMonthLiteral  
 									   | DayTimeLiteral);;;
-			YearMonthLiteral = YearsValue  
-			| !(YearsValue  >> '-'  >> MonthsValue);;;
+			YearMonthLiteral = lexeme_d[ YearsValue  
+			| !(YearsValue  >> '-'  >> MonthsValue)];;;
 			DayTimeLiteral = DayTimeInterval  
 			| TimeInterval;;;
-			DayTimeInterval = (DaysValue >> !(space_p >> HoursValue >> !(ch_p(':') >> MinutesValue >> !ch_p(':') >> SecondsValue)));;;
-			TimeInterval = (HoursValue >> !(ch_p(':') >> MinutesValue >> !ch_p(':') >> SecondsValue))  
+			DayTimeInterval = lexeme_d[(DaysValue >> !(space_p >> HoursValue >> !(ch_p(':') >> MinutesValue >> !ch_p(':') >> SecondsValue)))];;;
+			TimeInterval = lexeme_d[(HoursValue >> !(ch_p(':') >> MinutesValue >> !ch_p(':') >> SecondsValue))  
 			| (MinutesValue >> !ch_p(':') >> SecondsValue)  
-			| SecondsValue;;;
+			| SecondsValue];;;
 			YearsValue = DatetimeValue;;;
 			MonthsValue = DatetimeValue;;;
 			DaysValue = DatetimeValue;;;
 			HoursValue = DatetimeValue;;;
 			MinutesValue = DatetimeValue;;;
-			SecondsValue = (SecondsIntegerValue >> !(ch_p('.') >> !SecondsFraction));;;
+			SecondsValue =lexeme_d[ (SecondsIntegerValue >> !(ch_p('.') >> !SecondsFraction))];;;
 			SecondsIntegerValue = uint_p;;;
 			SecondsFraction = uint_p;;;
 			DatetimeValue = uint_p;;;
@@ -701,7 +696,7 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			CursorName = LocalQualifiedName;;;
 			LocalQualifiedName = !(LocalQualifier  >> '.'  >> QualifiedIdentifier);;;
 			LocalQualifier =(str_p("MODULE"));;;
-			HostParameterName = ch_p(':') >> Identifier;;;
+			HostParameterName = lexeme_d[ ch_p(':') >> Identifier];;;
 			SQLParameterName = Identifier;;;
 			ConstraintName = SchemaQualifiedName;;;
 			ExternalRoutineName = Identifier  
@@ -778,8 +773,8 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			| "REAL"   
 			| "DOUBLE"   >> "PRECISION" ;;;
 			Length = uint_p;;;
-			LargeObjectLength = (uint_p >> !Multiplier >> !CharLengthUnits)  
-			| (LargeObjectLengthToken >> !CharLengthUnits);;;
+								   LargeObjectLength = lexeme_d[(uint_p >> !Multiplier >> !CharLengthUnits)  
+			| (LargeObjectLengthToken >> !CharLengthUnits)];;;
 			CharLengthUnits =(str_p("CHARACTERS"))  
 			| "CODE_UNITS"   
 			| "OCTETS" ;;;
@@ -947,13 +942,13 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			GeneralizedInvocation = (ch_p('(') >> ValueExpressionPrimary  >> "AS"  >> DataType  >> ')'   >> '.'  >> MethodName >> !SQLArgumentList);;;
 			MethodSelection = RoutineInvocation;;;
 			ConstructorMethodSelection = RoutineInvocation;;;
-			StaticMethodInvocation = (PathResolvedUserDefinedTypeName >> DoubleColon >> MethodName >> !SQLArgumentList);;;
+			StaticMethodInvocation = (PathResolvedUserDefinedTypeName >> "::" >> MethodName >> !SQLArgumentList);;;
 			StaticMethodSelection = RoutineInvocation;;;
 			NewSpecification =(str_p("NEW")) >> RoutineInvocation;;;
 			NewInvocation = MethodInvocation  
 			| RoutineInvocation;;;
 			AttributeOrMethodReference = (ValueExpressionPrimary >> DereferenceOperator >> QualifiedIdentifier >> !SQLArgumentList);;;
-			DereferenceOperator = RightArrow;;;
+			DereferenceOperator = "->";;;
 			DereferenceOperation = ReferenceValueExpression >> DereferenceOperator >> AttributeName;;;
 			MethodReference = ValueExpressionPrimary >> DereferenceOperator >> MethodName >> SQLArgumentList;;;
 			ReferenceResolution =(str_p("DEREF"))  >> '('  >> ReferenceValueExpression  >> ')' ;;;
@@ -1055,7 +1050,7 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			| NormalizeFunction  
 			| SpecificTypeMethod;;;
 			CharacterSubstringFunction = ((str_p("SUBSTRING"))  >> '('  >> CharacterValueExpression  >> "FROM"  >> StartPosition >> !(str_p("FOR")) >> StringLength >> !(str_p("USING")) >> CharLengthUnits  >> ')' );;;
-			RegularExpressionSubstringFunction =(str_p("SUBSTRING"))  >> '('  >> CharacterValueExpression  >> "SIMILAR"  >> CharacterValueExpression  >> "ESCAPE"  >> EscapeCharacter  >> ')' ;;;
+			RegularExpressionSubstringFunction =(str_p("SUBSTRING"))  >> '('  >> CharacterValueExpression  >> "SIMILAR"  >> CharacterValueExpression  >> "ESCAPE"  >> lex_escape_ch_p		 >> ')' ;;;
 			Fold = ((str_p("UPPER"))  
 					| "LOWER"   >> '('  >> CharacterValueExpression  >> ')' );;;
 			Transcoding =(str_p("CONVERT"))  >> '('  >> CharacterValueExpression  >> "USING"  >> TranscodingName  >> ')' ;;;
@@ -1390,15 +1385,15 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			LikePredicate = CharacterLikePredicate  
 			| OctetLikePredicate;;;
 			CharacterLikePredicate = RowValuePredicand >> CharacterLikePredicatePart2;;;
-			CharacterLikePredicatePart2 = !((str_p("NOT"))  >> "LIKE"  >> CharacterPattern >> !(str_p("ESCAPE")) >> EscapeCharacter);;;
+			CharacterLikePredicatePart2 = !((str_p("NOT"))  >> "LIKE"  >> CharacterPattern >> !(str_p("ESCAPE")) >> lex_escape_ch_p		;;;
 			CharacterPattern = CharacterValueExpression;;;
-			EscapeCharacter = CharacterValueExpression;;;
+			lex_escape_ch_p		= CharacterValueExpression;;;
 			OctetLikePredicate = RowValuePredicand >> OctetLikePredicatePart2;;;
 			OctetLikePredicatePart2 = !((str_p("NOT"))  >> "LIKE"  >> OctetPattern >> !(str_p("ESCAPE")) >> EscapeOctet);;;
 			OctetPattern = BlobValueExpression;;;
 			EscapeOctet = BlobValueExpression;;;
 			SimilarPredicate = RowValuePredicand >> SimilarPredicatePart2;;;
-			SimilarPredicatePart2 = !((str_p("NOT"))  >> "SIMILAR"   >> "TO"  >> SimilarPattern >> !(str_p("ESCAPE")) >> EscapeCharacter);;;
+			SimilarPredicatePart2 = !((str_p("NOT"))  >> "SIMILAR"   >> "TO"  >> SimilarPattern >> !(str_p("ESCAPE")) >> lex_escape_ch_p		;;;
 			SimilarPattern = CharacterValueExpression;;;
 			RegularExpression = RegularTerm  
 			| RegularExpression  >> '|'  >> RegularTerm;;;
@@ -2532,7 +2527,7 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			AdaTypeSpecification = AdaQualifiedTypeSpecification  
 			| AdaUnqualifiedTypeSpecification  
 			| AdaDerivedTypeSpecification;;;
-			AdaQualifiedTypeSpecification = Interfaces.((str_p("SQL"))  >> '.'   >> "CHAR"  >> !((str_p("CHARACTER"))  >> "SET"  >> !(str_p("IS")) >> CharacterSetSpecification)  >> '('  >> 1 >> DoublePeriod >> Length  >> ')' )  
+			AdaQualifiedTypeSpecification = Interfaces.((str_p("SQL"))  >> '.'   >> "CHAR"  >> !((str_p("CHARACTER"))  >> "SET"  >> !(str_p("IS")) >> CharacterSetSpecification)  >> '('  >> 1 >> ".." >> Length  >> ')' )  
 			| InterfacesSQL  >> '.'   >> "SMALLINT"   
 			| Interfaces.(str_p("SQL"))  >> '.'   >> "INT"   
 			| InterfacesSQL  >> '.'   >> "BIGINT"   
@@ -2541,7 +2536,7 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			| Interfaces.(str_p("SQL"))  >> '.'   >> "BOOLEAN"   
 			| InterfacesSQL  >> '.'  >> "SQLSTATE_TYPE"  
 			| Interfaces.(str_p("SQL"))  >> '.'  >> "INDICATOR_TYPE";;;
-			AdaUnqualifiedTypeSpecification =(str_p("CHAR"))  >> '('  >> 1 >> DoublePeriod >> Length  >> ')'   
+			AdaUnqualifiedTypeSpecification =(str_p("CHAR"))  >> '('  >> 1 >> ".." >> Length  >> ')'   
 			| "SMALLINT"   
 			| "INT"   
 			| "BIGINT"   
@@ -2636,9 +2631,9 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			| COBOLUserDefinedTypeLocatorVariable  
 			| COBOLREFVariable;;;
 			COBOLCharacterType = !(((str_p("CHARACTER"))  >> "SET"  >> !(str_p("IS")) >> CharacterSetSpecification) >> "PIC"  
-								   | "PICTURE" >> !(str_p("IS")) >> +(X >> !ch_p('(') >> Length  >> ')' ));;;
+								   | "PICTURE" >> !(str_p("IS")) >> +("X" >> !ch_p('(') >> Length  >> ')' ));;;
 			COBOLNationalCharacterType = !(((str_p("CHARACTER"))  >> "SET"  >> !(str_p("IS")) >> CharacterSetSpecification) >> "PIC"  
-										   | "PICTURE" >> !(str_p("IS")) >> +(N >> !ch_p('(') >> Length  >> ')' ));;;
+										   | "PICTURE" >> !(str_p("IS")) >> +("N" >> !ch_p('(') >> Length  >> ')' ));;;
 			COBOLCLOBVariable = !(((str_p("USAGE")) >> !(str_p("IS")))  >> "SQL"   >> "TYPE"   >> "IS"   >> "CLOB"   >> '('  >> LargeObjectLength  >> ')'  >> !((str_p("CHARACTER"))  >> "SET"  >> !(str_p("IS")) >> CharacterSetSpecification));;;
 			COBOLNCLOBVariable = !(((str_p("USAGE")) >> !(str_p("IS")))  >> "SQL"   >> "TYPE"   >> "IS"   >> "NCLOB"   >> '('  >> LargeObjectLength  >> ')'  >> !((str_p("CHARACTER"))  >> "SET"  >> !(str_p("IS")) >> CharacterSetSpecification));;;
 			COBOLBLOBVariable = !(((str_p("USAGE")) >> !(str_p("IS")))  >> "SQL"   >> "TYPE"   >> "IS"   >> "BLOB"   >> '('  >> LargeObjectLength  >> ')' );;;
@@ -2718,7 +2713,7 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			EmbeddedSQLPascalProgram = nothing_p;;;
 			PascalVariableDefinition = ((PascalHostIdentifier%ch_p(','))  >> ':'  >> PascalTypeSpecification  >> ';' );;;
 			PascalHostIdentifier = nothing_p;;;
-			PascalTypeSpecification = (str_p(PACKED)  >> "ARRAY"   >> '{'  >> 1 >> DoublePeriod >> Length  >> '}'   >> "OF"   >> "CHAR"  >> !((str_p("CHARACTER"))  >> "SET"  >> !(str_p("IS")) >> CharacterSetSpecification))  
+			PascalTypeSpecification = (str_p(PACKED)  >> "ARRAY"   >> '{'  >> 1 >> ".." >> Length  >> '}'   >> "OF"   >> "CHAR"  >> !((str_p("CHARACTER"))  >> "SET"  >> !(str_p("IS")) >> CharacterSetSpecification))  
 			| "INTEGER"   
 			| "REAL"   
 			| ((str_p("CHAR")) >> !((str_p("CHARACTER"))  >> "SET"  >> !(str_p("IS")) >> CharacterSetSpecification))  
@@ -2862,7 +2857,7 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			BOOST_SPIRIT_DEBUG_RULE( UnicodeEscapeValue );
 			BOOST_SPIRIT_DEBUG_RULE( Unicode4DigitEscapeValue );
 			BOOST_SPIRIT_DEBUG_RULE( Unicode6DigitEscapeValue );
-			BOOST_SPIRIT_DEBUG_RULE( EscapeCharacter );
+			BOOST_SPIRIT_DEBUG_RULE( lex_escape_ch_p		);
 			BOOST_SPIRIT_DEBUG_RULE( NondoublequoteCharacter );
 			BOOST_SPIRIT_DEBUG_RULE( DoublequoteSymbol );
 			BOOST_SPIRIT_DEBUG_RULE( DelimiterToken );
@@ -2870,9 +2865,9 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			BOOST_SPIRIT_DEBUG_RULE( GreaterThanOrEqualsOperator );
 			BOOST_SPIRIT_DEBUG_RULE( LessThanOrEqualsOperator );
 			BOOST_SPIRIT_DEBUG_RULE( ConcatenationOperator );
-			BOOST_SPIRIT_DEBUG_RULE( RightArrow );
-			BOOST_SPIRIT_DEBUG_RULE( DoubleColon );
-			BOOST_SPIRIT_DEBUG_RULE( DoublePeriod );
+			BOOST_SPIRIT_DEBUG_RULE( "->" );
+			BOOST_SPIRIT_DEBUG_RULE( "::" );
+			BOOST_SPIRIT_DEBUG_RULE( ".." );
 			BOOST_SPIRIT_DEBUG_RULE( Separator );
 			BOOST_SPIRIT_DEBUG_RULE( Comment );
 			BOOST_SPIRIT_DEBUG_RULE( SimpleComment );
@@ -3345,7 +3340,7 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			BOOST_SPIRIT_DEBUG_RULE( CharacterLikePredicate );
 			BOOST_SPIRIT_DEBUG_RULE( CharacterLikePredicatePart2 );
 			BOOST_SPIRIT_DEBUG_RULE( CharacterPattern );
-			BOOST_SPIRIT_DEBUG_RULE( EscapeCharacter );
+			BOOST_SPIRIT_DEBUG_RULE( lex_escape_ch_p		);
 			BOOST_SPIRIT_DEBUG_RULE( OctetLikePredicate );
 			BOOST_SPIRIT_DEBUG_RULE( OctetLikePredicatePart2 );
 			BOOST_SPIRIT_DEBUG_RULE( OctetPattern );
@@ -4111,13 +4106,12 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			BOOST_SPIRIT_DEBUG_RULE( ConditionInformation );
 			BOOST_SPIRIT_DEBUG_RULE( ConditionInformationItem );
 			BOOST_SPIRIT_DEBUG_RULE( ConditionInformationItemName );
-			
-		rule<	ScannerT >
+		}	
+		rule<	ScannerT >NondelimiterToken ,
 			SQLTerminalCharacter ,
-			SQLTerminalCharacter,
-			SqlSpecialCharacters ,
+ 			SqlSpecialCharacters ,
 			Token ,
-			NondelimiterToken ,
+		
 			RegularIdentifier ,
 			IdentifierBody ,
 			IdentifierPart ,
@@ -4125,23 +4119,20 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			IdentifierExtend ,
 			LargeObjectLengthToken ,
 			Multiplier ,
+									  DelimitedIdentifier	,
 			UnicodeDelimitedIdentifier ,
 			UnicodeDelimiterBody ,
 			UnicodeIdentifierPart ,
 			UnicodeEscapeValue ,
 			Unicode4DigitEscapeValue ,
 			Unicode6DigitEscapeValue ,
-			EscapeCharacter ,
-			NondoublequoteCharacter ,
+ 			NondoublequoteCharacter ,
 			DoublequoteSymbol ,
 			DelimiterToken ,
 			NotEqualsOperator ,
 			GreaterThanOrEqualsOperator ,
 			LessThanOrEqualsOperator ,
-			ConcatenationOperator ,
-			RightArrow ,
-			DoubleColon ,
-			DoublePeriod ,
+			ConcatenationOperator , 
 			Separator ,
 			Comment ,
 			SimpleComment ,
@@ -4283,8 +4274,7 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			ScopeClause ,
 			ReferencedType ,
 			PathResolvedUserDefinedTypeName ,
-			PathResolvedUserDefinedTypeName ,
-			CollectionType ,
+ 			CollectionType ,
 			ArrayType ,
 			MultisetType ,
 			FieldDefinition ,
@@ -5020,8 +5010,7 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			ModuleTransformGroupSpecification ,
 			ModuleCollations ,
 			ModuleCollationSpecification ,
-			CharacterSetSpecificationList ,
-			ModuleContents ,
+ 			ModuleContents ,
 			ModuleNameClause ,
 			ModuleCharacterSetSpecification ,
 			ExternallyInvokedProcedure ,
@@ -5152,8 +5141,7 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			GetHeaderInformation ,
 			HeaderItemName ,
 			GetItemInformation ,
-			ItemNumber ,
-			SimpleTargetSpecification1 ,
+ 			SimpleTargetSpecification1 ,
 			SimpleTargetSpecification2 ,
 			DescriptorItemName ,
 			SetDescriptorStatement ,
@@ -5379,15 +5367,13 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			StatementInformationItemName ,
 			ConditionInformation ,
 			ConditionInformationItem ,
-			ConditionInformationItemName 
+			ConditionInformationItemName , 									  
 			;
 			rule<ScannerT> const& start() const
 			{
 				return Query;
 			}
-			
-		}
-	}
+ 	};
 	
-}
+};
  
