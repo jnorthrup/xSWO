@@ -1396,15 +1396,15 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			LikePredicate = CharacterLikePredicate  
 			| OctetLikePredicate;;;
 			CharacterLikePredicate = RowValuePredicand >> CharacterLikePredicatePart2;;;
-			CharacterLikePredicatePart2 = !((str_p("NOT"))  >> "LIKE"  >> CharacterPattern ;;;//>> !(str_p("ESCAPE")) >> lex_escape_ch_p		;;;
+			CharacterLikePredicatePart2 = !str_p("NOT")  >> "LIKE"  >> CharacterPattern ;;;//>> !(str_p("ESCAPE")) >> lex_escape_ch_p		;;;
 			CharacterPattern = CharacterValueExpression;;;
 			lex_escape_ch_p		= CharacterValueExpression;;;
 			OctetLikePredicate = RowValuePredicand >> OctetLikePredicatePart2;;;
-											OctetLikePredicatePart2 = !((str_p("NOT"))  >> "LIKE"  >> OctetPattern ;;//>> !(str_p("ESCAPE")) >> EscapeOctet);;;
+											OctetLikePredicatePart2 = !str_p("NOT")  >> "LIKE"  >> OctetPattern ;;//>> !(str_p("ESCAPE")) >> EscapeOctet);;;
 			OctetPattern = BlobValueExpression;;;
 			EscapeOctet = BlobValueExpression;;;
 			SimilarPredicate = RowValuePredicand >> SimilarPredicatePart2;;;
-																		SimilarPredicatePart2 = !((str_p("NOT"))  >> "SIMILAR"   >> "TO"  >> SimilarPattern ;;;//>> !(str_p("ESCAPE")) >> lex_escape_ch_p		;;;
+																		SimilarPredicatePart2 = !(str_p("NOT")  >> "SIMILAR"   >> "TO"  >> SimilarPattern ;;;//>> !(str_p("ESCAPE")) >> lex_escape_ch_p		;;;
 			SimilarPattern = CharacterValueExpression;;;
 			RegularExpression = RegularTerm  
 			| RegularExpression  >> '|'  >> RegularTerm;;;
@@ -1467,7 +1467,7 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			SubmultisetPredicate = RowValuePredicand >> SubmultisetPredicatePart2;;;
 			SubmultisetPredicatePart2 = !((str_p("NOT"))  >> "SUBMULTISET"  >> !(str_p("OF")) >> MultisetValueExpression);;;
 			SetPredicate = RowValuePredicand >> SetPredicatePart2;;;
-			SetPredicatePart2 = ((str_p("IS")) >> !(str_p("NOT")) >> A  >> "SET" );;;
+			SetPredicatePart2 = ((str_p("IS")) >> !(str_p("NOT")) >> "A"  >> "SET" );;;
 			TypePredicate = RowValuePredicand >> TypePredicatePart2;;;
 			TypePredicatePart2 = ((str_p("IS")) >> !(str_p("NOT"))  >> "OF"   >> '('  >> TypeList  >> ')' );;;
 			TypeList = ((UserDefinedTypeSpecification%ch_p(',')));;;
@@ -1704,7 +1704,8 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			ReferentialAction =(str_p("CASCADE"))  
 			| str_p("SET")   >> "NULL"   
 			| str_p("SET")   >> "DEFAULT"   
-			| RESTRICT  
+			| "RESTRICT"
+																								  
 			| str_p("NO")   >> "ACTION" ;;;
 			CheckConstraintDefinition =(str_p("CHECK"))  >> '('  >> SearchCondition  >> ')' ;;;
 			AlterTableStatement =(str_p("ALTER"))  >> "TABLE"  >> TableName >> AlterTableAction;;;
@@ -1838,7 +1839,7 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			OverridingMethodSpecification =(str_p("OVERRIDING")) >> PartialMethodSpecification;;;
 			PartialMethodSpecification = !((str_p("INSTANCE"))  
 										   | str_p("STATIC")   
-										   | "CONSTRUCTOR"  >> "METHOD"  >> MethodName >> SQLParameterDeclarationList >> ReturnsClause >> !(str_p("SPECIFIC")) >> SpecificMethodName);;;
+										   | "CONSTRUCTOR"  >> "METHOD"  >> MethodName >> SQLParameterDeclarationList >> ReturnsClause >> !(str_p("SPECIFIC")) >> SpecificMethodName)));;;
 			SpecificMethodName = !(SchemaName  >> '.'  >> QualifiedIdentifier);;;
 			MethodCharacteristics = +MethodCharacteristic;;;
 			MethodCharacteristic = LanguageClause  
@@ -1855,10 +1856,10 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			| AddOverridingMethodSpecification  
 			| DropMethodSpecification;;;
 			AddAttributeDefinition =(str_p("ADD"))  >> "ATTRIBUTE"  >> AttributeDefinition;;;
-			DropAttributeDefinition =(str_p("DROP"))  >> "ATTRIBUTE"  >> AttributeName >> RESTRICT;;;
+			DropAttributeDefinition =(str_p("DROP"))  >> "ATTRIBUTE"  >> AttributeName >> "RESTRICT";;;
 			AddOriginalMethodSpecification =(str_p("ADD")) >> OriginalMethodSpecification;;;
 			AddOverridingMethodSpecification =(str_p("ADD")) >> OverridingMethodSpecification;;;
-			DropMethodSpecification =(str_p("DROP")) >> SpecificMethodSpecificationDesignator >> RESTRICT;;;
+			DropMethodSpecification =(str_p("DROP")) >> SpecificMethodSpecificationDesignator >> "RESTRICT";;;
 			SpecificMethodSpecificationDesignator = !((str_p("INSTANCE"))  
 													  | str_p("STATIC")   
 													  | "CONSTRUCTOR"  >> "METHOD"  >> MethodName >> DataTypeList);;;
@@ -1940,7 +1941,7 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			| NullCallClause  
 			| DynamicResultSetsCharacteristic  
 			| str_p("NAME")  >> ExternalRoutineName;;;
-			AlterRoutineBehavior = RESTRICT;;;
+			AlterRoutineBehavior = "RESTRICT";;;
 			DropRoutineStatement =(str_p("DROP")) >> SpecificRoutineDesignator >> DropBehavior;;;
 			UserDefinedCastDefinition = ((str_p("CREATE"))  >> "CAST"   >> '('  >> SourceDataType  >> "AS"  >> TargetDataType  >> ')'   >> "WITH"  >> CastFunction >> !(str_p("AS"))  >> "ASSIGNMENT" );;;
 			CastFunction = SpecificRoutineDesignator;;;
@@ -2060,7 +2061,7 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			| str_p("HIERARCHY")   >> "OPTION"   >> "FOR" ;;;
 			RevokeRoleStatement = ((str_p("REVOKE")) >> !(str_p("ADMIN"))  >> "OPTION"   >> "FOR"  >> (RoleRevoked%ch_p(','))  >> "FROM"  >> (Grantee%ch_p(',')) >> !(str_p("GRANTED"))  >> "BY"  >> Grantor >> DropBehavior);;;
 			RoleRevoked = RoleName;;;
-			SQLClientModuleDefinition = (ModuleNameClause >> LanguageClause >> ModuleAuthorizationClause >> !ModulePathSpecification >> !ModuleTransformGroupSpecification >> !ModuleCollation >> *TemporaryTableDeclaration >> +ModuleContents);;;
+			SQLClientModuleDefinition = (ModuleNameClause >> LanguageClause >> ModuleAuthorizationClause >> !ModulePathSpecification >> !ModuleTransformGroupSpecification >> !ModuleCollations   >> *TemporaryTableDeclaration >> +ModuleContents);;;
 			ModuleAuthorizationClause =(str_p("SCHEMA")) >> SchemaName  
 			| ((str_p("AUTHORIZATION")) >> ModuleAuthorizationIdentifier >> !((str_p("FOR"))  >> "STATIC"   >> "ONLY"   
 																			  | str_p("AND")   >> "DYNAMIC" ))  
@@ -2209,7 +2210,7 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			| str_p("LAST")   
 			| ((str_p("ABSOLUTE"))  
 			   | str_p("RELATIVE")  >> SimpleValueSpecification);;;
-			FetchTargetList = ((TargetSpecification%ch_p(',')) ;;;
+			FetchTargetList =  TargetSpecification%ch_p(',' ) ;;;
 							   
 							   CloseStatement =(str_p("CLOSE")) >> CursorName;;;
 							   SelectStatementSingleRow = ((str_p("SELECT")) >> !SetQuantifier >> SelectList  >> "INTO"  >> SelectTargetList >> TableExpression);;;
@@ -2325,7 +2326,7 @@ struct sql2003_parser : public grammar<sql2003_parser>
 							   | str_p("TRANSFORM")   >> "GROUP"   >> "FOR"   >> "TYPE"  >> PathResolvedUserDefinedTypeName >> ValueSpecification;;;
 							   SetSessionCollationStatement = ((str_p("SET"))  >> "COLLATION"  >> CollationSpecification >> !(str_p("FOR")) >> CharacterSetSpecificationList)  
 							   | ((str_p("SET"))  >> "NO"   >> "COLLATION"  >> !(str_p("FOR")) >> CharacterSetSpecificationList);;;
-							   CharacterSetSpecificationList = (CharacterSetSpecification >> !,+CharacterSetSpecification);;;
+							   CharacterSetSpecificationList = (CharacterSetSpecification %ch_p(','));;;
 							   CollationSpecification = ValueSpecification;;;
 							   AllocateDescriptorStatement = ((str_p("ALLOCATE")) >> !(str_p("SQL"))  >> "DESCRIPTOR"  >> DescriptorName >> !(str_p("WITH"))  >> "MAX"  >> Occurrences);;;
 							   Occurrences = SimpleValueSpecification;;;
@@ -2471,11 +2472,11 @@ struct sql2003_parser : public grammar<sql2003_parser>
 							   | EmbeddedTransformGroupSpecification  
 							   | EmbeddedCollationSpecification  
 							   | EmbeddedExceptionDeclaration  
-							   | HandlerDeclaration  
+							  // | HandlerDeclaration  //
 							   | SQLProcedureStatement;;;
-							   SQLPrefix =(str_p("EXEC"))  >> "SQL"   
-							   | '&'   >> "SQL"   >> '(' ;;;
-							   SQLTerminator = "ENDEXEC"  
+							   SQLPrefix =str_p("EXEC")  >> "SQL"   
+							   | ch_p('&' ) >> "SQL"   >> '(' ;;;
+							   SQLTerminator = str_p("ENDEXEC"  )
 							   | ';'   
 							   | ')' ;;;
 							   EmbeddedAuthorizationDeclaration =(str_p("DECLARE")) >> EmbeddedAuthorizationClause;;;
@@ -2517,8 +2518,8 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			MajorCategory =(str_p("SQLEXCEPTION"))  
 			| str_p("SQLWARNING")   
 			| str_p("NOT")   >> "FOUND" ;;;
-			SQLSTATEClassValue = SQLSTATEChar >> SQLSTATECharnothing_p;;;
-			SQLSTATESubclassValue = SQLSTATEChar >> SQLSTATEChar >> SQLSTATECharfail_p;;;
+			SQLSTATEClassValue = SQLSTATEChar >> SQLSTATEChar ;;;//nothing_p;;;
+			SQLSTATESubclassValue = SQLSTATEChar >> SQLSTATEChar >> SQLSTATEChar;;;//fail_p;;;
 			SQLSTATEChar = upper_p  
 			| digit_p;;;
 			ConditionAction =(str_p("CONTINUE"))  
@@ -2820,7 +2821,7 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			| str_p("ROW_COUNT")   
 			| str_p("TRANSACTIONS_COMMITTED")   
 			| str_p("TRANSACTIONS_ROLLED_BACK")   
-			| str_p("TRANSACTION_ACTIVE") ;;;
+			| str_p("TRANSACTION_ACTIVE") ;;;ConditionNumber=uint_p;;;
 			ConditionInformation = ((str_p("EXCEPTION"))  
 									| str_p("CONDITION")  >> ConditionNumber >> (ConditionInformationItem%ch_p(',')));;;
 			ConditionInformationItem = SimpleTargetSpecification  >> '='  >> ConditionInformationItemName;;;
@@ -5379,6 +5380,7 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			StatementInformationItem ,
 			StatementInformationItemName ,
 			ConditionInformation ,
+		ConditionNumber,
 			ConditionInformationItem ,
 			ConditionInformationItemName , 	OverlapsPredicatePart,Query								  
 			;
