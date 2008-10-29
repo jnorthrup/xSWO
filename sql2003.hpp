@@ -76,11 +76,11 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			| GreaterThanOrEqualsOperator  
 			| LessThanOrEqualsOperator  
 			| ConcatenationOperator  
-			| "->"  
+			| str_p("->")  
 			//			| LeftBracketTrigraph  
 			//			| RightBracketTrigraph  
-			| "::"  
-			| ".." ;;;
+			| str_p("::")  
+			| str_p("..") ;;;
 			NotEqualsOperator = ch_p('<')  >> '>' ;;;
 			GreaterThanOrEqualsOperator = ch_p('>')  >> '=' ;;;
 			LessThanOrEqualsOperator = ch_p('<')  >> '=' ;;;
@@ -101,501 +101,501 @@ struct sql2003_parser : public grammar<sql2003_parser>
  			KeyWord = ReservedWord  
 			| NonReservedWord;;;
 			NonReservedWord =ch_p('A')  
-			| "ABS"   
-			| "ABSOLUTE"   
-			| "ACTION"
-			| "ADA"   
-			| "ADMIN"   
-			| "AFTER"   
-			| "ALWAYS"   
-			| "ASC"   
-			| "ASSERTION"   
-			| "ASSIGNMENT"   
-			| "ATTRIBUTE"   
-			| "ATTRIBUTES"   
-			| "AVG"   
-			| "BEFORE"   
-			| "BERNOULLI"   
-			| "BREADTH"   
+			| str_p("ABS")   
+			| str_p("ABSOLUTE")   
+			| str_p("ACTION")
+			| str_p("ADA")   
+			| str_p("ADMIN")   
+			| str_p("AFTER")   
+			| str_p("ALWAYS")   
+			| str_p("ASC")   
+			| str_p("ASSERTION")   
+			| str_p("ASSIGNMENT")   
+			| str_p("ATTRIBUTE")   
+			| str_p("ATTRIBUTES")   
+			| str_p("AVG")   
+			| str_p("BEFORE")   
+			| str_p("BERNOULLI")   
+			| str_p("BREADTH")   
 			|('C')  
-			| "CARDINALITY"   
-			| "CASCADE"   
-			| "CATALOG"   
-			| "CATALOG_NAME"   
-			| "CEIL"   
-			| "CEILING"   
-			| "CHAIN"   
-			| "CHARACTERISTICS"   
-			| "CHARACTERS"   
-			| "CHARACTER_LENGTH"   
-			| "CHARACTER_SET_CATALOG"   
-			| "CHARACTER_SET_NAME"   
-			| "CHARACTER_SET_SCHEMA"   
-			| "CHAR_LENGTH"   
-			| "CHECKED"   
-			| "CLASS_ORIGIN"   
-			| "COALESCE"   
-			| "COBOL"   
-			| "CODE_UNITS"   
-			| "COLLATION"   
-			| "COLLATION_CATALOG"   
-			| "COLLATION_NAME"   
-			| "COLLATION_SCHEMA"   
-			| "COLLECT"   
-			| "COLUMN_NAME"   
-			| "COMMAND_FUNCTION"   
-			| "COMMAND_FUNCTION_CODE"   
-			| "COMMITTED"   
-			| "CONDITION"   
-			| "CONDITION_NUMBER"   
-			| "CONNECTION_NAME"   
-			| "CONSTRAINTS"   
-			| "CONSTRAINT_CATALOG"   
-			| "CONSTRAINT_NAME"   
-			| "CONSTRAINT_SCHEMA"   
-			| "CONSTRUCTORS"   
-			| "CONTAINS"   
-			| "CONVERT"   
-			| "CORR"   
-			| "COUNT"   
-			| "COVAR_POP"   
-			| "COVAR_SAMP"   
-			| "CUME_DIST"   
-			| "CURRENT_COLLATION"   
-			| "CURSOR_NAME"   
-			| "DATA"   
-			| "DATETIME_INTERVAL_CODE"   
-			| "DATETIME_INTERVAL_PRECISION"   
-			| "DEFAULTS"   
-			| "DEFERRABLE"   
-			| "DEFERRED"   
-			| "DEFINED"   
-			| "DEFINER"   
-			| "DEGREE"   
-			| "DENSE_RANK"   
-			| "DEPTH"   
-			| "DERIVED"   
-			| "DESC"   
-			| "DESCRIPTOR"   
-			| "DIAGNOSTICS"   
-			| "DISPATCH"   
-			| "DOMAIN"   
-			| "DYNAMIC_FUNCTION"   
-			| "DYNAMIC_FUNCTION_CODE"   
-			| "EQUALS"   
-			| "EVERY"   
-			| "EXCEPTION"   
-			| "EXCLUDE"   
-			| "EXCLUDING"   
-			| "EXP"   
-			| "EXTRACT"   
-			| "FINAL"   
-			| "FIRST"   
-			| "FLOOR"   
-			| "FOLLOWING"   
-			| "FORTRAN"   
-			| "FOUND"   
-			| "FUSION"   
+			| str_p("CARDINALITY")   
+			| str_p("CASCADE")   
+			| str_p("CATALOG")   
+			| str_p("CATALOG_NAME")   
+			| str_p("CEIL")   
+			| str_p("CEILING")   
+			| str_p("CHAIN")   
+			| str_p("CHARACTERISTICS")   
+			| str_p("CHARACTERS")   
+			| str_p("CHARACTER_LENGTH")   
+			| str_p("CHARACTER_SET_CATALOG")   
+			| str_p("CHARACTER_SET_NAME")   
+			| str_p("CHARACTER_SET_SCHEMA")   
+			| str_p("CHAR_LENGTH")   
+			| str_p("CHECKED")   
+			| str_p("CLASS_ORIGIN")   
+			| str_p("COALESCE")   
+			| str_p("COBOL")   
+			| str_p("CODE_UNITS")   
+			| str_p("COLLATION")   
+			| str_p("COLLATION_CATALOG")   
+			| str_p("COLLATION_NAME")   
+			| str_p("COLLATION_SCHEMA")   
+			| str_p("COLLECT")   
+			| str_p("COLUMN_NAME")   
+			| str_p("COMMAND_FUNCTION")   
+			| str_p("COMMAND_FUNCTION_CODE")   
+			| str_p("COMMITTED")   
+			| str_p("CONDITION")   
+			| str_p("CONDITION_NUMBER")   
+			| str_p("CONNECTION_NAME")   
+			| str_p("CONSTRAINTS")   
+			| str_p("CONSTRAINT_CATALOG")   
+			| str_p("CONSTRAINT_NAME")   
+			| str_p("CONSTRAINT_SCHEMA")   
+			| str_p("CONSTRUCTORS")   
+			| str_p("CONTAINS")   
+			| str_p("CONVERT")   
+			| str_p("CORR")   
+			| str_p("COUNT")   
+			| str_p("COVAR_POP")   
+			| str_p("COVAR_SAMP")   
+			| str_p("CUME_DIST")   
+			| str_p("CURRENT_COLLATION")   
+			| str_p("CURSOR_NAME")   
+			| str_p("DATA")   
+			| str_p("DATETIME_INTERVAL_CODE")   
+			| str_p("DATETIME_INTERVAL_PRECISION")   
+			| str_p("DEFAULTS")   
+			| str_p("DEFERRABLE")   
+			| str_p("DEFERRED")   
+			| str_p("DEFINED")   
+			| str_p("DEFINER")   
+			| str_p("DEGREE")   
+			| str_p("DENSE_RANK")   
+			| str_p("DEPTH")   
+			| str_p("DERIVED")   
+			| str_p("DESC")   
+			| str_p("DESCRIPTOR")   
+			| str_p("DIAGNOSTICS")   
+			| str_p("DISPATCH")   
+			| str_p("DOMAIN")   
+			| str_p("DYNAMIC_FUNCTION")   
+			| str_p("DYNAMIC_FUNCTION_CODE")   
+			| str_p("EQUALS")   
+			| str_p("EVERY")   
+			| str_p("EXCEPTION")   
+			| str_p("EXCLUDE")   
+			| str_p("EXCLUDING")   
+			| str_p("EXP")   
+			| str_p("EXTRACT")   
+			| str_p("FINAL")   
+			| str_p("FIRST")   
+			| str_p("FLOOR")   
+			| str_p("FOLLOWING")   
+			| str_p("FORTRAN")   
+			| str_p("FOUND")   
+			| str_p("FUSION")   
 			|('G')  
-			| "GENERAL"   
-			| "GO"   
-			| "GOTO"   
-			| "GRANTED"   
-			| "HIERARCHY"   
-			| "IMPLEMENTATION"   
-			| "INCLUDING"   
-			| "INCREMENT"   
-			| "INITIALLY"   
-			| "INSTANCE"   
-			| "INSTANTIABLE"   
-			| "INTERSECTION"   
-			| "INVOKER"   
-			| "ISOLATION"   
+			| str_p("GENERAL")   
+			| str_p("GO")   
+			| str_p("GOTO")   
+			| str_p("GRANTED")   
+			| str_p("HIERARCHY")   
+			| str_p("IMPLEMENTATION")   
+			| str_p("INCLUDING")   
+			| str_p("INCREMENT")   
+			| str_p("INITIALLY")   
+			| str_p("INSTANCE")   
+			| str_p("INSTANTIABLE")   
+			| str_p("INTERSECTION")   
+			| str_p("INVOKER")   
+			| str_p("ISOLATION")   
 			|('K')  
-			| "KEY"   
-			| "KEY_MEMBER"   
-			| "KEY_TYPE"   
-			| "LAST"   
-			| "LENGTH"   
-			| "LEVEL"   
-			| "LN"   
-			| "LOCATOR"   
-			| "LOWER"   
+			| str_p("KEY")   
+			| str_p("KEY_MEMBER")   
+			| str_p("KEY_TYPE")   
+			| str_p("LAST")   
+			| str_p("LENGTH")   
+			| str_p("LEVEL")   
+			| str_p("LN")   
+			| str_p("LOCATOR")   
+			| str_p("LOWER")   
 			|('M')  
-			| "MAP"   
-			| "MATCHED"   
-			| "MAX"   
-			| "MAXVALUE"   
-			| "MESSAGE_LENGTH"   
-			| "MESSAGE_OCTET_LENGTH"   
-			| "MESSAGE_TEXT"   
-			| "MIN"   
-			| "MINVALUE"   
-			| "MOD"   
-			| "MORE"   
-			| "MUMPS"   
-			| "NAME"   
-			| "NAMES"   
-			| "NESTING"   
-			| "NEXT"   
-			| "NORMALIZE"   
-			| "NORMALIZED"   
-			| "NULLABLE"   
-			| "NULLIF"   
-			| "NULLS"   
-			| "NUMBER"   
-			| "OBJECT"   
-			| "OCTETS"   
-			| "OCTET_LENGTH"   
-			| "OPTION"   
-			| "OPTIONS"   
-			| "ORDERING"   
-			| "ORDINALITY"   
-			| "OTHERS"   
-			| "OVERLAY"   
-			| "OVERRIDING"   
-			| "PAD"   
-			| "PARAMETER_MODE"   
-			| "PARAMETER_NAME"   
-			| "PARAMETER_ORDINAL_POSITION"   
-			| "PARAMETER_SPECIFIC_CATALOG"   
-			| "PARAMETER_SPECIFIC_NAME"   
-			| "PARAMETER_SPECIFIC_SCHEMA"   
-			| "PARTIAL"   
-			| "PASCAL"   
-			| "PATH"   
-			| "PERCENTILE_CONT"   
-			| "PERCENTILE_DISC"   
-			| "PERCENT_RANK"   
-			| "PLACING"   
-			| "PLI"   
-			| "POSITION"   
-			| "POWER"   
-			| "PRECEDING"   
-			| "PRESERVE"   
-			| "PRIOR"   
-			| "PRIVILEGES"   
-			| "PUBLIC"   
-			| "RANK"   
-			| "READ"   
-			| "REGR_AVGX"   
-			| "REGR_AVGY"   
-			| "REGR_COUNT"   
-			| "REGR_INTERCEPT"   
-			| "REGR_R2"   
-			| "REGR_SLOPE"   
-			| "REGR_SXX"   
-			| "REGR_SXY"   
-			| "REGR_SXY"   
-			| "RELATIVE"   
-			| "REPEATABLE"   
-			| "RESTART"   
-			| "RESULT"   
-			| "RETURNED_CARDINALITY"   
-			| "RETURNED_LENGTH"   
-			| "RETURNED_OCTET_LENGTH"   
-			| "RETURNED_SQLSTATE"   
-			| "ROLE"   
-			| "ROUTINE"   
-			| "ROUTINE_CATALOG"   
-			| "ROUTINE_NAME"   
-			| "ROUTINE_SCHEMA"   
-			| "ROW_COUNT"   
-			| "ROW_NUMBER"   
-			| "SCALE"   
-			| "SCHEMA"   
-			| "SCHEMA_NAME"   
-			| "SCOPE_CATALOG"   
-			| "SCOPE_NAME"   
-			| "SCOPE_SCHEMA"   
-			| "SECTION"   
-			| "SECURITY"   
-			| "SELF"   
-			| "SEQUENCE"   
-			| "SERIALIZABLE"   
-			| "SERVER_NAME"   
-			| "SESSION"   
-			| "SETS"   
-			| "SIMPLE"   
-			| "SIZE"   
-			| "SOURCE"   
-			| "SPACE"   
-			| "SPECIFIC_NAME"   
-			| "SQRT"   
-			| "STATE"   
-			| "STATEMENT"   
-			| "STDDEV_POP"   
-			| "STDDEV_SAMP"   
-			| "STRUCTURE"   
-			| "STYLE"   
-			| "SUBCLASS_ORIGIN"   
-			| "SUBSTRING"   
-			| "SUM"   
-			| "TABLESAMPLE"   
-			| "TABLE_NAME"   
-			| "TEMPORARY"   
-			| "TIES"   
-			| "TOP_LEVEL_COUNT"   
-			| "TRANSACTION"   
-			| "TRANSACTIONS_COMMITTED"   
-			| "TRANSACTIONS_ROLLED_BACK"   
-			| "TRANSACTION_ACTIVE"   
-			| "TRANSFORM"   
-			| "TRANSFORMS"   
-			| "TRANSLATE"   
-			| "TRIGGER_CATALOG"   
-			| "TRIGGER_NAME"   
-			| "TRIGGER_SCHEMA"   
-			| "TRIM"   
-			| "TYPE"   
-			| "UNBOUNDED"   
-			| "UNCOMMITTED"   
-			| "UNDER"   
-			| "UNNAMED"   
-			| "UPPER"   
-			| "USAGE"   
-			| "USER_DEFINED_TYPE_CATALOG"   
-			| "USER_DEFINED_TYPE_CODE"   
-			| "USER_DEFINED_TYPE_NAME"   
-			| "USER_DEFINED_TYPE_SCHEMA"   
-			| "VAR_POP"   
-			| "VAR_SAMP"   
-			| "VIEW"   
-			| "WIDTH_BUCKET"   
-			| "WORK"   
-			| "WRITE"   
-			| "ZONE" ;;;
+			| str_p("MAP")   
+			| str_p("MATCHED")   
+			| str_p("MAX")   
+			| str_p("MAXVALUE")   
+			| str_p("MESSAGE_LENGTH")   
+			| str_p("MESSAGE_OCTET_LENGTH")   
+			| str_p("MESSAGE_TEXT")   
+			| str_p("MIN")   
+			| str_p("MINVALUE")   
+			| str_p("MOD")   
+			| str_p("MORE")   
+			| str_p("MUMPS")   
+			| str_p("NAME")   
+			| str_p("NAMES")   
+			| str_p("NESTING")   
+			| str_p("NEXT")   
+			| str_p("NORMALIZE")   
+			| str_p("NORMALIZED")   
+			| str_p("NULLABLE")   
+			| str_p("NULLIF")   
+			| str_p("NULLS")   
+			| str_p("NUMBER")   
+			| str_p("OBJECT")   
+			| str_p("OCTETS")   
+			| str_p("OCTET_LENGTH")   
+			| str_p("OPTION")   
+			| str_p("OPTIONS")   
+			| str_p("ORDERING")   
+			| str_p("ORDINALITY")   
+			| str_p("OTHERS")   
+			| str_p("OVERLAY")   
+			| str_p("OVERRIDING")   
+			| str_p("PAD")   
+			| str_p("PARAMETER_MODE")   
+			| str_p("PARAMETER_NAME")   
+			| str_p("PARAMETER_ORDINAL_POSITION")   
+			| str_p("PARAMETER_SPECIFIC_CATALOG")   
+			| str_p("PARAMETER_SPECIFIC_NAME")   
+			| str_p("PARAMETER_SPECIFIC_SCHEMA")   
+			| str_p("PARTIAL")   
+			| str_p("PASCAL")   
+			| str_p("PATH")   
+			| str_p("PERCENTILE_CONT")   
+			| str_p("PERCENTILE_DISC")   
+			| str_p("PERCENT_RANK")   
+			| str_p("PLACING")   
+			| str_p("PLI")   
+			| str_p("POSITION")   
+			| str_p("POWER")   
+			| str_p("PRECEDING")   
+			| str_p("PRESERVE")   
+			| str_p("PRIOR")   
+			| str_p("PRIVILEGES")   
+			| str_p("PUBLIC")   
+			| str_p("RANK")   
+			| str_p("READ")   
+			| str_p("REGR_AVGX")   
+			| str_p("REGR_AVGY")   
+			| str_p("REGR_COUNT")   
+			| str_p("REGR_INTERCEPT")   
+			| str_p("REGR_R2")   
+			| str_p("REGR_SLOPE")   
+			| str_p("REGR_SXX")   
+			| str_p("REGR_SXY")   
+			| str_p("REGR_SXY")   
+			| str_p("RELATIVE")   
+			| str_p("REPEATABLE")   
+			| str_p("RESTART")   
+			| str_p("RESULT")   
+			| str_p("RETURNED_CARDINALITY")   
+			| str_p("RETURNED_LENGTH")   
+			| str_p("RETURNED_OCTET_LENGTH")   
+			| str_p("RETURNED_SQLSTATE")   
+			| str_p("ROLE")   
+			| str_p("ROUTINE")   
+			| str_p("ROUTINE_CATALOG")   
+			| str_p("ROUTINE_NAME")   
+			| str_p("ROUTINE_SCHEMA")   
+			| str_p("ROW_COUNT")   
+			| str_p("ROW_NUMBER")   
+			| str_p("SCALE")   
+			| str_p("SCHEMA")   
+			| str_p("SCHEMA_NAME")   
+			| str_p("SCOPE_CATALOG")   
+			| str_p("SCOPE_NAME")   
+			| str_p("SCOPE_SCHEMA")   
+			| str_p("SECTION")   
+			| str_p("SECURITY")   
+			| str_p("SELF")   
+			| str_p("SEQUENCE")   
+			| str_p("SERIALIZABLE")   
+			| str_p("SERVER_NAME")   
+			| str_p("SESSION")   
+			| str_p("SETS")   
+			| str_p("SIMPLE")   
+			| str_p("SIZE")   
+			| str_p("SOURCE")   
+			| str_p("SPACE")   
+			| str_p("SPECIFIC_NAME")   
+			| str_p("SQRT")   
+			| str_p("STATE")   
+			| str_p("STATEMENT")   
+			| str_p("STDDEV_POP")   
+			| str_p("STDDEV_SAMP")   
+			| str_p("STRUCTURE")   
+			| str_p("STYLE")   
+			| str_p("SUBCLASS_ORIGIN")   
+			| str_p("SUBSTRING")   
+			| str_p("SUM")   
+			| str_p("TABLESAMPLE")   
+			| str_p("TABLE_NAME")   
+			| str_p("TEMPORARY")   
+			| str_p("TIES")   
+			| str_p("TOP_LEVEL_COUNT")   
+			| str_p("TRANSACTION")   
+			| str_p("TRANSACTIONS_COMMITTED")   
+			| str_p("TRANSACTIONS_ROLLED_BACK")   
+			| str_p("TRANSACTION_ACTIVE")   
+			| str_p("TRANSFORM")   
+			| str_p("TRANSFORMS")   
+			| str_p("TRANSLATE")   
+			| str_p("TRIGGER_CATALOG")   
+			| str_p("TRIGGER_NAME")   
+			| str_p("TRIGGER_SCHEMA")   
+			| str_p("TRIM")   
+			| str_p("TYPE")   
+			| str_p("UNBOUNDED")   
+			| str_p("UNCOMMITTED")   
+			| str_p("UNDER")   
+			| str_p("UNNAMED")   
+			| str_p("UPPER")   
+			| str_p("USAGE")   
+			| str_p("USER_DEFINED_TYPE_CATALOG")   
+			| str_p("USER_DEFINED_TYPE_CODE")   
+			| str_p("USER_DEFINED_TYPE_NAME")   
+			| str_p("USER_DEFINED_TYPE_SCHEMA")   
+			| str_p("VAR_POP")   
+			| str_p("VAR_SAMP")   
+			| str_p("VIEW")   
+			| str_p("WIDTH_BUCKET")   
+			| str_p("WORK")   
+			| str_p("WRITE")   
+			| str_p("ZONE") ;;;
 			ReservedWord =(str_p("ADD"))  
-			| "ALL"   
-			| "ALLOCATE"   
-			| "ALTER"   
-			| "AND"   
-			| "ANY"   
-			| "ARE"   
-			| "ARRAY"   
-			| "AS"   
-			| "ASENSITIVE"   
-			| "ASYMMETRIC"   
-			| "AT"   
-			| "ATOMIC"   
-			| "AUTHORIZATION"   
-			| "BEGIN"   
-			| "BETWEEN"   
-			| "BIGINT"   
-			| "BINARY"   
-			| "BLOB"   
-			| "BOOLEAN"   
-			| "BOTH"   
-			| "BY"   
-			| "CALL"   
-			| "CALLED"   
-			| "CASCADED"   
-			| "CASE"   
-			| "CAST"   
-			| "CHAR"   
-			| "CHARACTER"   
-			| "CHECK"   
-			| "CLOB"   
-			| "CLOSE"   
-			| "COLLATE"   
-			| "COLUMN"   
-			| "COMMIT"   
-			| "CONNECT"   
-			| "CONSTRAINT"   
-			| "CONTINUE"   
-			| "CORRESPONDING"   
-			| "CREATE"   
-			| "CROSS"   
-			| "CUBE"   
-			| "CURRENT"   
-			| "CURRENT_DATE"   
-			| "CURRENT_DEFAULT_TRANSFORM_GROUP"   
-			| "CURRENT_PATH"   
-			| "CURRENT_ROLE"   
-			| "CURRENT_TIME"   
-			| "CURRENT_TIMESTAMP"   
-			| "CURRENT_TRANSFORM_GROUP_FOR_TYPE"   
-			| "CURRENT_USER"   
-			| "CURSOR"   
-			| "CYCLE"   
-			| "DATE"   
-			| "DAY"   
-			| "DEALLOCATE"   
-			| "DEC"   
-			| "DECIMAL"   
-			| "DECLARE"   
-			| "DEFAULT"   
-			| "DELETE"   
-			| "DEREF"   
-			| "DESCRIBE"   
-			| "DETERMINISTIC"   
-			| "DISCONNECT"   
-			| "DISTINCT"   
-			| "DOUBLE"   
-			| "DROP"   
-			| "DYNAMIC"   
-			| "EACH"   
-			| "ELEMENT"   
-			| "ELSE"   
-			| "END"   
+			| str_p("ALL")   
+			| str_p("ALLOCATE")   
+			| str_p("ALTER")   
+			| str_p("AND")   
+			| str_p("ANY")   
+			| str_p("ARE")   
+			| str_p("ARRAY")   
+			| str_p("AS")   
+			| str_p("ASENSITIVE")   
+			| str_p("ASYMMETRIC")   
+			| str_p("AT")   
+			| str_p("ATOMIC")   
+			| str_p("AUTHORIZATION")   
+			| str_p("BEGIN")   
+			| str_p("BETWEEN")   
+			| str_p("BIGINT")   
+			| str_p("BINARY")   
+			| str_p("BLOB")   
+			| str_p("BOOLEAN")   
+			| str_p("BOTH")   
+			| str_p("BY")   
+			| str_p("CALL")   
+			| str_p("CALLED")   
+			| str_p("CASCADED")   
+			| str_p("CASE")   
+			| str_p("CAST")   
+			| str_p("CHAR")   
+			| str_p("CHARACTER")   
+			| str_p("CHECK")   
+			| str_p("CLOB")   
+			| str_p("CLOSE")   
+			| str_p("COLLATE")   
+			| str_p("COLUMN")   
+			| str_p("COMMIT")   
+			| str_p("CONNECT")   
+			| str_p("CONSTRAINT")   
+			| str_p("CONTINUE")   
+			| str_p("CORRESPONDING")   
+			| str_p("CREATE")   
+			| str_p("CROSS")   
+			| str_p("CUBE")   
+			| str_p("CURRENT")   
+			| str_p("CURRENT_DATE")   
+			| str_p("CURRENT_DEFAULT_TRANSFORM_GROUP")   
+			| str_p("CURRENT_PATH")   
+			| str_p("CURRENT_ROLE")   
+			| str_p("CURRENT_TIME")   
+			| str_p("CURRENT_TIMESTAMP")   
+			| str_p("CURRENT_TRANSFORM_GROUP_FOR_TYPE")   
+			| str_p("CURRENT_USER")   
+			| str_p("CURSOR")   
+			| str_p("CYCLE")   
+			| str_p("DATE")   
+			| str_p("DAY")   
+			| str_p("DEALLOCATE")   
+			| str_p("DEC")   
+			| str_p("DECIMAL")   
+			| str_p("DECLARE")   
+			| str_p("DEFAULT")   
+			| str_p("DELETE")   
+			| str_p("DEREF")   
+			| str_p("DESCRIBE")   
+			| str_p("DETERMINISTIC")   
+			| str_p("DISCONNECT")   
+			| str_p("DISTINCT")   
+			| str_p("DOUBLE")   
+			| str_p("DROP")   
+			| str_p("DYNAMIC")   
+			| str_p("EACH")   
+			| str_p("ELEMENT")   
+			| str_p("ELSE")   
+			| str_p("END")   
 			|  "END-EXEC"
-			| "ESCAPE"   
-			| "EXCEPT"   
-			| "EXEC"   
-			| "EXECUTE"   
-			| "EXISTS"   
-			| "EXTERNAL"   
-			| "FALSE"   
-			| "FETCH"   
-			| "FILTER"   
-			| "FLOAT"   
-			| "FOR"   
-			| "FOREIGN"   
-			| "FREE"   
-			| "FROM"   
-			| "FULL"   
-			| "FUNCTION"   
-			| "GET"   
-			| "GLOBAL"   
-			| "GRANT"   
-			| "GROUP"   
-			| "GROUPING"   
-			| "HAVING"   
-			| "HOLD"   
-			| "HOUR"   
-			| "IDENTITY"   
-			| "IMMEDIATE"   
-			| "IN"   
-			| "INDICATOR"   
-			| "INNER"   
-			| "INOUT"   
-			| "INPUT"   
-			| "INSENSITIVE"   
-			| "INSERT"   
-			| "INT"   
-			| "INTEGER"   
-			| "INTERSECT"   
-			| "INTERVAL"   
-			| "INTO"   
-			| "IS"   
-			| "ISOLATION"   
-			| "JOIN"   
-			| "LANGUAGE"   
-			| "LARGE"   
-			| "LATERAL"   
-			| "LEADING"   
-			| "LEFT"   
-			| "LIKE"   
-			| "LOCAL"   
-			| "LOCALTIME"   
-			| "LOCALTIMESTAMP"   
-			| "MATCH"   
-			| "MEMBER"   
-			| "MERGE"   
-			| "METHOD"   
-			| "MINUTE"   
-			| "MODIFIES"   
-			| "MODULE"   
-			| "MONTH"   
-			| "MULTISET"   
-			| "NATIONAL"   
-			| "NATURAL"   
-			| "NCHAR"   
-			| "NCLOB"   
-			| "NEW"   
-			| "NO"   
-			| "NONE"   
-			| "NOT"   
-			| "NULL"   
-			| "NUMERIC"   
-			| "OF"   
-			| "OLD"   
-			| "ON"   
-			| "ONLY"   
-			| "OPEN"   
-			| "OR"   
-			| "ORDER"   
-			| "OUT"   
-			| "OUTER"   
-			| "OUTPUT"   
-			| "OVER"   
-			| "OVERLAPS"   
-			| "PARAMETER"   
-			| "PARTITION"   
-			| "PRECISION"   
-			| "PREPARE"   
-			| "PRIMARY"   
-			| "PROCEDURE"   
-			| "RANGE"   
-			| "READS"   
-			| "REAL"   
-			| "RECURSIVE"   
-			| "REF"   
-			| "REFERENCES"   
-			| "REFERENCING"   
-			| "RELEASE"   
-			| "RETURN"   
-			| "RETURNS"   
-			| "REVOKE"   
-			| "RIGHT"   
-			| "ROLLBACK"   
-			| "ROLLUP"   
-			| "ROW"   
-			| "ROWS"   
-			| "SAVEPOINT"   
-			| "SCROLL"   
-			| "SEARCH"   
-			| "SECOND"   
-			| "SELECT"   
-			| "SENSITIVE"   
-			| "SESSION_USER"   
-			| "SET"   
-			| "SIMILAR"   
-			| "SMALLINT"   
-			| "SOME"   
-			| "SPECIFIC"   
-			| "SPECIFICTYPE"   
-			| "SQL"   
-			| "SQLEXCEPTION"   
-			| "SQLSTATE"   
-			| "SQLWARNING"   
-			| "START"   
-			| "STATIC"   
-			| "SUBMULTISET"   
-			| "SYMMETRIC"   
-			| "SYSTEM"   
-			| "SYSTEM_USER"   
-			| "TABLE"   
-			| "THEN"   
-			| "TIME"   
-			| "TIMESTAMP"   
-			| "TIMEZONE_HOUR"   
-			| "TIMEZONE_MINUTE"   
-			| "TO"   
-			| "TRAILING"   
-			| "TRANSLATION"   
-			| "TREAT"   
-			| "TRIGGER"   
-			| "TRUE"   
-			| "UNION"   
-			| "UNIQUE"   
-			| "UNKNOWN"   
-			| "UNNEST"   
-			| "UPDATE"   
-			| "USER"   
-			| "USING"   
-			| "VALUE"   
-			| "VALUES"   
-			| "VARCHAR"   
-			| "VARYING"   
-			| "WHEN"   
-			| "WHENEVER"   
-			| "WHERE"   
-			| "WINDOW"   
-			| "WITH"   
-			| "WITHIN"   
-			| "WITHOUT"   
-			| "YEAR" ;;;
+			| str_p("ESCAPE")   
+			| str_p("EXCEPT")   
+			| str_p("EXEC")   
+			| str_p("EXECUTE")   
+			| str_p("EXISTS")   
+			| str_p("EXTERNAL")   
+			| str_p("FALSE")   
+			| str_p("FETCH")   
+			| str_p("FILTER")   
+			| str_p("FLOAT")   
+			| str_p("FOR")   
+			| str_p("FOREIGN")   
+			| str_p("FREE")   
+			| str_p("FROM")   
+			| str_p("FULL")   
+			| str_p("FUNCTION")   
+			| str_p("GET")   
+			| str_p("GLOBAL")   
+			| str_p("GRANT")   
+			| str_p("GROUP")   
+			| str_p("GROUPING")   
+			| str_p("HAVING")   
+			| str_p("HOLD")   
+			| str_p("HOUR")   
+			| str_p("IDENTITY")   
+			| str_p("IMMEDIATE")   
+			| str_p("IN")   
+			| str_p("INDICATOR")   
+			| str_p("INNER")   
+			| str_p("INOUT")   
+			| str_p("INPUT")   
+			| str_p("INSENSITIVE")   
+			| str_p("INSERT")   
+			| str_p("INT")   
+			| str_p("INTEGER")   
+			| str_p("INTERSECT")   
+			| str_p("INTERVAL")   
+			| str_p("INTO")   
+			| str_p("IS")   
+			| str_p("ISOLATION")   
+			| str_p("JOIN")   
+			| str_p("LANGUAGE")   
+			| str_p("LARGE")   
+			| str_p("LATERAL")   
+			| str_p("LEADING")   
+			| str_p("LEFT")   
+			| str_p("LIKE")   
+			| str_p("LOCAL")   
+			| str_p("LOCALTIME")   
+			| str_p("LOCALTIMESTAMP")   
+			| str_p("MATCH")   
+			| str_p("MEMBER")   
+			| str_p("MERGE")   
+			| str_p("METHOD")   
+			| str_p("MINUTE")   
+			| str_p("MODIFIES")   
+			| str_p("MODULE")   
+			| str_p("MONTH")   
+			| str_p("MULTISET")   
+			| str_p("NATIONAL")   
+			| str_p("NATURAL")   
+			| str_p("NCHAR")   
+			| str_p("NCLOB")   
+			| str_p("NEW")   
+			| str_p("NO")   
+			| str_p("NONE")   
+			| str_p("NOT")   
+			| str_p("NULL")   
+			| str_p("NUMERIC")   
+			| str_p("OF")   
+			| str_p("OLD")   
+			| str_p("ON")   
+			| str_p("ONLY")   
+			| str_p("OPEN")   
+			| str_p("OR")   
+			| str_p("ORDER")   
+			| str_p("OUT")   
+			| str_p("OUTER")   
+			| str_p("OUTPUT")   
+			| str_p("OVER")   
+			| str_p("OVERLAPS")   
+			| str_p("PARAMETER")   
+			| str_p("PARTITION")   
+			| str_p("PRECISION")   
+			| str_p("PREPARE")   
+			| str_p("PRIMARY")   
+			| str_p("PROCEDURE")   
+			| str_p("RANGE")   
+			| str_p("READS")   
+			| str_p("REAL")   
+			| str_p("RECURSIVE")   
+			| str_p("REF")   
+			| str_p("REFERENCES")   
+			| str_p("REFERENCING")   
+			| str_p("RELEASE")   
+			| str_p("RETURN")   
+			| str_p("RETURNS")   
+			| str_p("REVOKE")   
+			| str_p("RIGHT")   
+			| str_p("ROLLBACK")   
+			| str_p("ROLLUP")   
+			| str_p("ROW")   
+			| str_p("ROWS")   
+			| str_p("SAVEPOINT")   
+			| str_p("SCROLL")   
+			| str_p("SEARCH")   
+			| str_p("SECOND")   
+			| str_p("SELECT")   
+			| str_p("SENSITIVE")   
+			| str_p("SESSION_USER")   
+			| str_p("SET")   
+			| str_p("SIMILAR")   
+			| str_p("SMALLINT")   
+			| str_p("SOME")   
+			| str_p("SPECIFIC")   
+			| str_p("SPECIFICTYPE")   
+			| str_p("SQL")   
+			| str_p("SQLEXCEPTION")   
+			| str_p("SQLSTATE")   
+			| str_p("SQLWARNING")   
+			| str_p("START")   
+			| str_p("STATIC")   
+			| str_p("SUBMULTISET")   
+			| str_p("SYMMETRIC")   
+			| str_p("SYSTEM")   
+			| str_p("SYSTEM_USER")   
+			| str_p("TABLE")   
+			| str_p("THEN")   
+			| str_p("TIME")   
+			| str_p("TIMESTAMP")   
+			| str_p("TIMEZONE_HOUR")   
+			| str_p("TIMEZONE_MINUTE")   
+			| str_p("TO")   
+			| str_p("TRAILING")   
+			| str_p("TRANSLATION")   
+			| str_p("TREAT")   
+			| str_p("TRIGGER")   
+			| str_p("TRUE")   
+			| str_p("UNION")   
+			| str_p("UNIQUE")   
+			| str_p("UNKNOWN")   
+			| str_p("UNNEST")   
+			| str_p("UPDATE")   
+			| str_p("USER")   
+			| str_p("USING")   
+			| str_p("VALUE")   
+			| str_p("VALUES")   
+			| str_p("VARCHAR")   
+			| str_p("VARYING")   
+			| str_p("WHEN")   
+			| str_p("WHENEVER")   
+			| str_p("WHERE")   
+			| str_p("WINDOW")   
+			| str_p("WITH")   
+			| str_p("WITHIN")   
+			| str_p("WITHOUT")   
+			| str_p("YEAR") ;;;
 			Literal = SignedNumericLiteral  
 			| GeneralLiteral;;;
 			UnsignedLiteral = UnsignedNumericLiteral  
@@ -614,7 +614,18 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			NonquoteCharacter = nothing_p;;;
 			QuoteSymbol = ch_p('\'') >> ch_p('\'');;;
 			NationalCharacterStringLiteral =lexeme_d[ "N'" >> *CharacterRepresentation >> ch_p('\'') >> *((Separator >> ch_p('\'') >> *CharacterRepresentation >> ch_p('\'')))];;;
-			UnicodeCharacterStringLiteral = !(Introducer >> CharacterSetSpecification  >> lexeme_d["U&'" >> *UnicodeRepresentation >> ch_p('\'') >> *((Separator >> ch_p('\'') >> *UnicodeRepresentation >> ch_p('\'')))] >> !(str_p("ESCAPE")) >> lex_escape_ch_p ;;;
+			UnicodeCharacterStringLiteral = 
+			!(Introducer >> CharacterSetSpecification  >>
+			  lexeme_d[
+					   str_p("U&'")
+					   >> *UnicodeRepresentation 
+					   >> ch_p('\'') 
+					   >> *((Separator
+							 >> ch_p('\'') 
+							 >> *UnicodeRepresentation 
+							 >> ch_p('\'')))
+			  ]
+			  >> !(str_p("ESCAPE")) >> lex_escape_ch_p) ;;;
 			UnicodeRepresentation = CharacterRepresentation  | UnicodeEscapeValue;;;
 			BinaryStringLiteral = lexeme_d["X" >> ch_p('\'') >> *(xdigit_p >> xdigit_p) >> ch_p('\'') >> *((Separator >> ch_p('\'') >> *(xdigit_p >> xdigit_p) >> ch_p('\'')))] >> !str_p("ESCAPE")>> lex_escape_ch_p		;;;
 			SignedNumericLiteral = !(sign_p >> UnsignedNumericLiteral);;;
@@ -664,8 +675,8 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			SecondsFraction = uint_p;;;
 			DatetimeValue = uint_p;;;
 			BooleanLiteral =(str_p("TRUE"))  
-			| "FALSE"   
-			| "UNKNOWN" ;;;
+			| str_p("FALSE")   
+			| str_p("UNKNOWN") ;;;
 			Identifier = ActualIdentifier;;;
 			ActualIdentifier = RegularIdentifier  
 			| DelimitedIdentifier;;;
@@ -678,12 +689,12 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			| UserIdentifier;;;
 			TableName = LocalOrSchemaQualifiedName;;;
 			DomainName = SchemaQualifiedName;;;
-			SchemaName = !(CatalogName  >> '.'  >> UnqualifiedSchemaName);;;
+			SchemaName = !(CatalogName  >> '.'  >> LocalQualifiedName);;;
 			CatalogName = Identifier;;;
 			SchemaQualifiedName = !(SchemaName  >> '.'  >> QualifiedIdentifier);;;
 			LocalOrSchemaQualifiedName = !(LocalOrSchemaQualifier  >> '.'  >> QualifiedIdentifier);;;
 			LocalOrSchemaQualifier = SchemaName  
-			| "MODULE" ;;;
+			| str_p("MODULE") ;;;
 			QualifiedIdentifier = Identifier;;;
 			ColumnName = Identifier;;;
 			CorrelationName = Identifier;;;
@@ -727,7 +738,7 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			ExtendedCursorName = !(ScopeOption >> SimpleValueSpecification);;;
 			DescriptorName = !(ScopeOption >> SimpleValueSpecification);;;
 			ScopeOption =(str_p("GLOBAL"))  
-			| "LOCAL" ;;;
+			| str_p("LOCAL") ;;;
 			WindowName = Identifier;;;
 			DataType = PredefinedType  
 			| RowType  
@@ -743,18 +754,18 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			| IntervalType;;;
 			CharacterStringType = ((str_p("CHARACTER")) >> !ch_p('(') >> Length  >> ')' )  
 			| ((str_p("CHAR")) >> !ch_p('(') >> Length  >> ')' )  
-			| "CHARACTER"   >> "VARYING"   >> '('  >> Length  >> ')'   
-			| "CHAR"   >> "VARYING"   >> '('  >> Length  >> ')'   
-			| "VARCHAR"   >> '('  >> Length  >> ')'   
+			| str_p("CHARACTER")   >> "VARYING"   >> '('  >> Length  >> ')'   
+			| str_p("CHAR")   >> "VARYING"   >> '('  >> Length  >> ')'   
+			| str_p("VARCHAR")   >> '('  >> Length  >> ')'   
 			| ((str_p("CHARACTER"))  >> "LARGE"   >> "OBJECT"  >> !ch_p('(') >> LargeObjectLength  >> ')' )  
 			| ((str_p("CHAR"))  >> "LARGE"   >> "OBJECT"  >> !ch_p('(') >> LargeObjectLength  >> ')' )  
 			| ((str_p("CLOB")) >> !ch_p('(') >> LargeObjectLength  >> ')' );;;
 			NationalCharacterStringType = ((str_p("NATIONAL"))  >> "CHARACTER"  >> !ch_p('(') >> Length  >> ')' )  
 			| ((str_p("NATIONAL"))  >> "CHAR"  >> !ch_p('(') >> Length  >> ')' )  
 			| ((str_p("NCHAR")) >> !ch_p('(') >> Length  >> ')' )  
-			| "NATIONAL"   >> "CHARACTER"   >> "VARYING"   >> '('  >> Length  >> ')'   
-			| "NATIONAL"   >> "CHAR"   >> "VARYING"   >> '('  >> Length  >> ')'   
-			| "NCHAR"   >> "VARYING"   >> '('  >> Length  >> ')'   
+			| str_p("NATIONAL")   >> "CHARACTER"   >> "VARYING"   >> '('  >> Length  >> ')'   
+			| str_p("NATIONAL")   >> "CHAR"   >> "VARYING"   >> '('  >> Length  >> ')'   
+			| str_p("NCHAR")   >> "VARYING"   >> '('  >> Length  >> ')'   
 			| ((str_p("NATIONAL"))  >> "CHARACTER"   >> "LARGE"   >> "OBJECT"  >> !ch_p('(') >> LargeObjectLength  >> ')' )  
 			| ((str_p("NCHAR"))  >> "LARGE"   >> "OBJECT"  >> !ch_p('(') >> LargeObjectLength  >> ')' )  
 			| ((str_p("NCLOB")) >> !ch_p('(') >> LargeObjectLength  >> ')' );;;
@@ -765,19 +776,19 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			ExactNumericType = ((str_p("NUMERIC")) >> !(ch_p('(') >> Precision >> !ch_p(',') >> Scale  >> ')' ))  
 			| ((str_p("DECIMAL")) >> !(ch_p('(') >> Precision >> !ch_p(',') >> Scale  >> ')' ))  
 			| ((str_p("DEC")) >> !(ch_p('(') >> Precision >> !ch_p(',') >> Scale  >> ')' ))  
-			| "SMALLINT"   
-			| "INTEGER"   
-			| "INT"   
-			| "BIGINT" ;;;
+			| str_p("SMALLINT")   
+			| str_p("INTEGER")   
+			| str_p("INT")   
+			| str_p("BIGINT") ;;;
 			ApproximateNumericType = ((str_p("FLOAT")) >> !ch_p('(') >> Precision  >> ')' )  
-			| "REAL"   
-			| "DOUBLE"   >> "PRECISION" ;;;
+			| str_p("REAL")   
+			| str_p("DOUBLE")   >> "PRECISION" ;;;
 			Length = uint_p;;;
 								   LargeObjectLength = lexeme_d[(uint_p >> !Multiplier >> !CharLengthUnits)  
 			| (LargeObjectLengthToken >> !CharLengthUnits)];;;
 			CharLengthUnits =(str_p("CHARACTERS"))  
-			| "CODE_UNITS"   
-			| "OCTETS" ;;;
+			| str_p("CODE_UNITS")   
+			| str_p("OCTETS") ;;;
 			Precision = uint_p;;;
 			Scale = uint_p;;;
 			BooleanType =(str_p("BOOLEAN"));;;
@@ -785,7 +796,7 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			| ((str_p("TIME")) >> !ch_p('(') >> TimePrecision  >> ')'  >> !WithOrWithoutTimeZone)  
 			| ((str_p("TIMESTAMP")) >> !ch_p('(') >> TimestampPrecision  >> ')'  >> !WithOrWithoutTimeZone);;;
 			WithOrWithoutTimeZone =(str_p("WITH"))  >> "TIME"   >> "ZONE"   
-			| "WITHOUT"   >> "TIME"   >> "ZONE" ;;;
+			| str_p("WITHOUT")   >> "TIME"   >> "ZONE" ;;;
 			TimePrecision = TimeFractionalSecondsPrecision;;;
 			TimestampPrecision = TimeFractionalSecondsPrecision;;;
 			TimeFractionalSecondsPrecision = uint_p;;;
@@ -799,8 +810,8 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			PathResolvedUserDefinedTypeName = UserDefinedTypeName;;;
 			CollectionType = ArrayType  
 			| MultisetType;;;
-			ArrayType = (DataType  >> "ARRAY"  >> !LeftBracketOrTrigraph >> uint_p
-						 >> RightBracketOrTrigraph);;;
+			ArrayType = (DataType  >> "ARRAY"  >> !ch_p('[') >> uint_p
+						 >> ch_p(']'));;;
 			MultisetType = DataType  >> "MULTISET" ;;;
 			FieldDefinition = (FieldName >> DataType >> !ReferenceScopeCheck);;;
 			ValueExpressionPrimary = ParenthesizedValueExpression  
@@ -834,15 +845,15 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			| DynamicParameterSpecification  
 			| EmbeddedVariableSpecification  
 			| CurrentCollationSpecification  
-			| "CURRENT_DEFAULT_TRANSFORM_GROUP"   
-			| "CURRENT_PATH"   
-			| "CURRENT_ROLE"   
-			| "CURRENT_TRANSFORM_GROUP_FOR_TYPE"  >> PathResolvedUserDefinedTypeName  
-			| "CURRENT_USER"   
-			| "SESSION_USER"   
-			| "SYSTEM_USER"   
-			| "USER"   
-			| "VALUE" ;;;
+			| str_p("CURRENT_DEFAULT_TRANSFORM_GROUP")   
+			| str_p("CURRENT_PATH")   
+			| str_p("CURRENT_ROLE")   
+			| str_p("CURRENT_TRANSFORM_GROUP_FOR_TYPE")  >> PathResolvedUserDefinedTypeName  
+			| str_p("CURRENT_USER")   
+			| str_p("SESSION_USER")   
+			| str_p("SYSTEM_USER")   
+			| str_p("USER")   
+			| str_p("VALUE") ;;;
 			SimpleValueSpecification = Literal  
 			| HostParameterName  
 			| SQLParameterReference  
@@ -862,7 +873,7 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			EmbeddedVariableSpecification = (EmbeddedVariableName >> !IndicatorVariable);;;
 			IndicatorVariable = !((str_p("INDICATOR")) >> EmbeddedVariableName);;;
 			IndicatorParameter = !((str_p("INDICATOR")) >> HostParameterName);;;
-			TargetArrayElementSpecification = TargetArrayReference >> LeftBracketOrTrigraph >> SimpleValueSpecification >> RightBracketOrTrigraph;;;
+			TargetArrayElementSpecification = TargetArrayReference >> ch_p('[') >> SimpleValueSpecification >> ch_p(']');;;
 			TargetArrayReference = SQLParameterReference  
 			| ColumnReference;;;
 			CurrentCollationSpecification =(str_p("CURRENT_COLLATION"))  >> '('  >> StringValueExpression  >> ')' ;;;
@@ -871,25 +882,25 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			ImplicitlyTypedValueSpecification = NullSpecification  
 			| EmptySpecification;;;
 			NullSpecification =(str_p("NULL"));;;
-			EmptySpecification =(str_p("ARRAY")) >> LeftBracketOrTrigraph >> RightBracketOrTrigraph  
-			| "MULTISET"  >> LeftBracketOrTrigraph >> RightBracketOrTrigraph;;;
+			EmptySpecification =(str_p("ARRAY")) >> ch_p('[') >> ch_p(']')  
+			| str_p("MULTISET")  >> ch_p('[') >> ch_p(']');;;
 			DefaultSpecification =(str_p("DEFAULT"));;;
 			IdentifierChain = ((Identifier%ch_p('.')));;;
 			BasicIdentifierChain = IdentifierChain;;;
 			ColumnReference = BasicIdentifierChain  
-			| "MODULE"   >> '.'  >> QualifiedIdentifier  >> '.'  >> ColumnName;;;
+			| str_p("MODULE")   >> '.'  >> QualifiedIdentifier  >> '.'  >> ColumnName;;;
 			SQLParameterReference = BasicIdentifierChain;;;
 			SetFunctionSpecification = AggregateFunction  
 			| GroupingOperation;;;
 			GroupingOperation = ((str_p("GROUPING"))  >> '('  >> (ColumnReference%ch_p(','))  >> ')' );;;
 			WindowFunction = WindowFunctionType  >> "OVER"  >> WindowNameOrSpecification;;;
 			WindowFunctionType = RankFunctionType  >> '('   >> ')'   
-			| "ROW_NUMBER"   >> '('   >> ')'   
+			| str_p("ROW_NUMBER")   >> '('   >> ')'   
 			| AggregateFunction;;;
 			RankFunctionType =(str_p("RANK"))  
-			| "DENSE_RANK"   
-			| "PERCENT_RANK"   
-			| "CUME_DIST" ;;;
+			| str_p("DENSE_RANK")   
+			| str_p("PERCENT_RANK")   
+			| str_p("CUME_DIST") ;;;
 			WindowNameOrSpecification = WindowName  
 			| InLineWindowSpecification;;;
 			InLineWindowSpecification = WindowSpecification;;;
@@ -923,7 +934,7 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			| SetPredicatePart2  
 			| TypePredicatePart2;;;
 			Result = ResultExpression  
-			| "NULL" ;;;
+			| str_p("NULL") ;;;
 			ResultExpression = ValueExpression;;;
 			CastSpecification =(str_p("CAST"))  >> '('  >> CastOperand  >> "AS"  >> CastTarget  >> ')' ;;;
 			CastOperand = ValueExpression  
@@ -952,8 +963,8 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			DereferenceOperation = ReferenceValueExpression >> DereferenceOperator >> AttributeName;;;
 			MethodReference = ValueExpressionPrimary >> DereferenceOperator >> MethodName >> SQLArgumentList;;;
 			ReferenceResolution =(str_p("DEREF"))  >> '('  >> ReferenceValueExpression  >> ')' ;;;
-			ArrayElementReference = ArrayValueExpression >> LeftBracketOrTrigraph >> NumericValueExpression >> RightBracketOrTrigraph;;;
-			MultisetElementReference =(str_p("ELEMENT"))  >> '('  >> MultsetValueExpression  >> ')' ;;;
+			ArrayElementReference = ArrayValueExpression >> ch_p('[') >> NumericValueExpression >> ch_p(']');;;
+			MultisetElementReference =(str_p("ELEMENT"))  >> '('  >>  MultisetValueExpression>> ')' ;;;
 			ValueExpression = CommonValueExpression  
 			| BooleanValueExpression  
 			| RowValueExpression;;;
@@ -998,18 +1009,18 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			LengthExpression = CharLengthExpression  
 			| OctetLengthExpression;;;
 			CharLengthExpression = ((str_p("CHAR_LENGTH"))  
-									| "CHARACTER_LENGTH"   >> '('  >> StringValueExpression >> !(str_p("USING")) >> CharLengthUnits  >> ')' );;;
+									| str_p("CHARACTER_LENGTH")   >> '('  >> StringValueExpression >> !(str_p("USING")) >> CharLengthUnits  >> ')' );;;
 			OctetLengthExpression =(str_p("OCTET_LENGTH"))  >> '('  >> StringValueExpression  >> ')' ;;;
 			ExtractExpression =(str_p("EXTRACT"))  >> '('  >> ExtractField  >> "FROM"  >> ExtractSource  >> ')' ;;;
 			ExtractField = PrimaryDatetimeField  
 			| TimeZoneField;;;
 			TimeZoneField =(str_p("TIMEZONE_HOUR"))  
-			| "TIMEZONE_MINUTE" ;;;
+			| str_p("TIMEZONE_MINUTE") ;;;
 			ExtractSource = DatetimeValueExpression  
 			| IntervalValueExpression;;;
 			CardinalityExpression =(str_p("CARDINALITY"))  >> '('  >> CollectionValueExpression  >> ')' ;;;
 			AbsoluteValueExpression =(str_p("ABS"))  >> '('  >> NumericValueExpression  >> ')' ;;;
-			ModulusExpression =(str_p("MOD"))  >> '('  >> NumericValueExpressionDividend  >> ','  >> NumericValueExpressionDivisor  >> ')' ;;;
+			ModulusExpression =(str_p("MOD"))  >> '('  >> NumericValueExpression   >> ','  >> NumericValueExpression   >> ')' ;;;
 			NaturalLogarithm =(str_p("LN"))  >> '('  >> NumericValueExpression  >> ')' ;;;
 			ExponentialFunction =(str_p("EXP"))  >> '('  >> NumericValueExpression  >> ')' ;;;
 			PowerFunction =(str_p("POWER"))  >> '('  >> NumericValueExpressionBase  >> ','  >> NumericValueExpressionExponent  >> ')' ;;;
@@ -1018,7 +1029,7 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			SquareRoot =(str_p("SQRT"))  >> '('  >> NumericValueExpression  >> ')' ;;;
 			FloorFunction =(str_p("FLOOR"))  >> '('  >> NumericValueExpression  >> ')' ;;;
 			CeilingFunction = ((str_p("CEIL"))  
-							   | "CEILING"   >> '('  >> NumericValueExpression  >> ')' );;;
+							   | str_p("CEILING")   >> '('  >> NumericValueExpression  >> ')' );;;
 			WidthBucketFunction =(str_p("WIDTH_BUCKET"))  >> '('  >> WidthBucketOperand  >> ','  >> WidthBucketBound1  >> ','  >> WidthBucketBound2  >> ','  >> WidthBucketCount  >> ')' ;;;
 			WidthBucketOperand = NumericValueExpression;;;
 			WidthBucketBound1 = NumericValueExpression;;;
@@ -1052,15 +1063,15 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			CharacterSubstringFunction = ((str_p("SUBSTRING"))  >> '('  >> CharacterValueExpression  >> "FROM"  >> StartPosition >> !(str_p("FOR")) >> StringLength >> !(str_p("USING")) >> CharLengthUnits  >> ')' );;;
 			RegularExpressionSubstringFunction =(str_p("SUBSTRING"))  >> '('  >> CharacterValueExpression  >> "SIMILAR"  >> CharacterValueExpression  >> "ESCAPE"  >> lex_escape_ch_p		 >> ')' ;;;
 			Fold = ((str_p("UPPER"))  
-					| "LOWER"   >> '('  >> CharacterValueExpression  >> ')' );;;
+					| str_p("LOWER")   >> '('  >> CharacterValueExpression  >> ')' );;;
 			Transcoding =(str_p("CONVERT"))  >> '('  >> CharacterValueExpression  >> "USING"  >> TranscodingName  >> ')' ;;;
 			CharacterTransliteration =(str_p("TRANSLATE"))  >> '('  >> CharacterValueExpression  >> "USING"  >> TransliterationName  >> ')' ;;;
 			TrimFunction =(str_p("TRIM"))  >> '('  >> TrimOperands  >> ')' ;;;
 			TrimOperands = !(!(TrimSpecification >> !TrimCharacter  >> "FROM" ) >> TrimSource);;;
 			TrimSource = CharacterValueExpression;;;
 			TrimSpecification =(str_p("LEADING"))  
-			| "TRAILING"   
-			| "BOTH" ;;;
+			| str_p("TRAILING")   
+			| str_p("BOTH") ;;;
 			TrimCharacter = CharacterValueExpression;;;
 			CharacterOverlayFunction = ((str_p("OVERLAY"))  >> '('  >> CharacterValueExpression  >> "PLACING"  >> CharacterValueExpression  >> "FROM"  >> StartPosition >> !(str_p("FOR")) >> StringLength >> !(str_p("USING")) >> CharLengthUnits  >> ')' );;;
 			NormalizeFunction =(str_p("NORMALIZE"))  >> '('  >> CharacterValueExpression  >> ')' ;;;
@@ -1086,7 +1097,7 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			| DatetimeValueFunction;;;
 			TimeZone =(str_p("AT")) >> TimeZoneSpecifier;;;
 			TimeZoneSpecifier =(str_p("LOCAL"))  
-			| "TIME"   >> "ZONE"  >> IntervalPrimary;;;
+			| str_p("TIME")   >> "ZONE"  >> IntervalPrimary;;;
 			DatetimeValueFunction = CurrentDateValueFunction  
 			| CurrentTimeValueFunction  
 			| CurrentTimestampValueFunction  
@@ -1120,8 +1131,8 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			BooleanFactor = !((str_p("NOT")) >> BooleanTest);;;
 			BooleanTest = (BooleanPrimary >> !((str_p("IS")) >> !(str_p("NOT")) >> TruthValue));;;
 			TruthValue =(str_p("TRUE"))  
-			| "FALSE"   
-			| "UNKNOWN" ;;;
+			| str_p("FALSE")   
+			| str_p("UNKNOWN") ;;;
 			BooleanPrimary = Predicate  
 			| BooleanPredicand;;;
 			BooleanPredicand = ParenthesizedBooleanValueExpression  
@@ -1134,18 +1145,18 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			ArrayFactor = ValueExpressionPrimary;;;
 			ArrayValueConstructor = ArrayValueConstructorByEnumeration  
 			| ArrayValueConstructorByQuery;;;
-			ArrayValueConstructorByEnumeration =(str_p("ARRAY")) >> LeftBracketOrTrigraph >> ArrayElementList >> RightBracketOrTrigraph;;;
+			ArrayValueConstructorByEnumeration =(str_p("ARRAY")) >> ch_p('[') >> ArrayElementList >> ch_p(']');;;
 			ArrayElementList = ((ArrayElement%ch_p(',')));;;
 			ArrayElement = ValueExpression;;;
 			ArrayValueConstructorByQuery = ((str_p("ARRAY"))  >> '('  >> QueryExpression >> !OrderByClause  >> ')' );;;
 			MultisetValueExpression = MultisetTerm  
 			| (MultisetValueExpression  >> "MULTISET"   >> "UNION"  >> !(str_p("ALL"))  
-			   | "DISTINCT"  >> MultisetTerm)  
+			   | str_p("DISTINCT")  >> MultisetTerm)  
 			| (MultisetValueExpression  >> "MULTISET"   >> "EXCEPT"  >> !(str_p("ALL"))  
-			   | "DISTINCT"  >> MultisetTerm);;;
+			   | str_p("DISTINCT")  >> MultisetTerm);;;
 			MultisetTerm = MultisetPrimary  
 			| (MultisetTerm  >> "MULTISET"   >> "INTERSECT"  >> !(str_p("ALL"))  
-			   | "DISTINCT"  >> MultisetPrimary);;;
+			   | str_p("DISTINCT")  >> MultisetPrimary);;;
 			MultisetPrimary = MultisetValueFunction  
 			| ValueExpressionPrimary;;;
 			MultisetValueFunction = MultisetSetFunction;;;
@@ -1153,16 +1164,16 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			MultisetValueConstructor = MultisetValueConstructorByEnumeration  
 			| MultisetValueConstructorByQuery  
 			| TableValueConstructorByQuery;;;
-			MultisetValueConstructorByEnumeration =(str_p("MULTISET")) >> LeftBracketOrTrigraph >> MultisetElementList >> RightBracketOrTrigraph;;;
+			MultisetValueConstructorByEnumeration =(str_p("MULTISET")) >> ch_p('[') >> MultisetElementList >> ch_p(']');;;
 			MultisetElementList = (MultisetElement >> !(ch_p(',') >> MultisetElement));;;
 			MultisetElement = ValueExpression;;;
 			MultisetValueConstructorByQuery =(str_p("MULTISET"))  >> '('  >> QueryExpression  >> ')' ;;;
-			TableValueConstructorByQuery =(str_p("TABLE"))  >> '('  >> QueryExpression  >> ')'  >> Specify >> A >> Value >> Or >> List >> Of >> Values >> To >> Be >> Constructed >> Into >> A >> Row >> Or >> Partial >> Row.;;;
+			TableValueConstructorByQuery =(str_p("TABLE"))  >> '('  >> QueryExpression  >> ')' ;;;// >> Specify >> A >> Value >> Or >> List >> Of >> Values >> To >> Be >> Constructed >> Into >> A >> Row >> Or >> Partial >> Row.;;;
 			RowValueConstructor = CommonValueExpression  
 			| BooleanValueExpression  
 			| ExplicitRowValueConstructor;;;
 			ExplicitRowValueConstructor = ch_p('(') >> RowValueConstructorElement  >> ','  >> RowValueConstructorElementList  >> ')'   
-			| "ROW"   >> '('  >> RowValueConstructorElementList  >> ')'   
+			| str_p("ROW")   >> '('  >> RowValueConstructorElementList  >> ')'   
 			| RowSubquery;;;
 			RowValueConstructorElementList = ((RowValueConstructorElement%ch_p(',')));;;
 			RowValueConstructorElement = ValueExpression;;;
@@ -1170,7 +1181,7 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			| BooleanValueExpression  
 			| ContextuallyTypedValueSpecification  
 			| '('  >> ContextuallyTypedRowValueConstructorElement  >> ','  >> ContextuallyTypedRowValueConstructorElementList  >> ')'   
-			| "ROW"   >> '('  >> ContextuallyTypedRowValueConstructorElementList  >> ')' ;;;
+			| str_p("ROW")   >> '('  >> ContextuallyTypedRowValueConstructorElementList  >> ')' ;;;
 			ContextuallyTypedRowValueConstructorElementList = ((ContextuallyTypedRowValueConstructorElement%ch_p(',')));;;
 			ContextuallyTypedRowValueConstructorElement = ValueExpression  
 			| ContextuallyTypedValueSpecification;;;
@@ -1198,7 +1209,7 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			| JoinedTable;;;
 			SampleClause = ((str_p("TABLESAMPLE")) >> SampleMethod  >> '('  >> SamplePercentage  >> ')'  >> !RepeatableClause);;;
 			SampleMethod =(str_p("BERNOULLI"))  
-			| "SYSTEM" ;;;
+			| str_p("SYSTEM") ;;;
 			RepeatableClause =(str_p("REPEATABLE"))  >> '('  >> RepeatArgument  >> ')' ;;;
 			SamplePercentage = NumericValueExpression;;;
 			RepeatArgument = NumericValueExpression;;;
@@ -1233,8 +1244,8 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			JoinType =(str_p("INNER"))  
 			| (OuterJoinType >> !(str_p("OUTER")));;;
 			OuterJoinType =(str_p("LEFT"))  
-			| "RIGHT"   
-			| "FULL" ;;;
+			| str_p("RIGHT")   
+			| str_p("FULL") ;;;
 			JoinColumnList = ColumnNameList;;;
 			WhereClause =(str_p("WHERE")) >> SearchCondition;;;
 			GroupByClause = ((str_p("GROUP"))  >> "BY"  >> !SetQuantifier >> GroupingElementList);;;
@@ -1273,24 +1284,24 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			WindowOrderClause =(str_p("ORDER"))  >> "BY"  >> SortSpecificationList;;;
 			WindowFrameClause = (WindowFrameUnits >> WindowFrameExtent >> !WindowFrameExclusion);;;
 			WindowFrameUnits =(str_p("ROWS"))  
-			| "RANGE" ;;;
+			| str_p("RANGE") ;;;
 			WindowFrameExtent = WindowFrameStart  
 			| WindowFrameBetween;;;
 			WindowFrameStart =(str_p("UNBOUNDED"))  >> "PRECEDING"   
 			| WindowFramePreceding  
-			| "CURRENT"   >> "ROW" ;;;
+			| str_p("CURRENT")   >> "ROW" ;;;
 			WindowFramePreceding = UnsignedValueSpecification  >> "PRECEDING" ;;;
 			WindowFrameBetween =(str_p("BETWEEN")) >> WindowFrameBound1  >> "AND"  >> WindowFrameBound2;;;
 			WindowFrameBound1 = WindowFrameBound;;;
 			WindowFrameBound2 = WindowFrameBound;;;
 			WindowFrameBound = WindowFrameStart  
-			| "UNBOUNDED"   >> "FOLLOWING"   
+			| str_p("UNBOUNDED")   >> "FOLLOWING"   
 			| WindowFrameFollowing;;;
 			WindowFrameFollowing = UnsignedValueSpecification  >> "FOLLOWING" ;;;
 			WindowFrameExclusion =(str_p("EXCLUDE"))  >> "CURRENT"   >> "ROW"   
-			| "EXCLUDE"   >> "GROUP"   
-			| "EXCLUDE"   >> "TIES"   
-			| "EXCLUDE"   >> "NO"   >> "OTHERS" ;;;
+			| str_p("EXCLUDE")   >> "GROUP"   
+			| str_p("EXCLUDE")   >> "TIES"   
+			| str_p("EXCLUDE")   >> "NO"   >> "OTHERS" ;;;
 			QuerySpecification = ((str_p("SELECT")) >> !SetQuantifier >> SelectList >> TableExpression);;;
 			SelectList = ch_p('*')  
 			| ((SelectSublist%ch_p(',')));;;
@@ -1313,14 +1324,14 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			| JoinedTable;;;
 			NonJoinQueryExpression = NonJoinQueryTerm  
 			| (QueryExpressionBody  >> "UNION"  >> !(str_p("ALL"))  
-			   | "DISTINCT"  >> !CorrespondingSpec >> QueryTerm)  
+			   | str_p("DISTINCT")  >> !CorrespondingSpec >> QueryTerm)  
 			| (QueryExpressionBody  >> "EXCEPT"  >> !(str_p("ALL"))  
-			   | "DISTINCT"  >> !CorrespondingSpec >> QueryTerm);;;
+			   | str_p("DISTINCT")  >> !CorrespondingSpec >> QueryTerm);;;
 			QueryTerm = NonJoinQueryTerm  
 			| JoinedTable;;;
 			NonJoinQueryTerm = NonJoinQueryPrimary  
 			| (QueryTerm  >> "INTERSECT"  >> !(str_p("ALL"))  
-			   | "DISTINCT"  >> !CorrespondingSpec >> QueryPrimary);;;
+			   | str_p("DISTINCT")  >> !CorrespondingSpec >> QueryPrimary);;;
 			QueryPrimary = NonJoinQueryPrimary  
 			| JoinedTable;;;
 			NonJoinQueryPrimary = SimpleTable  
@@ -1336,7 +1347,7 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			| SearchClause >> CycleClause;;;
 			SearchClause =(str_p("SEARCH")) >> RecursiveSearchOrder  >> "SET"  >> SequenceColumn;;;
 			RecursiveSearchOrder =(str_p("DEPTH"))  >> "FIRST"   >> "BY"  >> SortSpecificationList  
-			| "BREADTH"   >> "FIRST"   >> "BY"  >> SortSpecificationList;;;
+			| str_p("BREADTH")   >> "FIRST"   >> "BY"  >> SortSpecificationList;;;
 			SequenceColumn = ColumnName;;;
 			CycleClause =(str_p("CYCLE")) >> CycleColumnList  >> "SET"  >> CycleMarkColumn  >> "TO"  >> CycleMarkValue  >> "DEFAULT"  >> NonCycleMarkValue  >> "USING"  >> PathColumn;;;
 			CycleColumnList = ((CycleColumn%ch_p(',')));;;
@@ -1376,7 +1387,7 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			| GreaterThanOrEqualsOperator;;;
 			BetweenPredicate = RowValuePredicand >> BetweenPredicatePart2;;;
 			BetweenPredicatePart2 = !((str_p("NOT"))  >> "BETWEEN"  >> !(str_p("ASYMMETRIC"))  
-									  | "SYMMETRIC"  >> RowValuePredicand  >> "AND"  >> RowValuePredicand);;;
+									  | str_p("SYMMETRIC")  >> RowValuePredicand  >> "AND"  >> RowValuePredicand);;;
 			InPredicate = RowValuePredicand >> InPredicatePart2;;;
 			InPredicatePart2 = !((str_p("NOT"))  >> "IN"  >> InPredicateValue);;;
 			InPredicateValue = TableSubquery  
@@ -1385,15 +1396,15 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			LikePredicate = CharacterLikePredicate  
 			| OctetLikePredicate;;;
 			CharacterLikePredicate = RowValuePredicand >> CharacterLikePredicatePart2;;;
-			CharacterLikePredicatePart2 = !((str_p("NOT"))  >> "LIKE"  >> CharacterPattern >> !(str_p("ESCAPE")) >> lex_escape_ch_p		;;;
+			CharacterLikePredicatePart2 = !((str_p("NOT"))  >> "LIKE"  >> CharacterPattern ;;;//>> !(str_p("ESCAPE")) >> lex_escape_ch_p		;;;
 			CharacterPattern = CharacterValueExpression;;;
 			lex_escape_ch_p		= CharacterValueExpression;;;
 			OctetLikePredicate = RowValuePredicand >> OctetLikePredicatePart2;;;
-			OctetLikePredicatePart2 = !((str_p("NOT"))  >> "LIKE"  >> OctetPattern >> !(str_p("ESCAPE")) >> EscapeOctet);;;
+											OctetLikePredicatePart2 = !((str_p("NOT"))  >> "LIKE"  >> OctetPattern ;;//>> !(str_p("ESCAPE")) >> EscapeOctet);;;
 			OctetPattern = BlobValueExpression;;;
 			EscapeOctet = BlobValueExpression;;;
 			SimilarPredicate = RowValuePredicand >> SimilarPredicatePart2;;;
-			SimilarPredicatePart2 = !((str_p("NOT"))  >> "SIMILAR"   >> "TO"  >> SimilarPattern >> !(str_p("ESCAPE")) >> lex_escape_ch_p		;;;
+																		SimilarPredicatePart2 = !((str_p("NOT"))  >> "SIMILAR"   >> "TO"  >> SimilarPattern ;;;//>> !(str_p("ESCAPE")) >> lex_escape_ch_p		;;;
 			SimilarPattern = CharacterValueExpression;;;
 			RegularExpression = RegularTerm  
 			| RegularExpression  >> '|'  >> RegularTerm;;;
@@ -1434,14 +1445,14 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			| Some;;;
 			All =(str_p("ALL"));;;
 			Some =(str_p("SOME"))  
-			| "ANY" ;;;
+			| str_p("ANY") ;;;
 			ExistsPredicate =(str_p("EXISTS")) >> TableSubquery;;;
 			UniquePredicate =(str_p("UNIQUE")) >> TableSubquery;;;
 			NormalizedPredicate = (StringValueExpression  >> "IS"  >> !(str_p("NOT"))  >> "NORMALIZED" );;;
 			MatchPredicate = RowValuePredicand >> MatchPredicatePart2;;;
 			MatchPredicatePart2 = ((str_p("MATCH")) >> !(str_p("UNIQUE")) >> !(str_p("SIMPLE"))  
-								   | "PARTIAL"   
-								   | "FULL"  >> TableSubquery);;;
+								   | str_p("PARTIAL")   
+								   | str_p("FULL")  >> TableSubquery);;;
 			OverlapsPredicate = OverlapsPredicatePart1 >> OverlapsPredicatePart2;;;
 			OverlapsPredicatePart1 = RowValuePredicand1;;;
 			OverlapsPredicatePart2 =(str_p("OVERLAPS")) >> RowValuePredicand2;;;
@@ -1473,23 +1484,23 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			SingleDatetimeField = (NonSecondPrimaryDatetimeField >> !ch_p('(') >> IntervalLeadingFieldPrecision  >> ')' )  
 			| ((str_p("SECOND")) >> !(ch_p('(') >> IntervalLeadingFieldPrecision >> !ch_p(',') >> IntervalFractionalSecondsPrecision  >> ')' ));;;
 			PrimaryDatetimeField = NonSecondPrimaryDatetimeField  
-			| "SECOND" ;;;
+			| str_p("SECOND") ;;;
 			NonSecondPrimaryDatetimeField =(str_p("YEAR"))  
-			| "MONTH"   
-			| "DAY"   
-			| "HOUR"   
-			| "MINUTE" ;;;
+			| str_p("MONTH")   
+			| str_p("DAY")   
+			| str_p("HOUR")   
+			| str_p("MINUTE") ;;;
 			IntervalFractionalSecondsPrecision = uint_p;;;
 			IntervalLeadingFieldPrecision = uint_p;;;
 			LanguageClause =(str_p("LANGUAGE")) >> LanguageName;;;
 			LanguageName =(str_p("ADA"))  
 			|('C')  
-			| "COBOL"   
-			| "FORTRAN"   
-			| "MUMPS"   
-			| "PASCAL"   
-			| "PLI"   
-			| "SQL" ;;;
+			| str_p("COBOL")   
+			| str_p("FORTRAN")   
+			| str_p("MUMPS")   
+			| str_p("PASCAL")   
+			| str_p("PLI")   
+			| str_p("SQL") ;;;
 			PathSpecification =(str_p("PATH")) >> SchemaNameList;;;
 			SchemaNameList = ((SchemaName%ch_p(',')));;;
 			RoutineInvocation = RoutineName >> SQLArgumentList;;;
@@ -1508,11 +1519,11 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			SpecificRoutineDesignator =(str_p("SPECIFIC")) >> RoutineType >> SpecificName  
 			| (RoutineType >> MemberName >> !(str_p("FOR")) >> SchemaResolvedUserDefinedTypeName);;;
 			RoutineType =(str_p("ROUTINE"))  
-			| "FUNCTION"   
-			| "PROCEDURE"   
+			| str_p("FUNCTION")   
+			| str_p("PROCEDURE")   
 			| !((str_p("INSTANCE"))  
-				| "STATIC"   
-				| CONSTRUCTOR  >> "METHOD" );;;
+				| str_p("STATIC")   
+				| "CONSTRUCTOR"  >> "METHOD" );;;
 			MemberName = (MemberNameAlternatives >> !DataTypeList);;;
 			MemberNameAlternatives = SchemaQualifiedRoutineName  
 			| MethodName;;;
@@ -1522,7 +1533,7 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			ConstraintCharacteristics = (ConstraintCheckTime >> !!((str_p("NOT"))  >> "DEFERRABLE" ))  
 			| !((str_p("NOT"))  >> "DEFERRABLE"  >> !ConstraintCheckTime);;;
 			ConstraintCheckTime =(str_p("INITIALLY"))  >> "DEFERRED"   
-			| "INITIALLY"   >> "IMMEDIATE" ;;;
+			| str_p("INITIALLY")   >> "IMMEDIATE" ;;;
 			AggregateFunction = ((str_p("COUNT"))  >> '('   >> '*'   >> ')'  >> !FilterClause)  
 			| (GeneralSetFunction >> !FilterClause)  
 			| (BinarySetFunction >> !FilterClause)  
@@ -1530,36 +1541,36 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			GeneralSetFunction = (SetFunctionType  >> '('  >> !SetQuantifier >> ValueExpression  >> ')' );;;
 			SetFunctionType = ComputationalOperation;;;
 			ComputationalOperation =(str_p("AVG"))  
-			| "MAX"   
-			| "MIN"   
-			| "SUM"   
-			| "EVERY"   
-			| "ANY"   
-			| "SOME"   
-			| "COUNT"   
-			| "STDDEV_POP"   
-			| "STDDEV_SAMP"   
-			| "VAR_SAMP"   
-			| "VAR_POP"   
-			| "COLLECT"   
-			| "FUSION"   
-			| "INTERSECTION" ;;;
+			| str_p("MAX")   
+			| str_p("MIN")   
+			| str_p("SUM")   
+			| str_p("EVERY")   
+			| str_p("ANY")   
+			| str_p("SOME")   
+			| str_p("COUNT")   
+			| str_p("STDDEV_POP")   
+			| str_p("STDDEV_SAMP")   
+			| str_p("VAR_SAMP")   
+			| str_p("VAR_POP")   
+			| str_p("COLLECT")   
+			| str_p("FUSION")   
+			| str_p("INTERSECTION") ;;;
 			SetQuantifier =(str_p("DISTINCT"))  
-			| "ALL" ;;;
+			| str_p("ALL") ;;;
 			FilterClause =(str_p("FILTER"))  >> '('   >> "WHERE"  >> SearchCondition  >> ')' ;;;
 			BinarySetFunction = BinarySetFunctionType  >> '('  >> DependentVariableExpression  >> ','  >> IndependentVariableExpression  >> ')' ;;;
 			BinarySetFunctionType =(str_p("COVAR_POP"))  
-			| "COVAR_SAMP"   
-			| "CORR"   
-			| "REGR_SLOPE"   
-			| "REGR_INTERCEPT"   
-			| "REGR_COUNT"   
-			| "REGR_R2"   
-			| "REGR_AVGX"   
-			| "REGR_AVGY"   
-			| "REGR_SXX"   
-			| "REGR_SYY"
-			| "REGR_SXY" ;;;
+			| str_p("COVAR_SAMP")   
+			| str_p("CORR")   
+			| str_p("REGR_SLOPE")   
+			| str_p("REGR_INTERCEPT")   
+			| str_p("REGR_COUNT")   
+			| str_p("REGR_R2")   
+			| str_p("REGR_AVGX")   
+			| str_p("REGR_AVGY")   
+			| str_p("REGR_SXX")   
+			| str_p("REGR_SYY")
+			| str_p("REGR_SXY") ;;;
 			DependentVariableExpression = NumericValueExpression;;;
 			IndependentVariableExpression = NumericValueExpression;;;
 			OrderedSetFunction = HypotheticalSetFunction  
@@ -1570,21 +1581,21 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			InverseDistributionFunction = InverseDistributionFunctionType  >> '('  >> InverseDistributionFunctionArgument  >> ')'  >> WithinGroupSpecification;;;
 			InverseDistributionFunctionArgument = NumericValueExpression;;;
 			InverseDistributionFunctionType =(str_p("PERCENTILE_CONT"))  
-			| "PERCENTILE_DISC" ;;;
+			| str_p("PERCENTILE_DISC") ;;;
 			SortSpecificationList = ((SortSpecification%ch_p(',')));;;
 			SortSpecification = (SortKey >> !OrderingSpecification >> !NullOrdering);;;
 			SortKey = ValueExpression;;;
 			OrderingSpecification =(str_p("ASC"))  
-			| "DESC" ;;;
+			| str_p("DESC") ;;;
 			NullOrdering =(str_p("NULLS"))  >> "FIRST"   
-			| "NULLS"   >> "LAST" ;;;
+			| str_p("NULLS")   >> "LAST" ;;;
 			SchemaDefinition = ((str_p("CREATE"))  >> "SCHEMA"  >> SchemaNameClause >> !SchemaCharacterSetOrPath >> *SchemaElement);;;
 			SchemaCharacterSetOrPath = SchemaCharacterSetSpecification  
 			| SchemaPathSpecification  
 			| SchemaCharacterSetSpecification >> SchemaPathSpecification  
 			| SchemaPathSpecification >> SchemaCharacterSetSpecification;;;
 			SchemaNameClause = SchemaName  
-			| "AUTHORIZATION"  >> SchemaAuthorizationIdentifier  
+			| str_p("AUTHORIZATION")  >> SchemaAuthorizationIdentifier  
 			| SchemaName  >> "AUTHORIZATION"  >> SchemaAuthorizationIdentifier;;;
 			SchemaAuthorizationIdentifier = AuthorizationIdentifier;;;
 			SchemaCharacterSetSpecification =(str_p("DEFAULT"))  >> "CHARACTER"   >> "SET"  >> CharacterSetSpecification;;;
@@ -1607,16 +1618,16 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			| RoleDefinition;;;
 			DropSchemaStatement =(str_p("DROP"))  >> "SCHEMA"  >> SchemaName >> DropBehavior;;;
 			DropBehavior =(str_p("CASCADE"))  
-			| RESTRICT;;;
+			| "RESTRICT";;;
 			TableDefinition = ((str_p("CREATE")) >> !TableScope  >> "TABLE"  >> TableName >> TableContentsSource >> !(str_p("ON"))  >> "COMMIT"  >> TableCommitAction  >> "ROWS" );;;
 			TableContentsSource = TableElementList  
 			| ((str_p("OF")) >> PathResolvedUserDefinedTypeName >> !SubtableClause >> !TableElementList)  
 			| AsSubqueryClause;;;
 			TableScope = GlobalOrLocal  >> "TEMPORARY" ;;;
 			GlobalOrLocal =(str_p("GLOBAL"))  
-			| "LOCAL" ;;;
+			| str_p("LOCAL") ;;;
 			TableCommitAction =(str_p("PRESERVE"))  
-			| "DELETE" ;;;
+			| str_p("DELETE") ;;;
 			TableElementList = (ch_p('(') >> (TableElement%ch_p(','))  >> ')' );;;
 			TableElement = ColumnDefinition  
 			| TableConstraintDefinition  
@@ -1625,8 +1636,8 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			| ColumnOptions;;;
 			SelfReferencingColumnSpecification =(str_p("REF"))  >> "IS"  >> SelfReferencingColumnName >> ReferenceGeneration;;;
 			ReferenceGeneration =(str_p("SYSTEM")) >> "GENERATED"  
-			| "USER"  >> "GENERATED"  
-			| "DERIVED" ;;;
+			| str_p("USER")  >> "GENERATED"  
+			| str_p("DERIVED") ;;;
 			SelfReferencingColumnName = ColumnName;;;
 			ColumnOptions = ColumnName  >> "WITH"   >> "OPTIONS"  >> ColumnOptionList;;;
 			ColumnOptionList = !(ScopeClause >> !DefaultClause >> *ColumnConstraintDefinition);;;
@@ -1637,12 +1648,12 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			LikeOptions = IdentityOption  
 			| ColumnDefaultOption;;;
 			IdentityOption =(str_p("INCLUDING"))  >> "IDENTITY"   
-			| "EXCLUDING"   >> "IDENTITY" ;;;
+			| str_p("EXCLUDING")   >> "IDENTITY" ;;;
 			ColumnDefaultOption =(str_p("INCLUDING"))  >> "DEFAULTS"   
-			| "EXCLUDING"   >> "DEFAULTS" ;;;
+			| str_p("EXCLUDING")   >> "DEFAULTS" ;;;
 			AsSubqueryClause = !(ch_p('(') >> ColumnNameList  >> ')'   >> "AS"  >> Subquery >> WithOrWithoutData);;;
 			WithOrWithoutData =(str_p("WITH"))  >> "NO"   >> "DATA"   
-			| "WITH"   >> "DATA" ;;;
+			| str_p("WITH")   >> "DATA" ;;;
 			ColumnDefinition = (ColumnName >> !DataType  
 								| DomainName >> !ReferenceScopeCheck >> !DefaultClause  
 								| IdentityColumnSpecification  
@@ -1655,19 +1666,19 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			ReferenceScopeCheck = ((str_p("REFERENCES"))  >> "ARE"  >> !(str_p("NOT"))  >> "CHECKED"  >> !(str_p("ON"))  >> "DELETE"  >> ReferenceScopeCheckAction);;;
 			ReferenceScopeCheckAction = ReferentialAction;;;
 			IdentityColumnSpecification = ("GENERATED"  >> "ALWAYS"   
-										   | "BY"   >> "DEFAULT"   >> "AS"   >> "IDENTITY"  >> !ch_p('(') >> CommonSequenceGeneratorOptions  >> ')' );;;
+										   | str_p("BY")   >> "DEFAULT"   >> "AS"   >> "IDENTITY"  >> !ch_p('(') >> CommonSequenceGeneratorOptions  >> ')' );;;
 			GenerationClause = GenerationRule  >> "AS"  >> GenerationExpression;;;
 			GenerationRule = "GENERATED"  >> "ALWAYS" ;;;
 			GenerationExpression = ch_p('(') >> ValueExpression  >> ')' ;;;
 			DefaultClause =(str_p("DEFAULT")) >> DefaultOption;;;
 			DefaultOption = Literal  
 			| DatetimeValueFunction  
-			| "USER"   
-			| "CURRENT_USER"   
-			| "CURRENT_ROLE"   
-			| "SESSION_USER"   
-			| "SYSTEM_USER"   
-			| "CURRENT_PATH"   
+			| str_p("USER")   
+			| str_p("CURRENT_USER")   
+			| str_p("CURRENT_ROLE")   
+			| str_p("SESSION_USER")   
+			| str_p("SYSTEM_USER")   
+			| str_p("CURRENT_PATH")   
 			| ImplicitlyTypedValueSpecification;;;
 			TableConstraintDefinition = !(ConstraintNameDefinition >> TableConstraint >> !ConstraintCharacteristics);;;
 			TableConstraint = UniqueConstraintDefinition  
@@ -1676,13 +1687,13 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			UniqueConstraintDefinition = UniqueSpecification  >> '('  >> UniqueColumnList  >> ')'   
 			| ((str_p("UNIQUE"))  >> "VALUE" );;;
 			UniqueSpecification =(str_p("UNIQUE"))  
-			| "PRIMARY"   >> "KEY" ;;;
+			| str_p("PRIMARY")   >> "KEY" ;;;
 			UniqueColumnList = ColumnNameList;;;
 			ReferentialConstraintDefinition =(str_p("FOREIGN"))  >> "KEY"   >> '('  >> ReferencingColumns  >> ')'  >> ReferencesSpecification;;;
 			ReferencesSpecification = ((str_p("REFERENCES")) >> ReferencedTableAndColumns >> !(str_p("MATCH")) >> MatchType >> !ReferentialTriggeredAction);;;
 			MatchType =(str_p("FULL"))  
-			| "PARTIAL"   
-			| "SIMPLE" ;;;
+			| str_p("PARTIAL")   
+			| str_p("SIMPLE") ;;;
 			ReferencingColumns = ReferenceColumnList;;;
 			ReferencedTableAndColumns = (TableName >> !ch_p('(') >> ReferenceColumnList  >> ')' );;;
 			ReferenceColumnList = ColumnNameList;;;
@@ -1691,10 +1702,10 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			UpdateRule =(str_p("ON"))  >> "UPDATE"  >> ReferentialAction;;;
 			DeleteRule =(str_p("ON"))  >> "DELETE"  >> ReferentialAction;;;
 			ReferentialAction =(str_p("CASCADE"))  
-			| "SET"   >> "NULL"   
-			| "SET"   >> "DEFAULT"   
+			| str_p("SET")   >> "NULL"   
+			| str_p("SET")   >> "DEFAULT"   
 			| RESTRICT  
-			| "NO"   >> "ACTION" ;;;
+			| str_p("NO")   >> "ACTION" ;;;
 			CheckConstraintDefinition =(str_p("CHECK"))  >> '('  >> SearchCondition  >> ')' ;;;
 			AlterTableStatement =(str_p("ALTER"))  >> "TABLE"  >> TableName >> AlterTableAction;;;
 			AlterTableAction = AddColumnDefinition  
@@ -1715,7 +1726,7 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			DropColumnScopeClause =(str_p("DROP")) >> "SCOPE" >> DropBehavior;;;
 			AlterIdentityColumnSpecification = +AlterIdentityColumnOption;;;
 			AlterIdentityColumnOption = AlterSequenceGeneratorRestartOption  
-			| "SET"  >> BasicSequenceGeneratorOption;;;
+			| str_p("SET")  >> BasicSequenceGeneratorOption;;;
 			DropColumnDefinition = ((str_p("DROP")) >> !(str_p("COLUMN")) >> ColumnName >> DropBehavior);;;
 			AddTableConstraintDefinition =(str_p("ADD")) >> TableConstraintDefinition;;;
 			DropTableConstraintDefinition =(str_p("DROP"))  >> "CONSTRAINT"  >> ConstraintName >> DropBehavior;;;
@@ -1731,7 +1742,7 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			| ViewColumnOption;;;
 			ViewColumnOption = ColumnName  >> "WITH"   >> "OPTIONS"  >> ScopeClause;;;
 			LevelsClause =(str_p("CASCADED"))  
-			| "LOCAL" ;;;
+			| str_p("LOCAL") ;;;
 			ViewColumnList = ColumnNameList;;;
 			DropViewStatement =(str_p("DROP"))  >> "VIEW"  >> TableName >> DropBehavior;;;
 			DomainDefinition = ((str_p("CREATE"))  >> "DOMAIN"  >> DomainName >> !(str_p("AS")) >> DataType >> !DefaultClause >> *DomainConstraint >> !CollateClause);;;
@@ -1752,7 +1763,7 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			CollationDefinition = ((str_p("CREATE"))  >> "COLLATION"  >> CollationName  >> "FOR"  >> CharacterSetSpecification  >> "FROM"  >> ExistingCollationName >> !PadCharacteristic);;;
 			ExistingCollationName = CollationName;;;
 			PadCharacteristic =(str_p("NO"))  >> "PAD"   
-			| "PAD"   >> "SPACE" ;;;
+			| str_p("PAD")   >> "SPACE" ;;;
 			DropCollationStatement =(str_p("DROP"))  >> "COLLATION"  >> CollationName >> DropBehavior;;;
 			TransliterationDefinition =(str_p("CREATE"))  >> "TRANSLATION"  >> TransliterationName  >> "FOR"  >> SourceCharacterSetSpecification  >> "TO"  >> TargetCharacterSetSpecification  >> "FROM"  >> TransliterationSource;;;
 			SourceCharacterSetSpecification = CharacterSetSpecification;;;
@@ -1766,13 +1777,13 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			DropAssertionStatement =(str_p("DROP"))  >> "ASSERTION"  >> ConstraintName;;;
 			TriggerDefinition = ((str_p("CREATE"))  >> "TRIGGER"  >> TriggerName >> TriggerActionTime >> TriggerEvent  >> "ON"  >> TableName >> !(str_p("REFERENCING")) >> OldOrNewValuesAliasList >> TriggeredAction);;;
 			TriggerActionTime =(str_p("BEFORE"))  
-			| "AFTER" ;;;
+			| str_p("AFTER") ;;;
 			TriggerEvent =(str_p("INSERT"))  
-			| "DELETE"   
+			| str_p("DELETE")   
 			| ((str_p("UPDATE")) >> !(str_p("OF")) >> TriggerColumnList);;;
 			TriggerColumnList = ColumnNameList;;;
 			TriggeredAction = !(((str_p("FOR"))  >> "EACH"   >> "ROW"   
-								 | "STATEMENT" ) >> !(str_p("WHEN"))  >> '('  >> SearchCondition  >> ')'  >> TriggeredSQLStatement);;;
+								 | str_p("STATEMENT") ) >> !(str_p("WHEN"))  >> '('  >> SearchCondition  >> ')'  >> TriggeredSQLStatement);;;
 			TriggeredSQLStatement = SQLProcedureStatement  
 			| ((str_p("BEGIN"))  >> "ATOMIC"  >> +SQLProcedureStatement  >> ';'   >> "END" );;;
 			OldOrNewValuesAliasList = +OldOrNewValuesAlias;;;
@@ -1800,9 +1811,9 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			MemberList = (ch_p('(') >> (Member%ch_p(','))  >> ')' );;;
 			Member = AttributeDefinition;;;
 			InstantiableClause =(str_p("INSTANTIABLE"))  
-			| "NOT"   >> "INSTANTIABLE" ;;;
+			| str_p("NOT")   >> "INSTANTIABLE" ;;;
 			Finality =(str_p("FINAL"))  
-			| "NOT"   >> "FINAL" ;;;
+			| str_p("NOT")   >> "FINAL" ;;;
 			ReferenceTypeSpecification = UserDefinedRepresentation  
 			| DerivedRepresentation  
 			| SystemGeneratedRepresentation;;;
@@ -1826,8 +1837,8 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			OriginalMethodSpecification = (PartialMethodSpecification >> !(str_p("SELF"))  >> "AS"   >> "RESULT"  >> !(str_p("SELF"))  >> "AS"   >> "LOCATOR"  >> !MethodCharacteristics);;;
 			OverridingMethodSpecification =(str_p("OVERRIDING")) >> PartialMethodSpecification;;;
 			PartialMethodSpecification = !((str_p("INSTANCE"))  
-										   | "STATIC"   
-										   | CONSTRUCTOR  >> "METHOD"  >> MethodName >> SQLParameterDeclarationList >> ReturnsClause >> !(str_p("SPECIFIC")) >> SpecificMethodName);;;
+										   | str_p("STATIC")   
+										   | "CONSTRUCTOR"  >> "METHOD"  >> MethodName >> SQLParameterDeclarationList >> ReturnsClause >> !(str_p("SPECIFIC")) >> SpecificMethodName);;;
 			SpecificMethodName = !(SchemaName  >> '.'  >> QualifiedIdentifier);;;
 			MethodCharacteristics = +MethodCharacteristic;;;
 			MethodCharacteristic = LanguageClause  
@@ -1849,8 +1860,8 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			AddOverridingMethodSpecification =(str_p("ADD")) >> OverridingMethodSpecification;;;
 			DropMethodSpecification =(str_p("DROP")) >> SpecificMethodSpecificationDesignator >> RESTRICT;;;
 			SpecificMethodSpecificationDesignator = !((str_p("INSTANCE"))  
-													  | "STATIC"   
-													  | CONSTRUCTOR  >> "METHOD"  >> MethodName >> DataTypeList);;;
+													  | str_p("STATIC")   
+													  | "CONSTRUCTOR"  >> "METHOD"  >> MethodName >> DataTypeList);;;
 			DropDataTypeStatement =(str_p("DROP"))  >> "TYPE"  >> SchemaResolvedUserDefinedTypeName >> DropBehavior;;;
 			SQLInvokedRoutine = SchemaRoutine;;;
 			SchemaRoutine = SchemaProcedure  
@@ -1863,26 +1874,26 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			SQLParameterDeclarationList = (ch_p('(') >> !((SQLParameterDeclaration%ch_p(',')))  >> ')' );;;
 			SQLParameterDeclaration = !(ParameterMode >> !SQLParameterName >> ParameterType >> !(str_p("RESULT")));;;
 			ParameterMode =(str_p("IN"))  
-			| "OUT"   
-			| "INOUT" ;;;
+			| str_p("OUT")   
+			| str_p("INOUT") ;;;
 			ParameterType = (DataType >> !LocatorIndication);;;
 			LocatorIndication =(str_p("AS"))  >> "LOCATOR" ;;;
 			FunctionSpecification = ((str_p("FUNCTION")) >> SchemaQualifiedRoutineName >> SQLParameterDeclarationList >> ReturnsClause >> RoutineCharacteristics >> !DispatchClause);;;
 			MethodSpecificationDesignator =(str_p("SPECIFIC"))  >> "METHOD"  >> SpecificMethodName  
 			| !((str_p("INSTANCE"))  
-				| "STATIC"   
-				| CONSTRUCTOR  >> "METHOD"  >> MethodName >> SQLParameterDeclarationList >> !ReturnsClause  >> "FOR"  >> SchemaResolvedUserDefinedTypeName);;;
+				| str_p("STATIC")   
+				| "CONSTRUCTOR"  >> "METHOD"  >> MethodName >> SQLParameterDeclarationList >> !ReturnsClause  >> "FOR"  >> SchemaResolvedUserDefinedTypeName);;;
 			RoutineCharacteristics = *(RoutineCharacteristic);;;
 			RoutineCharacteristic = LanguageClause  
 			| ParameterStyleClause  
-			| "SPECIFIC"  >> SpecificName  
+			| str_p("SPECIFIC")  >> SpecificName  
 			| DeterministicCharacteristic  
 			| SQLDataAccessIndication  
 			| NullCallClause  
 			| DynamicResultSetsCharacteristic  
 			| SavepointLevelIndication;;;
 			SavepointLevelIndication =(str_p("NEW"))  >> "SAVEPOINT"   >> "LEVEL"   
-			| "OLD"   >> "SAVEPOINT"   >> "LEVEL" ;;;
+			| str_p("OLD")   >> "SAVEPOINT"   >> "LEVEL" ;;;
 			DynamicResultSetsCharacteristic =(str_p("DYNAMIC"))  >> "RESULT"   >> "SETS"  >> MaximumDynamicResultSets;;;
 			ParameterStyleClause =(str_p("PARAMETER"))  >> "STYLE"  >> ParameterStyle;;;
 			DispatchClause =(str_p("STATIC"))  >> "DISPATCH" ;;;
@@ -1899,22 +1910,22 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			| ExternalBodyReference;;;
 			SQLRoutineSpec = !(RightsClause >> SQLRoutineBody);;;
 			RightsClause =(str_p("SQL"))  >> "SECURITY"   >> "INVOKER"   
-			| "SQL"   >> "SECURITY"   >> "DEFINER" ;;;
+			| str_p("SQL")   >> "SECURITY"   >> "DEFINER" ;;;
 			SQLRoutineBody = SQLProcedureStatement;;;
 			ExternalBodyReference = ((str_p("EXTERNAL")) >> !(str_p("NAME")) >> ExternalRoutineName >> !ParameterStyleClause >> !TransformGroupSpecification >> !ExternalSecurityClause);;;
 			ExternalSecurityClause =(str_p("EXTERNAL"))  >> "SECURITY"   >> "DEFINER"   
-			| "EXTERNAL"   >> "SECURITY"   >> "INVOKER"   
-			| "EXTERNAL"   >> "SECURITY"   >> "IMPLEMENTATION"   >> "DEFINED" ;;;
+			| str_p("EXTERNAL")   >> "SECURITY"   >> "INVOKER"   
+			| str_p("EXTERNAL")   >> "SECURITY"   >> "IMPLEMENTATION"   >> "DEFINED" ;;;
 			ParameterStyle =(str_p("SQL"))  
-			| "GENERAL" ;;;
+			| str_p("GENERAL") ;;;
 			DeterministicCharacteristic =(str_p("DETERMINISTIC"))  
-			| "NOT"   >> "DETERMINISTIC" ;;;
+			| str_p("NOT")   >> "DETERMINISTIC" ;;;
 			SQLDataAccessIndication =(str_p("NO"))  >> "SQL"   
-			| "CONTAINS"   >> "SQL"   
-			| "READS"   >> "SQL"   >> "DATA"   
-			| "MODIFIES"   >> "SQL"   >> "DATA" ;;;
+			| str_p("CONTAINS")   >> "SQL"   
+			| str_p("READS")   >> "SQL"   >> "DATA"   
+			| str_p("MODIFIES")   >> "SQL"   >> "DATA" ;;;
 			NullCallClause =(str_p("RETURNS"))  >> "NULL"   >> "ON"   >> "NULL"   >> "INPUT"   
-			| "CALLED"   >> "ON"   >> "NULL"   >> "INPUT" ;;;
+			| str_p("CALLED")   >> "ON"   >> "NULL"   >> "INPUT" ;;;
 			MaximumDynamicResultSets = uint_p;;;
 			TransformGroupSpecification = ((str_p("TRANSFORM"))  >> "GROUP"  >> SingleGroupSpecification  
 										   | MultipleGroupSpecification);;;
@@ -1928,7 +1939,7 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			| SQLDataAccessIndication  
 			| NullCallClause  
 			| DynamicResultSetsCharacteristic  
-			| "NAME"  >> ExternalRoutineName;;;
+			| str_p("NAME")  >> ExternalRoutineName;;;
 			AlterRoutineBehavior = RESTRICT;;;
 			DropRoutineStatement =(str_p("DROP")) >> SpecificRoutineDesignator >> DropBehavior;;;
 			UserDefinedCastDefinition = ((str_p("CREATE"))  >> "CAST"   >> '('  >> SourceDataType  >> "AS"  >> TargetDataType  >> ')'   >> "WITH"  >> CastFunction >> !(str_p("AS"))  >> "ASSIGNMENT" );;;
@@ -1951,7 +1962,7 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			MapFunctionSpecification = SpecificRoutineDesignator;;;
 			DropUserDefinedOrderingStatement =(str_p("DROP"))  >> "ORDERING"   >> "FOR"  >> SchemaResolvedUserDefinedTypeName >> DropBehavior;;;
 			TransformDefinition = ((str_p("CREATE"))  >> "TRANSFORM"   
-								   | "TRANSFORMS"   >> "FOR"  >> SchemaResolvedUserDefinedTypeName >> +TransformGroup);;;
+								   | str_p("TRANSFORMS")   >> "FOR"  >> SchemaResolvedUserDefinedTypeName >> +TransformGroup);;;
 			TransformGroup = GroupName  >> '('  >> TransformElementList  >> ')' ;;;
 			GroupName = Identifier;;;
 			TransformElementList = (TransformElement >> !ch_p(',') >> TransformElement);;;
@@ -1962,7 +1973,7 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			ToSqlFunction = SpecificRoutineDesignator;;;
 			FromSqlFunction = SpecificRoutineDesignator;;;
 			AlterTransformStatement = ((str_p("ALTER"))  >> "TRANSFORM"   
-									   | "TRANSFORMS"   >> "FOR"  >> SchemaResolvedUserDefinedTypeName >> +AlterGroup);;;
+									   | str_p("TRANSFORMS")   >> "FOR"  >> SchemaResolvedUserDefinedTypeName >> +AlterGroup);;;
 			AlterGroup = GroupName  >> '('  >> AlterTransformActionList  >> ')' ;;;
 			AlterTransformActionList = ((AlterTransformAction%ch_p(',')));;;
 			AlterTransformAction = AddTransformElementList  
@@ -1970,9 +1981,9 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			AddTransformElementList =(str_p("ADD"))  >> '('  >> TransformElementList  >> ')' ;;;
 			DropTransformElementList = ((str_p("DROP"))  >> '('  >> TransformKind >> !ch_p(',') >> TransformKind >> DropBehavior  >> ')' );;;
 			TransformKind =(str_p("TO"))  >> "SQL"   
-			| "FROM"   >> "SQL" ;;;
+			| str_p("FROM")   >> "SQL" ;;;
 			DropTransformStatement = ((str_p("DROP"))  >> "TRANSFORM"   
-									  | "TRANSFORMS"  >> TransformsToBeDropped  >> "FOR"  >> SchemaResolvedUserDefinedTypeName >> DropBehavior);;;
+									  | str_p("TRANSFORMS")  >> TransformsToBeDropped  >> "FOR"  >> SchemaResolvedUserDefinedTypeName >> DropBehavior);;;
 			TransformsToBeDropped =(str_p("ALL"))  
 			| TransformGroupElement;;;
 			TransformGroupElement = GroupName;;;
@@ -1993,13 +2004,13 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			SequenceGeneratorIncrementByOption =(str_p("INCREMENT"))  >> "BY"  >> SequenceGeneratorIncrement;;;
 			SequenceGeneratorIncrement = SignedNumericLiteral;;;
 			SequenceGeneratorMaxvalueOption =(str_p("MAXVALUE")) >> SequenceGeneratorMaxValue  
-			| "NO"   >> "MAXVALUE" ;;;
+			| str_p("NO")   >> "MAXVALUE" ;;;
 			SequenceGeneratorMaxValue = SignedNumericLiteral;;;
 			SequenceGeneratorMinvalueOption =(str_p("MINVALUE")) >> SequenceGeneratorMinValue  
-			| "NO"   >> "MINVALUE" ;;;
+			| str_p("NO")   >> "MINVALUE" ;;;
 			SequenceGeneratorMinValue = SignedNumericLiteral;;;
 			SequenceGeneratorCycleOption =(str_p("CYCLE"))  
-			| "NO"   >> "CYCLE" ;;;
+			| str_p("NO")   >> "CYCLE" ;;;
 			AlterSequenceGeneratorStatement =(str_p("ALTER"))  >> "SEQUENCE"  >> SequenceGeneratorName >> AlterSequenceGeneratorOptions;;;
 			AlterSequenceGeneratorOptions = +AlterSequenceGeneratorOption;;;
 			AlterSequenceGeneratorOption = AlterSequenceGeneratorRestartOption  
@@ -2012,32 +2023,32 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			GrantPrivilegeStatement = ((str_p("GRANT")) >> Privileges  >> "TO"  >> (Grantee%ch_p(',')) >> !(str_p("WITH"))  >> "HIERARCHY"   >> "OPTION"  >> !(str_p("WITH"))  >> "GRANT"   >> "OPTION"  >> !(str_p("GRANTED"))  >> "BY"  >> Grantor);;;
 			Privileges = ObjectPrivileges  >> "ON"  >> ObjectName;;;
 			ObjectName = !((str_p("TABLE")) >> TableName)  
-			| "DOMAIN"  >> DomainName  
-			| "COLLATION"  >> CollationName  
-			| "CHARACTER"   >> "SET"  >> CharacterSetName  
-			| "TRANSLATION"  >> TransliterationName  
-			| "TYPE"  >> SchemaResolvedUserDefinedTypeName  
-			| "SEQUENCE"  >> SequenceGeneratorName  
+			| str_p("DOMAIN")  >> DomainName  
+			| str_p("COLLATION")  >> CollationName  
+			| str_p("CHARACTER")   >> "SET"  >> CharacterSetName  
+			| str_p("TRANSLATION")  >> TransliterationName  
+			| str_p("TYPE")  >> SchemaResolvedUserDefinedTypeName  
+			| str_p("SEQUENCE")  >> SequenceGeneratorName  
 			| SpecificRoutineDesignator;;;
 			ObjectPrivileges =(str_p("ALL"))  >> "PRIVILEGES"   
 			| ((Action%ch_p(',')));;;
 			Action =(str_p("SELECT"))  
-			| "SELECT"   >> '('  >> PrivilegeColumnList  >> ')'   
-			| "SELECT"   >> '('  >> PrivilegeMethodList  >> ')'   
-			| "DELETE"   
+			| str_p("SELECT")   >> '('  >> PrivilegeColumnList  >> ')'   
+			| str_p("SELECT")   >> '('  >> PrivilegeMethodList  >> ')'   
+			| str_p("DELETE")   
 			| ((str_p("INSERT")) >> !ch_p('(') >> PrivilegeColumnList  >> ')' )  
 			| ((str_p("UPDATE")) >> !ch_p('(') >> PrivilegeColumnList  >> ')' )  
 			| ((str_p("REFERENCES")) >> !ch_p('(') >> PrivilegeColumnList  >> ')' )  
-			| "USAGE"   
-			| "TRIGGER"   
-			| "UNDER"   
-			| "EXECUTE" ;;;
+			| str_p("USAGE")   
+			| str_p("TRIGGER")   
+			| str_p("UNDER")   
+			| str_p("EXECUTE") ;;;
 			PrivilegeMethodList = ((SpecificRoutineDesignator%ch_p(',')));;;
 			PrivilegeColumnList = ColumnNameList;;;
 			Grantee =(str_p("PUBLIC"))  
 			| AuthorizationIdentifier;;;
 			Grantor =(str_p("CURRENT_USER"))  
-			| "CURRENT_ROLE" ;;;
+			| str_p("CURRENT_ROLE") ;;;
 			RoleDefinition = ((str_p("CREATE"))  >> "ROLE"  >> RoleName >> !(str_p("WITH"))  >> "ADMIN"  >> Grantor);;;
 			GrantRoleStatement = ((str_p("GRANT")) >> (RoleGranted%ch_p(','))  >> "TO"  >> (Grantee%ch_p(',')) >> !(str_p("WITH"))  >> "ADMIN"   >> "OPTION"  >> !(str_p("GRANTED"))  >> "BY"  >> Grantor);;;
 			RoleGranted = RoleName;;;
@@ -2046,15 +2057,15 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			| RevokeRoleStatement;;;
 			RevokePrivilegeStatement = ((str_p("REVOKE")) >> !RevokeOptionExtension >> Privileges  >> "FROM"  >> (Grantee%ch_p(',')) >> !(str_p("GRANTED"))  >> "BY"  >> Grantor >> DropBehavior);;;
 			RevokeOptionExtension =(str_p("GRANT"))  >> "OPTION"   >> "FOR"   
-			| "HIERARCHY"   >> "OPTION"   >> "FOR" ;;;
+			| str_p("HIERARCHY")   >> "OPTION"   >> "FOR" ;;;
 			RevokeRoleStatement = ((str_p("REVOKE")) >> !(str_p("ADMIN"))  >> "OPTION"   >> "FOR"  >> (RoleRevoked%ch_p(','))  >> "FROM"  >> (Grantee%ch_p(',')) >> !(str_p("GRANTED"))  >> "BY"  >> Grantor >> DropBehavior);;;
 			RoleRevoked = RoleName;;;
 			SQLClientModuleDefinition = (ModuleNameClause >> LanguageClause >> ModuleAuthorizationClause >> !ModulePathSpecification >> !ModuleTransformGroupSpecification >> !ModuleCollation >> *TemporaryTableDeclaration >> +ModuleContents);;;
 			ModuleAuthorizationClause =(str_p("SCHEMA")) >> SchemaName  
 			| ((str_p("AUTHORIZATION")) >> ModuleAuthorizationIdentifier >> !((str_p("FOR"))  >> "STATIC"   >> "ONLY"   
-																			  | "AND"   >> "DYNAMIC" ))  
+																			  | str_p("AND")   >> "DYNAMIC" ))  
 			| ((str_p("SCHEMA")) >> SchemaName  >> "AUTHORIZATION"  >> ModuleAuthorizationIdentifier >> !((str_p("FOR"))  >> "STATIC"   >> "ONLY"   
-																										  | "AND"   >> "DYNAMIC" ));;;
+																										  | str_p("AND")   >> "DYNAMIC" ));;;
 			ModuleAuthorizationIdentifier = AuthorizationIdentifier;;;
 			ModulePathSpecification = PathSpecification;;;
 			ModuleTransformGroupSpecification = TransformGroupSpecification;;;
@@ -2175,17 +2186,17 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			SystemDescriptorStatement = AllocateDescriptorStatement  
 			| DeallocateDescriptorStatement  
 			| SetDescriptorStatement  
-			| GetDescriptorStatement >> Table >> 16--Data >> type >> correspondences >> for >> C;;;
+																								  | GetDescriptorStatement ;;;//>> Table >> 16--Data >> type >> correspondences >> for >> C;;;
 			DeclareCursor = ((str_p("DECLARE")) >> CursorName >> !CursorSensitivity >> !CursorScrollability  >> "CURSOR"  >> !CursorHoldability >> !CursorReturnability  >> "FOR"  >> CursorSpecification);;;
 			CursorSensitivity =(str_p("SENSITIVE"))  
-			| "INSENSITIVE"   
-			| "ASENSITIVE" ;;;
+			| str_p("INSENSITIVE")   
+			| str_p("ASENSITIVE") ;;;
 			CursorScrollability =(str_p("SCROLL"))  
-			| "NO"   >> "SCROLL" ;;;
+			| str_p("NO")   >> "SCROLL" ;;;
 			CursorHoldability =(str_p("WITH"))  >> "HOLD"   
-			| "WITHOUT"   >> "HOLD" ;;;
+			| str_p("WITHOUT")   >> "HOLD" ;;;
 			CursorReturnability =(str_p("WITH"))  >> "RETURN"   
-			| "WITHOUT"   >> "RETURN" ;;;
+			| str_p("WITHOUT")   >> "RETURN" ;;;
 			CursorSpecification = (QueryExpression >> !OrderByClause >> !UpdatabilityClause);;;
 			UpdatabilityClause = ((str_p("FOR"))  >> "READ"   >> "ONLY"   
 								  | ((str_p("UPDATE")) >> !(str_p("OF")) >> ColumnNameList));;;
@@ -2193,11 +2204,11 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			OpenStatement =(str_p("OPEN")) >> CursorName;;;
 			FetchStatement = ((str_p("FETCH")) >> !!(FetchOrientation  >> "FROM" ) >> CursorName  >> "INTO"  >> FetchTargetList);;;
 			FetchOrientation =(str_p("NEXT"))  
-			| "PRIOR"   
-			| "FIRST"   
-			| "LAST"   
+			| str_p("PRIOR")   
+			| str_p("FIRST")   
+			| str_p("LAST")   
 			| ((str_p("ABSOLUTE"))  
-			   | "RELATIVE"  >> SimpleValueSpecification);;;
+			   | str_p("RELATIVE")  >> SimpleValueSpecification);;;
 			FetchTargetList = ((TargetSpecification%ch_p(',')) ;;;
 							   
 							   CloseStatement =(str_p("CLOSE")) >> CursorName;;;
@@ -2205,7 +2216,7 @@ struct sql2003_parser : public grammar<sql2003_parser>
 							   SelectTargetList = ((TargetSpecification%ch_p(',')));;;
 							   DeleteStatementPositioned =(str_p("DELETE"))  >> "FROM"  >> TargetTable  >> "WHERE"   >> "CURRENT"   >> "OF"  >> CursorName;;;
 							   TargetTable = TableName  
-							   | "ONLY"   >> '('  >> TableName  >> ')' ;;;
+							   | str_p("ONLY")   >> '('  >> TableName  >> ')' ;;;
 							   DeleteStatementSearched = ((str_p("DELETE"))  >> "FROM"  >> TargetTable >> !(str_p("WHERE")) >> SearchCondition);;;
 							   InsertStatement =(str_p("INSERT"))  >> "INTO"  >> InsertionTarget >> InsertColumnsAndSource;;;
 							   InsertionTarget = TableName;;;
@@ -2215,7 +2226,7 @@ struct sql2003_parser : public grammar<sql2003_parser>
 							   FromSubquery = !(ch_p('(') >> InsertColumnList  >> ')'  >> !OverrideClause >> QueryExpression);;;
 							   FromConstructor = !(ch_p('(') >> InsertColumnList  >> ')'  >> !OverrideClause >> ContextuallyTypedTableValueConstructor);;;
 							   OverrideClause =(str_p("OVERRIDING"))  >> "USER"   >> "VALUE"   
-							   | "OVERRIDING"   >> "SYSTEM"   >> "VALUE" ;;;
+							   | str_p("OVERRIDING")   >> "SYSTEM"   >> "VALUE" ;;;
 							   FromDefault =(str_p("DEFAULT"))  >> "VALUES" ;;;
 							   InsertColumnList = ColumnNameList;;;
 							   MergeStatement = ((str_p("MERGE"))  >> "INTO"  >> TargetTable >> !!((str_p("AS")) >> MergeCorrelationName)  >> "USING"  >> TableReference  >> "ON"  >> SearchCondition >> MergeOperationSpecification);;;
@@ -2240,7 +2251,7 @@ struct sql2003_parser : public grammar<sql2003_parser>
 							   SetTargetList = (ch_p('(') >> (SetTarget%ch_p(','))  >> ')' );;;
 							   AssignedRow = ContextuallyTypedRowValueExpression;;;
 							   UpdateTarget = ObjectColumn  
-							   | ObjectColumn >> LeftBracketOrTrigraph >> SimpleValueSpecification >> RightBracketOrTrigraph;;;
+							   | ObjectColumn >> ch_p('[') >> SimpleValueSpecification >> ch_p(']');;;
 							   ObjectColumn = ColumnName;;;
 							   MutatedSetClause = MutatedTarget  >> '.'  >> MethodName;;;
 							   MutatedTarget = ObjectColumn  
@@ -2255,24 +2266,24 @@ struct sql2003_parser : public grammar<sql2003_parser>
 							   CallStatement =(str_p("CALL")) >> RoutineInvocation;;;
 							   ReturnStatement =(str_p("RETURN")) >> ReturnValue;;;
 							   ReturnValue = ValueExpression  
-							   | "NULL" ;;;
+							   | str_p("NULL") ;;;
 							   StartTransactionStatement = ((str_p("START"))  >> "TRANSACTION"  >> !((TransactionMode%ch_p(','))));;;
 							   TransactionMode = IsolationLevel  
 							   | TransactionAccessMode  
 							   | DiagnosticsSize;;;
 							   TransactionAccessMode =(str_p("READ"))  >> "ONLY"   
-							   | "READ"   >> "WRITE" ;;;
+							   | str_p("READ")   >> "WRITE" ;;;
 							   IsolationLevel =(str_p("ISOLATION"))  >> "LEVEL"  >> LevelOfIsolation;;;
 							   LevelOfIsolation =(str_p("READ"))  >> "UNCOMMITTED"   
-							   | "READ"   >> "COMMITTED"   
-							   | "REPEATABLE"   >> "READ"   
-							   | "SERIALIZABLE" ;;;
+							   | str_p("READ")   >> "COMMITTED"   
+							   | str_p("REPEATABLE")   >> "READ"   
+							   | str_p("SERIALIZABLE") ;;;
 							   DiagnosticsSize =(str_p("DIAGNOSTICS"))  >> "SIZE"  >> NumberOfConditions;;;
 							   NumberOfConditions = SimpleValueSpecification;;;
 							   SetTransactionStatement = ((str_p("SET")) >> !(str_p("LOCAL")) >> TransactionCharacteristics);;;
 							   TransactionCharacteristics = ((str_p("TRANSACTION")) >> (TransactionMode%ch_p(',')));;;
 							   SetConstraintsModeStatement = ((str_p("SET"))  >> "CONSTRAINTS"  >> ConstraintNameList  >> "DEFERRED"   
-															  | "IMMEDIATE" );;;
+															  | str_p("IMMEDIATE") );;;
 							   ConstraintNameList =(str_p("ALL"))  
 							   | ((ConstraintName%ch_p(',')));;;
 							   SavepointStatement =(str_p("SAVEPOINT")) >> SavepointSpecifier;;;
@@ -2283,24 +2294,24 @@ struct sql2003_parser : public grammar<sql2003_parser>
 							   SavepointClause =(str_p("TO"))  >> "SAVEPOINT"  >> SavepointSpecifier;;;
 							   ConnectStatement =(str_p("CONNECT"))  >> "TO"  >> ConnectionTarget;;;
 							   ConnectionTarget = (SQLServerName >> !(str_p("AS")) >> ConnectionName >> !(str_p("USER")) >> ConnectionUserName)  
-							   | "DEFAULT" ;;;
+							   | str_p("DEFAULT") ;;;
 							   SetConnectionStatement =(str_p("SET")) >> "CONNECTION" >> ConnectionObject;;;
 							   ConnectionObject =(str_p("DEFAULT"))  
 							   | ConnectionName;;;
 							   DisconnectStatement =(str_p("DISCONNECT")) >> DisconnectObject;;;
 							   DisconnectObject = ConnectionObject  
-							   | "ALL"   
-							   | "CURRENT" ;;;
+							   | str_p("ALL")   
+							   | str_p("CURRENT") ;;;
 							   SetSessionCharacteristicsStatement =(str_p("SET"))  >> "SESSION"   >> "CHARACTERISTICS"   >> "AS"  >> SessionCharacteristicList;;;
 							   SessionCharacteristicList = ((SessionCharacteristic%ch_p(',')));;;
 							   SessionCharacteristic = TransactionCharacteristics;;;
 							   SetSessionUserIdentifierStatement =(str_p("SET"))  >> "SESSION"   >> "AUTHORIZATION"  >> ValueSpecification;;;
 							   SetRoleStatement =(str_p("SET"))  >> "ROLE"  >> RoleSpecification;;;
 							   RoleSpecification = ValueSpecification  
-							   | "NONE" ;;;
+							   | str_p("NONE") ;;;
 							   SetLocalTimeZoneStatement =(str_p("SET"))  >> "TIME"   >> "ZONE"  >> SetTimeZoneValue;;;
 							   SetTimeZoneValue = IntervalValueExpression  
-							   | "LOCAL" ;;;
+							   | str_p("LOCAL") ;;;
 							   SetCatalogStatement =(str_p("SET")) >> CatalogNameCharacteristic;;;
 							   CatalogNameCharacteristic =(str_p("CATALOG")) >> ValueSpecification;;;
 							   SetSchemaStatement =(str_p("SET")) >> SchemaNameCharacteristic;;;
@@ -2311,7 +2322,7 @@ struct sql2003_parser : public grammar<sql2003_parser>
 							   SQLPathCharacteristic =(str_p("PATH")) >> ValueSpecification;;;
 							   SetTransformGroupStatement =(str_p("SET")) >> TransformGroupCharacteristic;;;
 							   TransformGroupCharacteristic =(str_p("DEFAULT"))  >> "TRANSFORM"   >> "GROUP"  >> ValueSpecification  
-							   | "TRANSFORM"   >> "GROUP"   >> "FOR"   >> "TYPE"  >> PathResolvedUserDefinedTypeName >> ValueSpecification;;;
+							   | str_p("TRANSFORM")   >> "GROUP"   >> "FOR"   >> "TYPE"  >> PathResolvedUserDefinedTypeName >> ValueSpecification;;;
 							   SetSessionCollationStatement = ((str_p("SET"))  >> "COLLATION"  >> CollationSpecification >> !(str_p("FOR")) >> CharacterSetSpecificationList)  
 							   | ((str_p("SET"))  >> "NO"   >> "COLLATION"  >> !(str_p("FOR")) >> CharacterSetSpecificationList);;;
 							   CharacterSetSpecificationList = (CharacterSetSpecification >> !,+CharacterSetSpecification);;;
@@ -2324,51 +2335,51 @@ struct sql2003_parser : public grammar<sql2003_parser>
 							   | ((str_p("VALUE")) >> ItemNumber >> (GetItemInformation%ch_p(',')));;;
 							   GetHeaderInformation = SimpleTargetSpecification1  >> '='  >> HeaderItemName;;;
 							   HeaderItemName =(str_p("COUNT"))  
-							   | "KEY_TYPE"   
-							   | "DYNAMIC_FUNCTION"   
-							   | "DYNAMIC_FUNCTION_CODE"   
-							   | "TOP_LEVEL_COUNT" ;;;
+							   | str_p("KEY_TYPE")   
+							   | str_p("DYNAMIC_FUNCTION")   
+							   | str_p("DYNAMIC_FUNCTION_CODE")   
+							   | str_p("TOP_LEVEL_COUNT") ;;;
 							   GetItemInformation = SimpleTargetSpecification2  >> '='  >> DescriptorItemName;;;
 							   ItemNumber = SimpleValueSpecification;;;
 							   SimpleTargetSpecification1 = SimpleTargetSpecification;;;
 							   SimpleTargetSpecification2 = SimpleTargetSpecification;;;
 							   DescriptorItemName =(str_p("CARDINALITY"))  
-							   | "CHARACTER_SET_CATALOG"   
-							   | "CHARACTER_SET_NAME"   
-							   | "CHARACTER_SET_SCHEMA"   
-							   | "COLLATION_CATALOG"   
-							   | "COLLATION_NAME"   
-							   | "COLLATION_SCHEMA"   
-							   | "DATA"   
-							   | "DATETIME_INTERVAL_CODE"   
-							   | "DATETIME_INTERVAL_PRECISION"   
-							   | "DEGREE"   
-							   | "INDICATOR"   
-							   | "KEY_MEMBER"   
-							   | "LENGTH"   
-							   | "LEVEL"   
-							   | "NAME"   
-							   | "NULLABLE"   
-							   | "OCTET_LENGTH"   
-							   | "PARAMETER_MODE"   
-							   | "PARAMETER_ORDINAL_POSITION"   
-							   | "PARAMETER_SPECIFIC_CATALOG"   
-							   | "PARAMETER_SPECIFIC_NAME"   
-							   | "PARAMETER_SPECIFIC_SCHEMA"   
-							   | "PRECISION"   
-							   | "RETURNED_CARDINALITY"   
-							   | "RETURNED_LENGTH"   
-							   | "RETURNED_OCTET_LENGTH"   
-							   | "SCALE"   
-							   | "SCOPE_CATALOG"   
-							   | "SCOPE_NAME"   
-							   | "SCOPE_SCHEMA"   
-							   | "TYPE"   
-							   | "UNNAMED"   
-							   | "USER_DEFINED_TYPE_CATALOG"   
-							   | "USER_DEFINED_TYPE_NAME"   
-							   | "USER_DEFINED_TYPE_SCHEMA"   
-							   | "USER_DEFINED_TYPE_CODE" ;;;
+							   | str_p("CHARACTER_SET_CATALOG")   
+							   | str_p("CHARACTER_SET_NAME")   
+							   | str_p("CHARACTER_SET_SCHEMA")   
+							   | str_p("COLLATION_CATALOG")   
+							   | str_p("COLLATION_NAME")   
+							   | str_p("COLLATION_SCHEMA")   
+							   | str_p("DATA")   
+							   | str_p("DATETIME_INTERVAL_CODE")   
+							   | str_p("DATETIME_INTERVAL_PRECISION")   
+							   | str_p("DEGREE")   
+							   | str_p("INDICATOR")   
+							   | str_p("KEY_MEMBER")   
+							   | str_p("LENGTH")   
+							   | str_p("LEVEL")   
+							   | str_p("NAME")   
+							   | str_p("NULLABLE")   
+							   | str_p("OCTET_LENGTH")   
+							   | str_p("PARAMETER_MODE")   
+							   | str_p("PARAMETER_ORDINAL_POSITION")   
+							   | str_p("PARAMETER_SPECIFIC_CATALOG")   
+							   | str_p("PARAMETER_SPECIFIC_NAME")   
+							   | str_p("PARAMETER_SPECIFIC_SCHEMA")   
+							   | str_p("PRECISION")   
+							   | str_p("RETURNED_CARDINALITY")   
+							   | str_p("RETURNED_LENGTH")   
+							   | str_p("RETURNED_OCTET_LENGTH")   
+							   | str_p("SCALE")   
+							   | str_p("SCOPE_CATALOG")   
+							   | str_p("SCOPE_NAME")   
+							   | str_p("SCOPE_SCHEMA")   
+							   | str_p("TYPE")   
+							   | str_p("UNNAMED")   
+							   | str_p("USER_DEFINED_TYPE_CATALOG")   
+							   | str_p("USER_DEFINED_TYPE_NAME")   
+							   | str_p("USER_DEFINED_TYPE_SCHEMA")   
+							   | str_p("USER_DEFINED_TYPE_CODE") ;;;
 							   SetDescriptorStatement = ((str_p("SET")) >> !(str_p("SQL"))  >> "DESCRIPTOR"  >> DescriptorName >> SetDescriptorInformation);;;
 							   SetDescriptorInformation = ((SetHeaderInformation%ch_p(',')))  
 							   | ((str_p("VALUE")) >> ItemNumber >> (SetItemInformation%ch_p(',')));;;
@@ -2412,10 +2423,10 @@ struct sql2003_parser : public grammar<sql2003_parser>
 							   DescribeInputStatement = ((str_p("DESCRIBE"))  >> "INPUT"  >> SQLStatementName >> UsingDescriptor >> !NestingOption);;;
 							   DescribeOutputStatement = ((str_p("DESCRIBE")) >> !(str_p("OUTPUT")) >> DescribedObject >> UsingDescriptor >> !NestingOption);;;
 							   NestingOption =(str_p("WITH"))  >> "NESTING"   
-							   | "WITHOUT"   >> "NESTING" ;;;
+							   | str_p("WITHOUT")   >> "NESTING" ;;;
 							   UsingDescriptor = ((str_p("USING")) >> !(str_p("SQL"))  >> "DESCRIPTOR"  >> DescriptorName);;;
 							   DescribedObject = SQLStatementName  
-							   | "CURSOR"  >> ExtendedCursorName  >> "STRUCTURE" ;;;
+							   | str_p("CURSOR")  >> ExtendedCursorName  >> "STRUCTURE" ;;;
 							   InputUsingClause = UsingArguments  
 							   | UsingInputDescriptor;;;
 							   UsingArguments = ((str_p("USING")) >> (UsingArgument%ch_p(',')));;;
@@ -2464,15 +2475,15 @@ struct sql2003_parser : public grammar<sql2003_parser>
 							   | SQLProcedureStatement;;;
 							   SQLPrefix =(str_p("EXEC"))  >> "SQL"   
 							   | '&'   >> "SQL"   >> '(' ;;;
-							   SQLTerminator = ENDEXEC  
+							   SQLTerminator = "ENDEXEC"  
 							   | ';'   
 							   | ')' ;;;
 							   EmbeddedAuthorizationDeclaration =(str_p("DECLARE")) >> EmbeddedAuthorizationClause;;;
 							   EmbeddedAuthorizationClause =(str_p("SCHEMA")) >> SchemaName  
 							   | ((str_p("AUTHORIZATION")) >> EmbeddedAuthorizationIdentifier >> !((str_p("FOR"))  >> "STATIC"   >> "ONLY"   
-																								   | "AND"   >> "DYNAMIC" ))  
+																								   | str_p("AND")   >> "DYNAMIC" ))  
 							   | ((str_p("SCHEMA")) >> SchemaName  >> "AUTHORIZATION"  >> EmbeddedAuthorizationIdentifier >> !((str_p("FOR"))  >> "STATIC"   >> "ONLY"   
-																															   | "AND"   >> "DYNAMIC" ));;;
+																															   | str_p("AND")   >> "DYNAMIC" ));;;
 							   EmbeddedAuthorizationIdentifier = ModuleAuthorizationIdentifier;;;
 							   EmbeddedPathSpecification = PathSpecification;;;
 							   EmbeddedTransformGroupSpecification = TransformGroupSpecification;;;
@@ -2502,10 +2513,10 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			Condition = SQLCondition;;;
 			SQLCondition = MajorCategory  
 			| ((str_p("SQLSTATE")) >> (SQLSTATEClassValue >> !,SQLSTATESubclassValue))  
-			| "CONSTRAINT"  >> ConstraintName;;;
+			| str_p("CONSTRAINT")  >> ConstraintName;;;
 			MajorCategory =(str_p("SQLEXCEPTION"))  
-			| "SQLWARNING"   
-			| "NOT"   >> "FOUND" ;;;
+			| str_p("SQLWARNING")   
+			| str_p("NOT")   >> "FOUND" ;;;
 			SQLSTATEClassValue = SQLSTATEChar >> SQLSTATECharnothing_p;;;
 			SQLSTATESubclassValue = SQLSTATEChar >> SQLSTATEChar >> SQLSTATECharfail_p;;;
 			SQLSTATEChar = upper_p  
@@ -2513,7 +2524,7 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			ConditionAction =(str_p("CONTINUE"))  
 			| GoTo;;;
 			GoTo = ((str_p("GOTO"))  
-					| "GO"   >> "TO"  >> GotoTarget);;;
+					| str_p("GO")   >> "TO"  >> GotoTarget);;;
 			GotoTarget = HostLabelIdentifier  
 			| uint_p  
 			| HostPLILabelVariable;;;
@@ -2536,15 +2547,15 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			| Interfaces.(str_p("SQL"))  >> '.'   >> "BOOLEAN"   
 			| InterfacesSQL  >> '.'  >> "SQLSTATE_TYPE"  
 			| Interfaces.(str_p("SQL"))  >> '.'  >> "INDICATOR_TYPE";;;
-			AdaUnqualifiedTypeSpecification =(str_p("CHAR"))  >> '('  >> 1 >> ".." >> Length  >> ')'   
-			| "SMALLINT"   
-			| "INT"   
-			| "BIGINT"   
-			| "REAL"   
-			| "DOUBLE_PRECISION"  
-			| "BOOLEAN"   
-			| "SQLSTATE_TYPE"  
-			| "INDICATOR_TYPE";;;
+			AdaUnqualifiedTypeSpecification =(str_p("CHAR"))  >> '('  >> '1' >> ".." >> Length  >> ')'   
+			| str_p("SMALLINT")   
+			| str_p("INT")   
+			| str_p("BIGINT")   
+			| str_p("REAL")   
+			| str_p("DOUBLE_PRECISION")  
+			| str_p("BOOLEAN")   
+			| str_p("SQLSTATE_TYPE")  
+			| str_p("INDICATOR_TYPE");;;
 			AdaDerivedTypeSpecification = AdaCLOBVariable  
 			| AdaCLOBLocatorVariable  
 			| AdaBLOBVariable  
@@ -2568,20 +2579,22 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			CVariableSpecification = CNumericVariable  
 			| CCharacterVariable  
 			| CDerivedVariable;;;
-			CStorageClass = Auto  
-			| Extern  
-			| Static;;;
+			CStorageClass =str_p( "Auto")  
+			| "Extern"  
+			| "Static";;;
 			CClassModifier = str_p("const" )
-			| "volatile" ;;;
-			CNumericVariable = ("Long" >> "Long"  
-								| "Long"  
-								| Short  
-								| Float  
-								| Double >> CHostIdentifier >> !CInitialValue >> *((ch_p(',') >> CHostIdentifier >> !CInitialValue)));;;
+			| str_p("volatile") ;;;
+			CNumericVariable = (str_p("LONG") >> "LONG"  
+								| str_p("LONG")  
+								| "SHORT"  
+								| "FLOAT"  
+								| "DOUBLE" >> CHostIdentifier >> !CInitialValue >> *((ch_p(',') >> CHostIdentifier >> !CInitialValue)));;;
 			CCharacterVariable = (CCharacterType >> !((str_p("CHARACTER"))  >> "SET"  >> !(str_p("IS")) >> CharacterSetSpecification) >> CHostIdentifier >> CArraySpecification >> !CInitialValue >> *((ch_p(',') >> CHostIdentifier >> CArraySpecification >> !CInitialValue)));;;
-			CCharacterType = Char  
-			| Unsigned >> Char  
-			| Unsigned >> Short;;;
+			CCharacterType = str_p("CHAR")  
+			| "UNSIGNED"
+									  >> "CHAR"
+									  
+			| "UNSIGNED" >> "SHORT";;;
 			CArraySpecification = ch_p('{') >> Length  >> '}' ;;;
 			CHostIdentifier = nothing_p;;;
 			CDerivedVariable = CVARCHARVariable  
@@ -2631,9 +2644,9 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			| COBOLUserDefinedTypeLocatorVariable  
 			| COBOLREFVariable;;;
 			COBOLCharacterType = !(((str_p("CHARACTER"))  >> "SET"  >> !(str_p("IS")) >> CharacterSetSpecification) >> "PIC"  
-								   | "PICTURE" >> !(str_p("IS")) >> +("X" >> !ch_p('(') >> Length  >> ')' ));;;
+								   | str_p("PICTURE") >> !(str_p("IS")) >> +("X" >> !ch_p('(') >> Length  >> ')' ));;;
 			COBOLNationalCharacterType = !(((str_p("CHARACTER"))  >> "SET"  >> !(str_p("IS")) >> CharacterSetSpecification) >> "PIC"  
-										   | "PICTURE" >> !(str_p("IS")) >> +("N" >> !ch_p('(') >> Length  >> ')' ));;;
+										   | str_p("PICTURE") >> !(str_p("IS")) >> +("N" >> !ch_p('(') >> Length  >> ')' ));;;
 			COBOLCLOBVariable = !(((str_p("USAGE")) >> !(str_p("IS")))  >> "SQL"   >> "TYPE"   >> "IS"   >> "CLOB"   >> '('  >> LargeObjectLength  >> ')'  >> !((str_p("CHARACTER"))  >> "SET"  >> !(str_p("IS")) >> CharacterSetSpecification));;;
 			COBOLNCLOBVariable = !(((str_p("USAGE")) >> !(str_p("IS")))  >> "SQL"   >> "TYPE"   >> "IS"   >> "NCLOB"   >> '('  >> LargeObjectLength  >> ')'  >> !((str_p("CHARACTER"))  >> "SET"  >> !(str_p("IS")) >> CharacterSetSpecification));;;
 			COBOLBLOBVariable = !(((str_p("USAGE")) >> !(str_p("IS")))  >> "SQL"   >> "TYPE"   >> "IS"   >> "BLOB"   >> '('  >> LargeObjectLength  >> ')' );;;
@@ -2646,22 +2659,22 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			COBOLREFVariable = !(((str_p("USAGE")) >> !(str_p("IS")))  >> "SQL"   >> "TYPE"   >> "IS"  >> ReferenceType);;;
 			COBOLNumericType = (
 								"PIC"  
-								| "PICTURE" >> !(str_p("IS")) >> "S" >> COBOLNinesSpecification >> !((str_p("USAGE")) >> !(str_p("IS"))) >> "DISPLAY" >> "SIGN"  >> "LEADING"  >> "SEPARATE");;;
+								| str_p("PICTURE") >> !(str_p("IS")) >> "S" >> COBOLNinesSpecification >> !((str_p("USAGE")) >> !(str_p("IS"))) >> "DISPLAY" >> "SIGN"  >> "LEADING"  >> "SEPARATE");;;
 			COBOLNinesSpecification = (COBOLNines >> !("V" >> !COBOLNines))  
-			| "V" >> COBOLNines;;;
+			| str_p("V") >> COBOLNines;;;
 			COBOLIntegerType = COBOLBinaryInteger;;;
 			COBOLBinaryInteger = ("PIC"  
-								  | "PICTURE" >> !(str_p("IS")) >> "S" >> COBOLNines >> !((str_p("USAGE")) >> !(str_p("IS")))  >> "BINARY" );;;
-			COBOLNines = +((9 >> !ch_p('(') >> Length  >> ')' ));;;
+								  | str_p("PICTURE") >> !(str_p("IS")) >> "S" >> COBOLNines >> !((str_p("USAGE")) >> !(str_p("IS")))  >> "BINARY" );;;
+			COBOLNines = +(('9' >> !ch_p('(') >> Length  >> ')' ));;;
 			EmbeddedSQLFortranProgram = nothing_p;;;
 			FortranVariableDefinition = (FortranTypeSpecification >> (FortranHostIdentifier%ch_p(',')));;;
 			FortranHostIdentifier = nothing_p;;;
 			FortranTypeSpecification = ((str_p("CHARACTER")) >> !ch_p('*') >> Length >> !((str_p("CHARACTER"))  >> "SET"  >> !(str_p("IS")) >> CharacterSetSpecification))  
-			| "CHARACTER"  >> KIND=(n >> !ch_p('*') >> Length >> !((str_p("CHARACTER"))  >> "SET"  >> !(str_p("IS")) >> CharacterSetSpecification))  
-			| "INTEGER"   
-			| "REAL"   
-			| "DOUBLE"   >> "PRECISION"   
-			| "LOGICAL"
+			| str_p("CHARACTER")  >> "broken KIND=" >> (/*n >>*/ !ch_p('*') >> Length >> !((str_p("CHARACTER"))  >> "SET"  >> !(str_p("IS")) >> CharacterSetSpecification))  
+			| str_p("INTEGER")   
+			| str_p("REAL")   
+			| str_p("DOUBLE")   >> "PRECISION"   
+			| str_p("LOGICAL")
 			| FortranDerivedTypeSpecification;;;
 			FortranDerivedTypeSpecification = FortranCLOBVariable  
 			| FortranBLOBVariable  
@@ -2691,7 +2704,7 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			MUMPSNumericVariable = (MUMPSTypeSpecification >> (MUMPSHostIdentifier%ch_p(',')));;;
 			MUMPSTypeSpecification =(str_p("INT"))  
 			| ((str_p("DEC")) >> !(ch_p('(') >> Precision >> !ch_p(',') >> Scale  >> ')' ))  
-			| "REAL" ;;;
+			| str_p("REAL") ;;;
 			MUMPSDerivedTypeSpecification = MUMPSCLOBVariable  
 			| MUMPSBLOBVariable  
 			| MUMPSUserDefinedTypeVariable  
@@ -2713,11 +2726,11 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			EmbeddedSQLPascalProgram = nothing_p;;;
 			PascalVariableDefinition = ((PascalHostIdentifier%ch_p(','))  >> ':'  >> PascalTypeSpecification  >> ';' );;;
 			PascalHostIdentifier = nothing_p;;;
-			PascalTypeSpecification = (str_p(PACKED)  >> "ARRAY"   >> '{'  >> 1 >> ".." >> Length  >> '}'   >> "OF"   >> "CHAR"  >> !((str_p("CHARACTER"))  >> "SET"  >> !(str_p("IS")) >> CharacterSetSpecification))  
-			| "INTEGER"   
-			| "REAL"   
+			PascalTypeSpecification = (str_p("PACKED")  >> "ARRAY"   >> '{'  >> 1 >> ".." >> Length  >> '}'   >> "OF"   >> "CHAR"  >> !((str_p("CHARACTER"))  >> "SET"  >> !(str_p("IS")) >> CharacterSetSpecification))  
+			| str_p("INTEGER")   
+			| str_p("REAL")   
 			| ((str_p("CHAR")) >> !((str_p("CHARACTER"))  >> "SET"  >> !(str_p("IS")) >> CharacterSetSpecification))  
-			| "BOOLEAN"   
+			| str_p("BOOLEAN")   
 			| PascalDerivedTypeSpecification;;;
 			PascalDerivedTypeSpecification = PascalCLOBVariable  
 			| PascalBLOBVariable  
@@ -2739,11 +2752,11 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			PascalREFVariable =(str_p("SQL"))  >> "TYPE"   >> "IS"  >> ReferenceType;;;
 			EmbeddedSQLPLIProgram = nothing_p;;;
 			PLIVariableDefinition = (str_p("DCL")  
-									 | "DECLARE"  >> PLIHostIdentifier  
+									 | str_p("DECLARE")  >> PLIHostIdentifier  
 									 | (ch_p('(') >> (PLIHostIdentifier%ch_p(','))  >> ')' ) >> PLITypeSpecification >> *CharacterRepresentation  >> ';' );;;
 			PLIHostIdentifier = nothing_p;;;
 			PLITypeSpecification = ((str_p("CHAR"))  
-									| "CHARACTER"  >> !(str_p("VARYING"))  >> '('  >> Length  >> ')'  >> !((str_p("CHARACTER"))  >> "SET"  >> !(str_p("IS")) >> CharacterSetSpecification))  
+									| str_p("CHARACTER")  >> !(str_p("VARYING"))  >> '('  >> Length  >> ')'  >> !((str_p("CHARACTER"))  >> "SET"  >> !(str_p("IS")) >> CharacterSetSpecification))  
 			| (PLITypeFixedDecimal  >> '('  >> Precision >> !ch_p(',') >> Scale  >> ')' )  
 			| (PLITypeFixedBinary >> !ch_p('(') >> Precision  >> ')' )  
 			| PLITypeFloatBinary  >> '('  >> Precision  >> ')'   
@@ -2767,17 +2780,17 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			PLIMultisetLocatorVariable =(str_p("SQL"))  >> "TYPE"   >> "IS"  >> MultisetType  >> "AS"   >> "LOCATOR" ;;;
 			PLIREFVariable =(str_p("SQL"))  >> "TYPE"   >> "IS"  >> ReferenceType;;;
 			PLITypeFixedDecimal = ((str_p("DEC"))  
-								   | "DECIMAL"   >> "FIXED" )  
+								   | str_p("DECIMAL")   >> "FIXED" )  
 			| (str_p("FIXED")  >> "DEC"   
-			   | "DECIMAL" );;;
+			   | str_p("DECIMAL") );;;
 			PLITypeFixedBinary = (str_p("BIN")		
-								  | "BINARY"   >> "FIXED" )  
+								  | str_p("BINARY")   >> "FIXED" )  
 			| (str_p("FIXED")  >> "BIN" 		
-			   | "BINARY" );;;
+			   | str_p("BINARY") );;;
 			PLITypeFloatBinary = (str_p("BIN")		
-								  | "BINARY"   >> "FLOAT" )  
+								  | str_p("BINARY")   >> "FLOAT" )  
 			| ((str_p("FLOAT"))  >> "BIN" 		
-			   | "BINARY" );;;
+			   | str_p("BINARY") );;;
 			DirectSQLStatement = DirectlyExecutableStatement  >> ';' ;;;
 			DirectlyExecutableStatement = DirectSQLDataStatement  
 			| SQLSchemaStatement  
@@ -2799,45 +2812,45 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			StatementInformation = ((StatementInformationItem%ch_p(',')));;;
 			StatementInformationItem = SimpleTargetSpecification  >> '='  >> StatementInformationItemName;;;
 			StatementInformationItemName =(str_p("NUMBER"))  
-			| "MORE"   
-			| "COMMAND_FUNCTION"   
-			| "COMMAND_FUNCTION_CODE"   
-			| "DYNAMIC_FUNCTION"   
-			| "DYNAMIC_FUNCTION_CODE"   
-			| "ROW_COUNT"   
-			| "TRANSACTIONS_COMMITTED"   
-			| "TRANSACTIONS_ROLLED_BACK"   
-			| "TRANSACTION_ACTIVE" ;;;
+			| str_p("MORE")   
+			| str_p("COMMAND_FUNCTION")   
+			| str_p("COMMAND_FUNCTION_CODE")   
+			| str_p("DYNAMIC_FUNCTION")   
+			| str_p("DYNAMIC_FUNCTION_CODE")   
+			| str_p("ROW_COUNT")   
+			| str_p("TRANSACTIONS_COMMITTED")   
+			| str_p("TRANSACTIONS_ROLLED_BACK")   
+			| str_p("TRANSACTION_ACTIVE") ;;;
 			ConditionInformation = ((str_p("EXCEPTION"))  
-									| "CONDITION"  >> ConditionNumber >> (ConditionInformationItem%ch_p(',')));;;
+									| str_p("CONDITION")  >> ConditionNumber >> (ConditionInformationItem%ch_p(',')));;;
 			ConditionInformationItem = SimpleTargetSpecification  >> '='  >> ConditionInformationItemName;;;
 			ConditionInformationItemName =(str_p("CATALOG_NAME"))  
-			| "CLASS_ORIGIN"   
-			| "COLUMN_NAME"   
-			| "CONDITION_NUMBER"   
-			| "CONNECTION_NAME"   
-			| "CONSTRAINT_CATALOG"   
-			| "CONSTRAINT_NAME"   
-			| "CONSTRAINT_SCHEMA"   
-			| "CURSOR_NAME"   
-			| "MESSAGE_LENGTH"   
-			| "MESSAGE_OCTET_LENGTH"   
-			| "MESSAGE_TEXT"   
-			| "PARAMETER_MODE"   
-			| "PARAMETER_NAME"   
-			| "PARAMETER_ORDINAL_POSITION"   
-			| "RETURNED_SQLSTATE"   
-			| "ROUTINE_CATALOG"   
-			| "ROUTINE_NAME"   
-			| "ROUTINE_SCHEMA"   
-			| "SCHEMA_NAME"   
-			| "SERVER_NAME"   
-			| "SPECIFIC_NAME"   
-			| "SUBCLASS_ORIGIN"   
-			| "TABLE_NAME"   
-			| "TRIGGER_CATALOG"   
-			| "TRIGGER_NAME"   
-			| "TRIGGER_SCHEMA" ;;;
+			| str_p("CLASS_ORIGIN")   
+			| str_p("COLUMN_NAME")   
+			| str_p("CONDITION_NUMBER")   
+			| str_p("CONNECTION_NAME")   
+			| str_p("CONSTRAINT_CATALOG")   
+			| str_p("CONSTRAINT_NAME")   
+			| str_p("CONSTRAINT_SCHEMA")   
+			| str_p("CURSOR_NAME")   
+			| str_p("MESSAGE_LENGTH")   
+			| str_p("MESSAGE_OCTET_LENGTH")   
+			| str_p("MESSAGE_TEXT")   
+			| str_p("PARAMETER_MODE")   
+			| str_p("PARAMETER_NAME")   
+			| str_p("PARAMETER_ORDINAL_POSITION")   
+			| str_p("RETURNED_SQLSTATE")   
+			| str_p("ROUTINE_CATALOG")   
+			| str_p("ROUTINE_NAME")   
+			| str_p("ROUTINE_SCHEMA")   
+			| str_p("SCHEMA_NAME")   
+			| str_p("SERVER_NAME")   
+			| str_p("SPECIFIC_NAME")   
+			| str_p("SUBCLASS_ORIGIN")   
+			| str_p("TABLE_NAME")   
+			| str_p("TRIGGER_CATALOG")   
+			| str_p("TRIGGER_NAME")   
+			| str_p("TRIGGER_SCHEMA") ;;;
 			
 			BOOST_SPIRIT_DEBUG_RULE( SQLTerminalCharacter );
 			BOOST_SPIRIT_DEBUG_RULE( SQLTerminalCharacter);
@@ -5367,7 +5380,7 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			StatementInformationItemName ,
 			ConditionInformation ,
 			ConditionInformationItem ,
-			ConditionInformationItemName , 									  
+			ConditionInformationItemName , 	OverlapsPredicatePart,Query								  
 			;
 			rule<ScannerT> const& start() const
 			{

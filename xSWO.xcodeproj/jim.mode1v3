@@ -202,7 +202,7 @@
 			<key>Content</key>
 			<dict>
 				<key>PBXProjectModuleGUID</key>
-				<string>380142960EB7FF84007CCEF6</string>
+				<string>380142EF0EB854CB007CCEF6</string>
 				<key>PBXProjectModuleLabel</key>
 				<string>sql2003.hpp</string>
 				<key>PBXSplitModuleInNavigatorKey</key>
@@ -210,25 +210,16 @@
 					<key>Split0</key>
 					<dict>
 						<key>PBXProjectModuleGUID</key>
-						<string>3801429F0EB83776007CCEF6</string>
+						<string>380142F40EB85B9A007CCEF6</string>
 						<key>PBXProjectModuleLabel</key>
 						<string>sql2003.hpp</string>
 						<key>_historyCapacity</key>
 						<integer>0</integer>
 						<key>bookmark</key>
-						<string>380142DE0EB8502E007CCEF6</string>
+						<string>380142FD0EB85DDA007CCEF6</string>
 						<key>history</key>
 						<array>
-							<string>380142D90EB8502E007CCEF6</string>
-							<string>380142DA0EB8502E007CCEF6</string>
-							<string>380142CF0EB84FA3007CCEF6</string>
-						</array>
-						<key>prevStack</key>
-						<array>
-							<string>380142A60EB83A56007CCEF6</string>
-							<string>380142DB0EB8502E007CCEF6</string>
-							<string>380142DC0EB8502E007CCEF6</string>
-							<string>380142DD0EB8502E007CCEF6</string>
+							<string>380142F10EB85AE0007CCEF6</string>
 						</array>
 					</dict>
 					<key>SplitCount</key>
@@ -244,7 +235,7 @@
 				<key>PBXModuleWindowStatusBarHidden2</key>
 				<false/>
 				<key>RubberWindowFrame</key>
-				<string>71 267 1046 1153 0 0 1050 1658 </string>
+				<string>255 130 1046 1153 0 0 1050 1658 </string>
 			</dict>
 		</dict>
 	</array>
@@ -477,7 +468,7 @@
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>380142D40EB8502E007CCEF6</string>
+										<string>380142FB0EB85DDA007CCEF6</string>
 										<key>history</key>
 										<array>
 											<string>38C1F0DA0E76697100FCDC3F</string>
@@ -528,7 +519,7 @@
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>380142D80EB8502E007CCEF6</string>
+										<string>380142FC0EB85DDA007CCEF6</string>
 										<key>history</key>
 										<array>
 											<string>38C1F0DA0E76697100FCDC3F</string>
@@ -729,7 +720,7 @@
 	<key>PerspectivesBarVisible</key>
 	<false/>
 	<key>PinnedNavigatorIdentifier</key>
-	<string>380142960EB7FF84007CCEF6</string>
+	<string>380142EF0EB854CB007CCEF6</string>
 	<key>ShelfIsVisible</key>
 	<false/>
 	<key>SourceDescription</key>
@@ -752,10 +743,10 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>1CD10A99069EF8BA00B06720</string>
 		<string>1C78EAAD065D492600B07095</string>
+		<string>1CD10A99069EF8BA00B06720</string>
 		<string>/Users/jim/work/xSWO/xSWO.xcodeproj</string>
-		<string>380142960EB7FF84007CCEF6</string>
+		<string>380142EF0EB854CB007CCEF6</string>
 		<string>38AB2A5C0E7328A30092C680</string>
 	</array>
 	<key>WindowString</key>
@@ -789,7 +780,7 @@
 								<key>Frame</key>
 								<string>{{0, 0}, {1046, 672}}</string>
 								<key>RubberWindowFrame</key>
-								<string>4 47 1046 1611 0 0 1050 1658 </string>
+								<string>-24 47 1046 1611 0 0 1050 1658 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
@@ -797,6 +788,8 @@
 							<string>672pt</string>
 						</dict>
 						<dict>
+							<key>BecomeActive</key>
+							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
@@ -809,22 +802,20 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 677}, {1046, 672}}</string>
+								<string>{{0, 677}, {1046, 257}}</string>
 								<key>RubberWindowFrame</key>
-								<string>4 47 1046 1611 0 0 1050 1658 </string>
+								<string>-24 47 1046 1611 0 0 1050 1658 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
 							<key>Proportion</key>
-							<string>672pt</string>
+							<string>257pt</string>
 						</dict>
 						<dict>
-							<key>BecomeActive</key>
-							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXBuildLogShowsTranscriptDefaultKey</key>
-								<string>{{0, 179}, {1046, 37}}</string>
+								<string>{{0, 357}, {1046, 274}}</string>
 								<key>PBXProjectModuleGUID</key>
 								<string>XCMainBuildResultsModuleGUID</string>
 								<key>PBXProjectModuleLabel</key>
@@ -837,14 +828,14 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 1354}, {1046, 216}}</string>
+								<string>{{0, 939}, {1046, 631}}</string>
 								<key>RubberWindowFrame</key>
-								<string>4 47 1046 1611 0 0 1050 1658 </string>
+								<string>-24 47 1046 1611 0 0 1050 1658 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXBuildResultsModule</string>
 							<key>Proportion</key>
-							<string>216pt</string>
+							<string>631pt</string>
 						</dict>
 					</array>
 					<key>Proportion</key>
@@ -870,7 +861,7 @@
 			<key>ToolbarConfiguration</key>
 			<string>xcode.toolbar.config.buildV3</string>
 			<key>WindowString</key>
-			<string>4 47 1046 1611 0 0 1050 1658 </string>
+			<string>-24 47 1046 1611 0 0 1050 1658 </string>
 			<key>WindowToolGUID</key>
 			<string>38AB2A5C0E7328A30092C680</string>
 			<key>WindowToolIsVisible</key>
@@ -1130,7 +1121,7 @@
 								<key>Frame</key>
 								<string>{{0, 0}, {1920, 1103}}</string>
 								<key>RubberWindowFrame</key>
-								<string>-845 514 1920 1144 0 0 1050 1658 </string>
+								<string>316 178 1920 1144 1050 324 1920 1200 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXDebugCLIModule</string>
@@ -1159,11 +1150,11 @@
 			<key>ToolbarConfiguration</key>
 			<string>xcode.toolbar.config.consoleV3</string>
 			<key>WindowString</key>
-			<string>-845 514 1920 1144 0 0 1050 1658 </string>
+			<string>316 178 1920 1144 1050 324 1920 1200 </string>
 			<key>WindowToolGUID</key>
 			<string>1C78EAAD065D492600B07095</string>
 			<key>WindowToolIsVisible</key>
-			<true/>
+			<false/>
 		</dict>
 		<dict>
 			<key>Identifier</key>

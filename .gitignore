@@ -36,3 +36,4 @@ build/xSWO.build
 //build/**
 sql2003.hpp.~1~ sql2003.hpp.~2~ sql2003.hpp.~3~
 .#*
+*.d
