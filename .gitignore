@@ -26,3 +26,12 @@ TurtleSParser/TurtleSParser.cpp
 TurtleSParser/TurtleSParser.hpp
 TurtleSScanner.cpp
 SPARQLfedScanner.cpp
+target
+build
+build/xSWO.build
+./build/xSWO.build
+./build/xSWO.build
+/build/*
+/build
+//build/**
+sql2003.hpp.~1~ sql2003.hpp.~2~ sql2003.hpp.~3~

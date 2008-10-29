@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		380142730EB7E38D007CCEF6 /* sql2003.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 385D321F0EB70C0600FB2626 /* sql2003.hpp */; };
 		385D322A0EB70E4B00FB2626 /* sql2003.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 385D32280EB70E4B00FB2626 /* sql2003.cpp */; };
 		3883A7600E7B399600730AF8 /* sparql.h in Headers */ = {isa = PBXBuildFile; fileRef = 38C1F1150E76740700FCDC3F /* sparql.h */; };
 		38CBCA250E7A68CA00EFBB9B /* sparql.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 38C1F1160E76740700FCDC3F /* sparql.cpp */; };
@@ -119,6 +120,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3883A7600E7B399600730AF8 /* sparql.h in Headers */,
+				380142730EB7E38D007CCEF6 /* sql2003.hpp in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
