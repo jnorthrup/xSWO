@@ -4112,7 +4112,7 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			BOOST_SPIRIT_DEBUG_RULE( ConditionInformationItem );
 			BOOST_SPIRIT_DEBUG_RULE( ConditionInformationItemName );
 			
-			ScannerT 
+		rule<	ScannerT >
 			SQLTerminalCharacter ,
 			SQLTerminalCharacter,
 			SqlSpecialCharacters ,
@@ -5381,9 +5381,13 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			ConditionInformationItem ,
 			ConditionInformationItemName 
 			;
+			rule<ScannerT> const& start() const
+			{
+				return Query;
+			}
+			
 		}
 	}
 	
 }
-}
-
+ 
