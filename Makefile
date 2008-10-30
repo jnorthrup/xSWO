@@ -13,8 +13,8 @@ SED?=sed
 #LIBS
 DEBUG?=-g
 #OPT=-O4
-DEFS?=-DYYTEXT_POINTER=1
-WARN?=-W -Wall -Wextra -Wnon-virtual-dtor
+#DEFS?=-DYYTEXT_POINTER=1
+#WARN?=-W -Wall -Wextra -Wnon-virtual-dtor
 BASENAME ?= basename
 MV ?= mv
 RM ?= rm
@@ -33,7 +33,7 @@ override LINKFLAGS:= -dynamiclib  -Wl,-single_module
 #-current_version' '$(VER)
 #-compatibility_version' '$(patsubst .%,,$(VER))	\
 
- 			
+
 else
 
 ifeq	($(OSTYPE:windows%=windows),windows)

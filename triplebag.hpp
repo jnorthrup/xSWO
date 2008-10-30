@@ -38,7 +38,7 @@ using namespace boost::multi_index;
 using namespace boost::tuples; 
 using namespace boost; 
 using namespace std; 
-namespace x{ 
+namespace xModel{ 
 	
 	/**
 	 Intelligent Object Handler.  
@@ -46,7 +46,7 @@ namespace x{
 	 
 	 Unlike a "Framework" level of communication abstractions, the "subscribers" are merely callbacks, wrapped in STL names.
 	 */
-	namespace xH{
+	namespace xEvent{
 		
 		/**
 		 the source of events.  
