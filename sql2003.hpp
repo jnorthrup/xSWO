@@ -364,8 +364,9 @@ struct sql2003_parser: public grammar<sql2003_parser> {
 		  MethodName = Identifier;;;
 		  SpecificName = SchemaQualifiedName;;;
 		  CursorName = LocalQualifiedName;;;
-		  LocalQualifiedName
-		    = !(LocalQualifier >> '.' >> QualifiedIdentifier);;;
+		  LocalQualifiedName   = !(LocalQualifier 
+					   >> '.'
+					   >> QualifiedIdentifier);;;
 		  LocalQualifier = (str_p("MODULE"));;;
 		  HostParameterName = lexeme_d[ch_p(':') >> Identifier];;;
 		  SQLParameterName = Identifier;;;
@@ -417,44 +418,73 @@ struct sql2003_parser: public grammar<sql2003_parser> {
 		       >> ')');;;
 		  NationalCharacterStringType = ((str_p("NATIONAL")) >> "CHARACTER"
 						 >> !ch_p('(') >> Length >> ')') | ((str_p("NATIONAL"))
-										    >> "CHAR" >> !ch_p('(') >> Length >> ')')
-		    | ((str_p("NCHAR")) >> !ch_p('(') >> Length >> ')')
+										    >> "CHAR" >> !(ch_p('(') >> Length >> ')'))
+		    | ((str_p("NCHAR")) >> !(ch_p('(') >> Length >> ')'))
 		    | str_p("NATIONAL") >> "CHARACTER" >> "VARYING" >> '('
 					>> Length >> ')' | str_p("NATIONAL") >> "CHAR"
 					>> "VARYING" >> '(' >> Length >> ')' | str_p("NCHAR")
 					>> "VARYING" >> '(' >> Length >> ')' | ((str_p("NATIONAL"))
-										>> "CHARACTER" >> "LARGE" >> "OBJECT" >> !ch_p('(')
-										>> LargeObjectLength >> ')') | ((str_p("NCHAR")) >> "LARGE"
-														>> "OBJECT" >> !ch_p('(') >> LargeObjectLength >> ')')
-		    | ((str_p("NCLOB")) >> !ch_p('(') >> LargeObjectLength
-		       >> ')');;;
+										>> "CHARACTER" >> "LARGE" >> "OBJECT" >> !(ch_p('(')
+															   >> LargeObjectLength >> ')')) | ((str_p("NCHAR")) >> "LARGE"
+																			    >> "OBJECT" >> !(ch_p('(') >> LargeObjectLength >> ')'))
+		    | ((str_p("NCLOB")) >> !(ch_p('(') >> LargeObjectLength
+					     >> ')'));;;
 		  BinaryLargeObjectStringType = ((str_p("BINARY")) >> "LARGE"
 						 >> "OBJECT" >> !ch_p('(') >> LargeObjectLength >> ')')
 		    | ((str_p("BLOB")) >> !ch_p('(') >> LargeObjectLength
 		       >> ')');;;
 		  NumericType = ExactNumericType | ApproximateNumericType;;;
-		  ExactNumericType = ((str_p("NUMERIC")) >> !(ch_p('(') >> Precision
-							      >> !ch_p(',') >> Scale >> ')')) | ((str_p("DECIMAL"))
-												 >> !(ch_p('(') >> Precision >> !ch_p(',') >> Scale >> ')'))
+		  ExactNumericType = ((str_p("NUMERIC")) 
+				      >> !(ch_p('(') >> Precision
+					   >> !ch_p(',')
+					   >> Scale
+					   >> ')'
+					   )
+				      ) 
+		    | ((str_p("DECIMAL"))
+		       >> !(ch_p('(') >> Precision >> !ch_p(',') >> Scale >> ')'))
 		    | ((str_p("DEC")) >> !(ch_p('(') >> Precision >> !ch_p(',')
 					   >> Scale >> ')')) | str_p("SMALLINT") | str_p(
 											 "INTEGER") | str_p("INT") | str_p("BIGINT");;;
-		  ApproximateNumericType = ((str_p("FLOAT")) >> !ch_p('(')
-					    >> Precision >> ')') | str_p("REAL") | str_p("DOUBLE")
-		    >> "PRECISION";;;
+		  ApproximateNumericType = ((str_p("FLOAT"))
+					    >> !(ch_p('(')
+						 >> Precision 
+						 >> ')'
+						 ) )
+					    | str_p("REAL")
+					    | str_p("DOUBLE")
+					    >> "PRECISION";;;
 		  Length = uint_p;;;
-		  LargeObjectLength = lexeme_d[(uint_p >> !Multiplier
-						>> !CharLengthUnits) | (LargeObjectLengthToken
-									>> !CharLengthUnits)];;;
-		  CharLengthUnits = (str_p("CHARACTERS")) | str_p("CODE_UNITS")
+		  LargeObjectLength = lexeme_d[
+					       (
+						uint_p 
+						>> !Multiplier
+						>> !CharLengthUnits) 
+					       | (LargeObjectLengthToken
+						  >> !CharLengthUnits)
+					       ];;;
+		  CharLengthUnits = (str_p("CHARACTERS"))
+		    | str_p("CODE_UNITS")
 		    | str_p("OCTETS");;;
 		  Precision = uint_p;;;
 		  Scale = uint_p;;;
 		  BooleanType = (str_p("BOOLEAN"));;;
-		  DatetimeType = (str_p("DATE")) | ((str_p("TIME")) >> !ch_p('(')
-						    >> TimePrecision >> ')' >> !WithOrWithoutTimeZone)
-		    | ((str_p("TIMESTAMP")) >> !ch_p('(') >> TimestampPrecision
-		       >> ')' >> !WithOrWithoutTimeZone);;;
+		  DatetimeType = (str_p("DATE")) 
+		    | ((str_p("TIME")) 
+		       >> !(
+			    ch_p('(')
+			    >> TimePrecision
+			    >> ')' 
+			    >> !WithOrWithoutTimeZone
+			    )
+		       )
+		    | ((str_p("TIMESTAMP")) 
+		       >> !(ch_p('(') 
+			    >> TimestampPrecision
+			    >> ')'
+			    >> !WithOrWithoutTimeZone
+			    )
+		       );;;
 		  WithOrWithoutTimeZone = (str_p("WITH")) >> "TIME" >> "ZONE"
 		    | str_p("WITHOUT") >> "TIME" >> "ZONE";;;
 		  TimePrecision = TimeFractionalSecondsPrecision;;;
@@ -2302,11 +2332,20 @@ struct sql2003_parser: public grammar<sql2003_parser> {
 		    //			| Interfaces.(str_p("SQL"))  >> '.'  >> "INDICATOR_TYPE";;;
 		    ;;;
 
-		  AdaUnqualifiedTypeSpecification = (str_p("CHAR")) >> '(' >> '1'
-								    >> ".." >> Length >> ')' | str_p("SMALLINT") | str_p("INT")
-		    | str_p("BIGINT") | str_p("REAL") | str_p(
-							      "DOUBLE_PRECISION") | str_p("BOOLEAN") | str_p(
-													     "SQLSTATE_TYPE") | str_p("INDICATOR_TYPE");;;
+		  AdaUnqualifiedTypeSpecification = (str_p("CHAR")) 
+		    >> '('
+		    >> '1'
+		    >> ".." 
+		    >> Length
+		    >> ')' 
+		    | str_p("SMALLINT") 
+		    | str_p("INT")
+		    | str_p("BIGINT") 
+		    | str_p("REAL")
+		    | str_p(  "DOUBLE_PRECISION") 
+		    | str_p("BOOLEAN") 
+		    | str_p(    "SQLSTATE_TYPE") 
+		    | str_p("INDICATOR_TYPE");;;
 		  AdaDerivedTypeSpecification = AdaCLOBVariable
 		    | AdaCLOBLocatorVariable | AdaBLOBVariable
 		    | AdaBLOBLocatorVariable | AdaUserDefinedTypeVariable
@@ -2376,8 +2415,11 @@ struct sql2003_parser: public grammar<sql2003_parser> {
 					   >> *((ch_p(',') >> CHostIdentifier >> CArraySpecification
 						 >> !CInitialValue)));;;
 		  CCLOBVariable = ((str_p("SQL")) >> "TYPE" >> "IS" >> "CLOB" >> '('
-				   >> LargeObjectLength >> ')' >> !((str_p("CHARACTER"))
-								    >> "SET" >> !(str_p("IS")) >> CharacterSetSpecification)
+				   >> LargeObjectLength >> ')' 
+				   >> !((str_p("CHARACTER"))
+					>> "SET"
+					>> !(str_p("IS")) 
+					>> CharacterSetSpecification)
 				   >> CHostIdentifier >> !CInitialValue >> *((ch_p(',')
 									      >> CHostIdentifier >> !CInitialValue)));;;
 		  CNCLOBVariable = ((str_p("SQL")) >> "TYPE" >> "IS" >> "NCLOB"
@@ -2436,9 +2478,9 @@ struct sql2003_parser: public grammar<sql2003_parser> {
 					 | str_p( "PICTURE")
 					 >> !(str_p("IS")) 
 					 >> +("X"
-					      >> !ch_p('(')
+					      >> !(ch_p('(')
 					      >> Length 
-					      >> ')')) ;;;
+						   >> ')'))) ;;;
 		  COBOLNationalCharacterType = !(((str_p("CHARACTER"))
 						  >> "SET"
 						  >> !(str_p("IS"))
@@ -2451,13 +2493,21 @@ struct sql2003_parser: public grammar<sql2003_parser> {
 						      >> Length
 						      >> ')'));;;
 		  COBOLCLOBVariable = !(((str_p("USAGE")) >> !(str_p("IS"))) >> "SQL"
-					>> "TYPE" >> "IS" >> "CLOB" >> '(' >> LargeObjectLength
-					>> ')' >> !((str_p("CHARACTER")) >> "SET" >> !(str_p("IS"))
-						    >> CharacterSetSpecification));;;
+					>> "TYPE"
+					>> "IS"
+					>> "CLOB"
+					>> '('
+					>> LargeObjectLength
+					>> ')' 
+					>> !((str_p("CHARACTER")) >> "SET" >> !(str_p("IS"))
+					     >> CharacterSetSpecification));;;
 		  COBOLNCLOBVariable = !(((str_p("USAGE")) >> !(str_p("IS")))
 					 >> "SQL" >> "TYPE" >> "IS" >> "NCLOB" >> '('
-					 >> LargeObjectLength >> ')' >> !((str_p("CHARACTER"))
-									  >> "SET" >> !(str_p("IS")) >> CharacterSetSpecification));;;
+					 >> LargeObjectLength >> ')' 
+					 >> !((str_p("CHARACTER"))
+					      >> "SET" 
+					      >> !(str_p("IS")) 
+					      >> CharacterSetSpecification));;;
 		  COBOLBLOBVariable = !(((str_p("USAGE")) >> !(str_p("IS"))) >> "SQL"
 					>> "TYPE" >> "IS" >> "BLOB" >> '(' >> LargeObjectLength
 					>> ')');;;
