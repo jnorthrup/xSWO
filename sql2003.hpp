@@ -55,9 +55,9 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			UnicodeDelimitedIdentifier = lexeme_d[  "U&\""  >> +UnicodeDelimiterBody  >> '"'  ]>> !(str_p("ESCAPE")) >> lex_escape_ch_p		;;;
 			UnicodeDelimiterBody = +UnicodeIdentifierPart;;;
 			UnicodeIdentifierPart =lexeme_d[ DelimitedIdentifier  
-			| UnicodeEscapeValue];;;
+											| UnicodeEscapeValue];;;
 			UnicodeEscapeValue = lexeme_d[ Unicode4DigitEscapeValue  
-			| Unicode6DigitEscapeValue];;;
+										  | Unicode6DigitEscapeValue];;;
 			Unicode4DigitEscapeValue = lex_escape_ch_p		>> xdigit_p >> xdigit_p >> xdigit_p >> xdigit_p;;;
 			Unicode6DigitEscapeValue = lex_escape_ch_p		 >> '+'  >> xdigit_p >> xdigit_p >> xdigit_p >> xdigit_p >> xdigit_p >> xdigit_p;;;
  			NondoublequoteCharacter = ~(ch_p('"'));;;
@@ -438,7 +438,7 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			| str_p("ELEMENT")   
 			| str_p("ELSE")   
 			| str_p("END")   
-			|  "END-EXEC"
+			|  "ENDEXEC"
 			| str_p("ESCAPE")   
 			| str_p("EXCEPT")   
 			| str_p("EXEC")   
@@ -624,7 +624,7 @@ struct sql2003_parser : public grammar<sql2003_parser>
 							 >> ch_p('\'') 
 							 >> *UnicodeRepresentation 
 							 >> ch_p('\'')))
-			  ]
+					   ]
 			  >> !(str_p("ESCAPE")) >> lex_escape_ch_p) ;;;
 			UnicodeRepresentation = CharacterRepresentation  | UnicodeEscapeValue;;;
 			BinaryStringLiteral = lexeme_d["X" >> ch_p('\'') >> *(xdigit_p >> xdigit_p) >> ch_p('\'') >> *((Separator >> ch_p('\'') >> *(xdigit_p >> xdigit_p) >> ch_p('\'')))] >> !str_p("ESCAPE")>> lex_escape_ch_p		;;;
@@ -658,13 +658,13 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			UnquotedIntervalString = !(sign_p >> YearMonthLiteral  
 									   | DayTimeLiteral);;;
 			YearMonthLiteral = lexeme_d[ YearsValue  
-			| !(YearsValue  >> '-'  >> MonthsValue)];;;
+										| !(YearsValue  >> '-'  >> MonthsValue)];;;
 			DayTimeLiteral = DayTimeInterval  
 			| TimeInterval;;;
 			DayTimeInterval = lexeme_d[(DaysValue >> !(space_p >> HoursValue >> !(ch_p(':') >> MinutesValue >> !ch_p(':') >> SecondsValue)))];;;
 			TimeInterval = lexeme_d[(HoursValue >> !(ch_p(':') >> MinutesValue >> !ch_p(':') >> SecondsValue))  
-			| (MinutesValue >> !ch_p(':') >> SecondsValue)  
-			| SecondsValue];;;
+									| (MinutesValue >> !ch_p(':') >> SecondsValue)  
+									| SecondsValue];;;
 			YearsValue = DatetimeValue;;;
 			MonthsValue = DatetimeValue;;;
 			DaysValue = DatetimeValue;;;
@@ -784,8 +784,8 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			| str_p("REAL")   
 			| str_p("DOUBLE")   >> "PRECISION" ;;;
 			Length = uint_p;;;
-								   LargeObjectLength = lexeme_d[(uint_p >> !Multiplier >> !CharLengthUnits)  
-			| (LargeObjectLengthToken >> !CharLengthUnits)];;;
+			LargeObjectLength = lexeme_d[(uint_p >> !Multiplier >> !CharLengthUnits)  
+										 | (LargeObjectLengthToken >> !CharLengthUnits)];;;
 			CharLengthUnits =(str_p("CHARACTERS"))  
 			| str_p("CODE_UNITS")   
 			| str_p("OCTETS") ;;;
@@ -1400,11 +1400,11 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			CharacterPattern = CharacterValueExpression;;;
 			lex_escape_ch_p		= CharacterValueExpression;;;
 			OctetLikePredicate = RowValuePredicand >> OctetLikePredicatePart2;;;
-											OctetLikePredicatePart2 = !str_p("NOT")  >> "LIKE"  >> OctetPattern ;;//>> !(str_p("ESCAPE")) >> EscapeOctet);;;
+			OctetLikePredicatePart2 = !str_p("NOT")  >> "LIKE"  >> OctetPattern ;;//>> !(str_p("ESCAPE")) >> EscapeOctet);;;
 			OctetPattern = BlobValueExpression;;;
 			EscapeOctet = BlobValueExpression;;;
 			SimilarPredicate = RowValuePredicand >> SimilarPredicatePart2;;;
-																		SimilarPredicatePart2 = !(str_p("NOT")  >> "SIMILAR"   >> "TO"  >> SimilarPattern ;;;//>> !(str_p("ESCAPE")) >> lex_escape_ch_p		;;;
+            SimilarPredicatePart2 = !(str_p("NOT")  >> "SIMILAR"   >> "TO"  >> SimilarPattern) ;;;//>> !(str_p("ESCAPE")) >> lex_escape_ch_p		;;;
 			SimilarPattern = CharacterValueExpression;;;
 			RegularExpression = RegularTerm  
 			| RegularExpression  >> '|'  >> RegularTerm;;;
@@ -1518,12 +1518,12 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			UserDefinedCharacterSetName = CharacterSetName;;;
 			SpecificRoutineDesignator =(str_p("SPECIFIC")) >> RoutineType >> SpecificName  
 			| (RoutineType >> MemberName >> !(str_p("FOR")) >> SchemaResolvedUserDefinedTypeName);;;
-			RoutineType =(str_p("ROUTINE"))  
+			RoutineType =			str_p("ROUTINE")
 			| str_p("FUNCTION")   
 			| str_p("PROCEDURE")   
-			| !((str_p("INSTANCE"))  
+			| !((str_p("INSTANCE"))
 				| str_p("STATIC")   
-				| "CONSTRUCTOR"  >> "METHOD" );;;
+				| str_p("CONSTRUCTOR" ))>> "METHOD"  ;;;
 			MemberName = (MemberNameAlternatives >> !DataTypeList);;;
 			MemberNameAlternatives = SchemaQualifiedRoutineName  
 			| MethodName;;;
@@ -1665,12 +1665,12 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			| CheckConstraintDefinition;;;
 			ReferenceScopeCheck = ((str_p("REFERENCES"))  >> "ARE"  >> !(str_p("NOT"))  >> "CHECKED"  >> !(str_p("ON"))  >> "DELETE"  >> ReferenceScopeCheckAction);;;
 			ReferenceScopeCheckAction = ReferentialAction;;;
-			IdentityColumnSpecification = ("GENERATED"  >> "ALWAYS"   
+			IdentityColumnSpecification = (str_p("GENERATED"  )>> "ALWAYS"   
 										   | str_p("BY")   >> "DEFAULT"   >> "AS"   >> "IDENTITY"  >> !ch_p('(') >> CommonSequenceGeneratorOptions  >> ')' );;;
 			GenerationClause = GenerationRule  >> "AS"  >> GenerationExpression;;;
-			GenerationRule = "GENERATED"  >> "ALWAYS" ;;;
+			GenerationRule = str_p("GENERATED"  )>> "ALWAYS" ;;;
 			GenerationExpression = ch_p('(') >> ValueExpression  >> ')' ;;;
-			DefaultClause =(str_p("DEFAULT")) >> DefaultOption;;;
+			DefaultClause =str_p("DEFAULT") >> DefaultOption;;;
 			DefaultOption = Literal  
 			| DatetimeValueFunction  
 			| str_p("USER")   
@@ -1684,7 +1684,9 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			TableConstraint = UniqueConstraintDefinition  
 			| ReferentialConstraintDefinition  
 			| CheckConstraintDefinition;;;
-			UniqueConstraintDefinition = UniqueSpecification  >> '('  >> UniqueColumnList  >> ')'   
+			UniqueConstraintDefinition = UniqueSpecification  
+			>> '(' 
+			>> UniqueColumnList  >> ')'   
 			| ((str_p("UNIQUE"))  >> "VALUE" );;;
 			UniqueSpecification =(str_p("UNIQUE"))  
 			| str_p("PRIMARY")   >> "KEY" ;;;
@@ -1704,8 +1706,8 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			ReferentialAction =(str_p("CASCADE"))  
 			| str_p("SET")   >> "NULL"   
 			| str_p("SET")   >> "DEFAULT"   
-			| "RESTRICT"
-																								  
+			| str_p("RESTRICT")
+			
 			| str_p("NO")   >> "ACTION" ;;;
 			CheckConstraintDefinition =(str_p("CHECK"))  >> '('  >> SearchCondition  >> ')' ;;;
 			AlterTableStatement =(str_p("ALTER"))  >> "TABLE"  >> TableName >> AlterTableAction;;;
@@ -1837,9 +1839,10 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			| OverridingMethodSpecification;;;
 			OriginalMethodSpecification = (PartialMethodSpecification >> !(str_p("SELF"))  >> "AS"   >> "RESULT"  >> !(str_p("SELF"))  >> "AS"   >> "LOCATOR"  >> !MethodCharacteristics);;;
 			OverridingMethodSpecification =(str_p("OVERRIDING")) >> PartialMethodSpecification;;;
-			PartialMethodSpecification = !((str_p("INSTANCE"))  
-										   | str_p("STATIC")   
-										   | "CONSTRUCTOR"  >> "METHOD"  >> MethodName >> SQLParameterDeclarationList >> ReturnsClause >> !(str_p("SPECIFIC")) >> SpecificMethodName)));;;
+			
+			PartialMethodSpecification =nothing_p ;;;// !((str_p("INSTANCE"))  
+			//										   | str_p("STATIC")   
+			//										   |str_p( "CONSTRUCTOR")  >> "METHOD"  >> MethodName >> SQLParameterDeclarationList >> ReturnsClause >> !(str_p("SPECIFIC")) >> SpecificMethodName)));;;
 			SpecificMethodName = !(SchemaName  >> '.'  >> QualifiedIdentifier);;;
 			MethodCharacteristics = +MethodCharacteristic;;;
 			MethodCharacteristic = LanguageClause  
@@ -1862,7 +1865,7 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			DropMethodSpecification =(str_p("DROP")) >> SpecificMethodSpecificationDesignator >> "RESTRICT";;;
 			SpecificMethodSpecificationDesignator = !((str_p("INSTANCE"))  
 													  | str_p("STATIC")   
-													  | "CONSTRUCTOR"  >> "METHOD"  >> MethodName >> DataTypeList);;;
+													  | str_p("CONSTRUCTOR")  ) >> "METHOD"  >> MethodName >> DataTypeList ;;;
 			DropDataTypeStatement =(str_p("DROP"))  >> "TYPE"  >> SchemaResolvedUserDefinedTypeName >> DropBehavior;;;
 			SQLInvokedRoutine = SchemaRoutine;;;
 			SchemaRoutine = SchemaProcedure  
@@ -1883,7 +1886,7 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			MethodSpecificationDesignator =(str_p("SPECIFIC"))  >> "METHOD"  >> SpecificMethodName  
 			| !((str_p("INSTANCE"))  
 				| str_p("STATIC")   
-				| "CONSTRUCTOR"  >> "METHOD"  >> MethodName >> SQLParameterDeclarationList >> !ReturnsClause  >> "FOR"  >> SchemaResolvedUserDefinedTypeName);;;
+				|str_p("CONSTRUCTOR")  >> "METHOD"  >> MethodName >> SQLParameterDeclarationList >> !ReturnsClause  >> "FOR"  >> SchemaResolvedUserDefinedTypeName);;;
 			RoutineCharacteristics = *(RoutineCharacteristic);;;
 			RoutineCharacteristic = LanguageClause  
 			| ParameterStyleClause  
@@ -2187,7 +2190,7 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			SystemDescriptorStatement = AllocateDescriptorStatement  
 			| DeallocateDescriptorStatement  
 			| SetDescriptorStatement  
-																								  | GetDescriptorStatement ;;;//>> Table >> 16--Data >> type >> correspondences >> for >> C;;;
+			| GetDescriptorStatement ;;;//>> Table >> 16--Data >> type >> correspondences >> for >> C;;;
 			DeclareCursor = ((str_p("DECLARE")) >> CursorName >> !CursorSensitivity >> !CursorScrollability  >> "CURSOR"  >> !CursorHoldability >> !CursorReturnability  >> "FOR"  >> CursorSpecification);;;
 			CursorSensitivity =(str_p("SENSITIVE"))  
 			| str_p("INSENSITIVE")   
@@ -2211,290 +2214,290 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			| ((str_p("ABSOLUTE"))  
 			   | str_p("RELATIVE")  >> SimpleValueSpecification);;;
 			FetchTargetList =  TargetSpecification%ch_p(',' ) ;;;
-							   
-							   CloseStatement =(str_p("CLOSE")) >> CursorName;;;
-							   SelectStatementSingleRow = ((str_p("SELECT")) >> !SetQuantifier >> SelectList  >> "INTO"  >> SelectTargetList >> TableExpression);;;
-							   SelectTargetList = ((TargetSpecification%ch_p(',')));;;
-							   DeleteStatementPositioned =(str_p("DELETE"))  >> "FROM"  >> TargetTable  >> "WHERE"   >> "CURRENT"   >> "OF"  >> CursorName;;;
-							   TargetTable = TableName  
-							   | str_p("ONLY")   >> '('  >> TableName  >> ')' ;;;
-							   DeleteStatementSearched = ((str_p("DELETE"))  >> "FROM"  >> TargetTable >> !(str_p("WHERE")) >> SearchCondition);;;
-							   InsertStatement =(str_p("INSERT"))  >> "INTO"  >> InsertionTarget >> InsertColumnsAndSource;;;
-							   InsertionTarget = TableName;;;
-							   InsertColumnsAndSource = FromSubquery  
-							   | FromConstructor  
-							   | FromDefault;;;
-							   FromSubquery = !(ch_p('(') >> InsertColumnList  >> ')'  >> !OverrideClause >> QueryExpression);;;
-							   FromConstructor = !(ch_p('(') >> InsertColumnList  >> ')'  >> !OverrideClause >> ContextuallyTypedTableValueConstructor);;;
-							   OverrideClause =(str_p("OVERRIDING"))  >> "USER"   >> "VALUE"   
-							   | str_p("OVERRIDING")   >> "SYSTEM"   >> "VALUE" ;;;
-							   FromDefault =(str_p("DEFAULT"))  >> "VALUES" ;;;
-							   InsertColumnList = ColumnNameList;;;
-							   MergeStatement = ((str_p("MERGE"))  >> "INTO"  >> TargetTable >> !!((str_p("AS")) >> MergeCorrelationName)  >> "USING"  >> TableReference  >> "ON"  >> SearchCondition >> MergeOperationSpecification);;;
-							   MergeCorrelationName = CorrelationName;;;
-							   MergeOperationSpecification = +MergeWhenClause;;;
-							   MergeWhenClause = MergeWhenMatchedClause  
-							   | MergeWhenNotMatchedClause;;;
-							   MergeWhenMatchedClause =(str_p("WHEN"))  >> "MATCHED"   >> "THEN"  >> MergeUpdateSpecification;;;
-							   MergeWhenNotMatchedClause =(str_p("WHEN"))  >> "NOT"   >> "MATCHED"   >> "THEN"  >> MergeInsertSpecification;;;
-							   MergeUpdateSpecification =(str_p("UPDATE"))  >> "SET"  >> SetClauseList;;;
-							   MergeInsertSpecification = ((str_p("INSERT")) >> !ch_p('(') >> InsertColumnList  >> ')'  >> !OverrideClause  >> "VALUES"  >> MergeInsertValueList);;;
-							   MergeInsertValueList = (ch_p('(') >> (MergeInsertValueElement%ch_p(','))  >> ')' );;;
-							   MergeInsertValueElement = ValueExpression  
-							   | ContextuallyTypedValueSpecification;;;
-							   UpdateStatementPositioned =(str_p("UPDATE")) >> TargetTable  >> "SET"  >> SetClauseList  >> "WHERE"   >> "CURRENT"   >> "OF"  >> CursorName;;;
-							   UpdateStatementSearched = ((str_p("UPDATE")) >> TargetTable  >> "SET"  >> SetClauseList >> !(str_p("WHERE")) >> SearchCondition);;;
-							   SetClauseList = ((SetClause%ch_p(',')));;;
-							   SetClause = MultipleColumnAssignment  
-							   | SetTarget  >> '='  >> UpdateSource;;;
-							   SetTarget = UpdateTarget  			| MutatedSetClause;;;
-							   MultipleColumnAssignment = SetTargetList  >> '='  >> AssignedRow;;;
-							   SetTargetList = (ch_p('(') >> (SetTarget%ch_p(','))  >> ')' );;;
-							   AssignedRow = ContextuallyTypedRowValueExpression;;;
-							   UpdateTarget = ObjectColumn  
-							   | ObjectColumn >> ch_p('[') >> SimpleValueSpecification >> ch_p(']');;;
-							   ObjectColumn = ColumnName;;;
-							   MutatedSetClause = MutatedTarget  >> '.'  >> MethodName;;;
-							   MutatedTarget = ObjectColumn  
-							   | MutatedSetClause;;;
-							   UpdateSource = ValueExpression  
-							   | ContextuallyTypedValueSpecification;;;
-							   TemporaryTableDeclaration = ((str_p("DECLARE"))  >> "LOCAL"   >> "TEMPORARY"   >> "TABLE"  >> TableName >> TableElementList >> !(str_p("ON"))  >> "COMMIT"  >> TableCommitAction  >> "ROWS" );;;
-							   FreeLocatorStatement = ((str_p("FREE"))  >> "LOCATOR"  >> (LocatorReference%ch_p(',')));;;
-							   LocatorReference = HostParameterName  
-							   | EmbeddedVariableName;;;
-							   HoldLocatorStatement = ((str_p("HOLD"))  >> "LOCATOR"  >> (LocatorReference%ch_p(',')));;;
-							   CallStatement =(str_p("CALL")) >> RoutineInvocation;;;
-							   ReturnStatement =(str_p("RETURN")) >> ReturnValue;;;
-							   ReturnValue = ValueExpression  
-							   | str_p("NULL") ;;;
-							   StartTransactionStatement = ((str_p("START"))  >> "TRANSACTION"  >> !((TransactionMode%ch_p(','))));;;
-							   TransactionMode = IsolationLevel  
-							   | TransactionAccessMode  
-							   | DiagnosticsSize;;;
-							   TransactionAccessMode =(str_p("READ"))  >> "ONLY"   
-							   | str_p("READ")   >> "WRITE" ;;;
-							   IsolationLevel =(str_p("ISOLATION"))  >> "LEVEL"  >> LevelOfIsolation;;;
-							   LevelOfIsolation =(str_p("READ"))  >> "UNCOMMITTED"   
-							   | str_p("READ")   >> "COMMITTED"   
-							   | str_p("REPEATABLE")   >> "READ"   
-							   | str_p("SERIALIZABLE") ;;;
-							   DiagnosticsSize =(str_p("DIAGNOSTICS"))  >> "SIZE"  >> NumberOfConditions;;;
-							   NumberOfConditions = SimpleValueSpecification;;;
-							   SetTransactionStatement = ((str_p("SET")) >> !(str_p("LOCAL")) >> TransactionCharacteristics);;;
-							   TransactionCharacteristics = ((str_p("TRANSACTION")) >> (TransactionMode%ch_p(',')));;;
-							   SetConstraintsModeStatement = ((str_p("SET"))  >> "CONSTRAINTS"  >> ConstraintNameList  >> "DEFERRED"   
-															  | str_p("IMMEDIATE") );;;
-							   ConstraintNameList =(str_p("ALL"))  
-							   | ((ConstraintName%ch_p(',')));;;
-							   SavepointStatement =(str_p("SAVEPOINT")) >> SavepointSpecifier;;;
-							   SavepointSpecifier = SavepointName;;;
-							   ReleaseSavepointStatement =(str_p("RELEASE"))  >> "SAVEPOINT"  >> SavepointSpecifier;;;
-							   CommitStatement = ((str_p("COMMIT")) >> !(str_p("WORK")) >> !((str_p("AND")) >> !(str_p("NO"))  >> "CHAIN" ));;;
-							   RollbackStatement = ((str_p("ROLLBACK")) >> !(str_p("WORK")) >> !((str_p("AND")) >> !(str_p("NO"))  >> "CHAIN" ) >> !SavepointClause);;;
-							   SavepointClause =(str_p("TO"))  >> "SAVEPOINT"  >> SavepointSpecifier;;;
-							   ConnectStatement =(str_p("CONNECT"))  >> "TO"  >> ConnectionTarget;;;
-							   ConnectionTarget = (SQLServerName >> !(str_p("AS")) >> ConnectionName >> !(str_p("USER")) >> ConnectionUserName)  
-							   | str_p("DEFAULT") ;;;
-							   SetConnectionStatement =(str_p("SET")) >> "CONNECTION" >> ConnectionObject;;;
-							   ConnectionObject =(str_p("DEFAULT"))  
-							   | ConnectionName;;;
-							   DisconnectStatement =(str_p("DISCONNECT")) >> DisconnectObject;;;
-							   DisconnectObject = ConnectionObject  
-							   | str_p("ALL")   
-							   | str_p("CURRENT") ;;;
-							   SetSessionCharacteristicsStatement =(str_p("SET"))  >> "SESSION"   >> "CHARACTERISTICS"   >> "AS"  >> SessionCharacteristicList;;;
-							   SessionCharacteristicList = ((SessionCharacteristic%ch_p(',')));;;
-							   SessionCharacteristic = TransactionCharacteristics;;;
-							   SetSessionUserIdentifierStatement =(str_p("SET"))  >> "SESSION"   >> "AUTHORIZATION"  >> ValueSpecification;;;
-							   SetRoleStatement =(str_p("SET"))  >> "ROLE"  >> RoleSpecification;;;
-							   RoleSpecification = ValueSpecification  
-							   | str_p("NONE") ;;;
-							   SetLocalTimeZoneStatement =(str_p("SET"))  >> "TIME"   >> "ZONE"  >> SetTimeZoneValue;;;
-							   SetTimeZoneValue = IntervalValueExpression  
-							   | str_p("LOCAL") ;;;
-							   SetCatalogStatement =(str_p("SET")) >> CatalogNameCharacteristic;;;
-							   CatalogNameCharacteristic =(str_p("CATALOG")) >> ValueSpecification;;;
-							   SetSchemaStatement =(str_p("SET")) >> SchemaNameCharacteristic;;;
-							   SchemaNameCharacteristic =(str_p("SCHEMA")) >> ValueSpecification;;;
-							   SetNamesStatement =(str_p("SET")) >> CharacterSetNameCharacteristic;;;
-							   CharacterSetNameCharacteristic =(str_p("NAMES")) >> ValueSpecification;;;
-							   SetPathStatement =(str_p("SET")) >> SQLPathCharacteristic;;;
-							   SQLPathCharacteristic =(str_p("PATH")) >> ValueSpecification;;;
-							   SetTransformGroupStatement =(str_p("SET")) >> TransformGroupCharacteristic;;;
-							   TransformGroupCharacteristic =(str_p("DEFAULT"))  >> "TRANSFORM"   >> "GROUP"  >> ValueSpecification  
-							   | str_p("TRANSFORM")   >> "GROUP"   >> "FOR"   >> "TYPE"  >> PathResolvedUserDefinedTypeName >> ValueSpecification;;;
-							   SetSessionCollationStatement = ((str_p("SET"))  >> "COLLATION"  >> CollationSpecification >> !(str_p("FOR")) >> CharacterSetSpecificationList)  
-							   | ((str_p("SET"))  >> "NO"   >> "COLLATION"  >> !(str_p("FOR")) >> CharacterSetSpecificationList);;;
-							   CharacterSetSpecificationList = (CharacterSetSpecification %ch_p(','));;;
-							   CollationSpecification = ValueSpecification;;;
-							   AllocateDescriptorStatement = ((str_p("ALLOCATE")) >> !(str_p("SQL"))  >> "DESCRIPTOR"  >> DescriptorName >> !(str_p("WITH"))  >> "MAX"  >> Occurrences);;;
-							   Occurrences = SimpleValueSpecification;;;
-							   DeallocateDescriptorStatement = ((str_p("DEALLOCATE")) >> !(str_p("SQL"))  >> "DESCRIPTOR"  >> DescriptorName);;;
-							   GetDescriptorStatement = ((str_p("GET")) >> !(str_p("SQL"))  >> "DESCRIPTOR"  >> DescriptorName >> GetDescriptorInformation);;;
-							   GetDescriptorInformation = ((GetHeaderInformation%ch_p(',')))  
-							   | ((str_p("VALUE")) >> ItemNumber >> (GetItemInformation%ch_p(',')));;;
-							   GetHeaderInformation = SimpleTargetSpecification1  >> '='  >> HeaderItemName;;;
-							   HeaderItemName =(str_p("COUNT"))  
-							   | str_p("KEY_TYPE")   
-							   | str_p("DYNAMIC_FUNCTION")   
-							   | str_p("DYNAMIC_FUNCTION_CODE")   
-							   | str_p("TOP_LEVEL_COUNT") ;;;
-							   GetItemInformation = SimpleTargetSpecification2  >> '='  >> DescriptorItemName;;;
-							   ItemNumber = SimpleValueSpecification;;;
-							   SimpleTargetSpecification1 = SimpleTargetSpecification;;;
-							   SimpleTargetSpecification2 = SimpleTargetSpecification;;;
-							   DescriptorItemName =(str_p("CARDINALITY"))  
-							   | str_p("CHARACTER_SET_CATALOG")   
-							   | str_p("CHARACTER_SET_NAME")   
-							   | str_p("CHARACTER_SET_SCHEMA")   
-							   | str_p("COLLATION_CATALOG")   
-							   | str_p("COLLATION_NAME")   
-							   | str_p("COLLATION_SCHEMA")   
-							   | str_p("DATA")   
-							   | str_p("DATETIME_INTERVAL_CODE")   
-							   | str_p("DATETIME_INTERVAL_PRECISION")   
-							   | str_p("DEGREE")   
-							   | str_p("INDICATOR")   
-							   | str_p("KEY_MEMBER")   
-							   | str_p("LENGTH")   
-							   | str_p("LEVEL")   
-							   | str_p("NAME")   
-							   | str_p("NULLABLE")   
-							   | str_p("OCTET_LENGTH")   
-							   | str_p("PARAMETER_MODE")   
-							   | str_p("PARAMETER_ORDINAL_POSITION")   
-							   | str_p("PARAMETER_SPECIFIC_CATALOG")   
-							   | str_p("PARAMETER_SPECIFIC_NAME")   
-							   | str_p("PARAMETER_SPECIFIC_SCHEMA")   
-							   | str_p("PRECISION")   
-							   | str_p("RETURNED_CARDINALITY")   
-							   | str_p("RETURNED_LENGTH")   
-							   | str_p("RETURNED_OCTET_LENGTH")   
-							   | str_p("SCALE")   
-							   | str_p("SCOPE_CATALOG")   
-							   | str_p("SCOPE_NAME")   
-							   | str_p("SCOPE_SCHEMA")   
-							   | str_p("TYPE")   
-							   | str_p("UNNAMED")   
-							   | str_p("USER_DEFINED_TYPE_CATALOG")   
-							   | str_p("USER_DEFINED_TYPE_NAME")   
-							   | str_p("USER_DEFINED_TYPE_SCHEMA")   
-							   | str_p("USER_DEFINED_TYPE_CODE") ;;;
-							   SetDescriptorStatement = ((str_p("SET")) >> !(str_p("SQL"))  >> "DESCRIPTOR"  >> DescriptorName >> SetDescriptorInformation);;;
-							   SetDescriptorInformation = ((SetHeaderInformation%ch_p(',')))  
-							   | ((str_p("VALUE")) >> ItemNumber >> (SetItemInformation%ch_p(',')));;;
-							   SetHeaderInformation = HeaderItemName  >> '='  >> SimpleValueSpecification1;;;
-							   SetItemInformation = DescriptorItemName  >> '='  >> SimpleValueSpecification2;;;
-							   SimpleValueSpecification1 = SimpleValueSpecification;;;
-							   SimpleValueSpecification2 = SimpleValueSpecification;;;
-							   ItemNumber = SimpleValueSpecification;;;
-							   PrepareStatement = ((str_p("PREPARE")) >> SQLStatementName >> !AttributesSpecification  >> "FROM"  >> SQLStatementVariable);;;
-							   AttributesSpecification =(str_p("ATTRIBUTES")) >> AttributesVariable;;;
-							   AttributesVariable = SimpleValueSpecification;;;
-							   SQLStatementVariable = SimpleValueSpecification;;;
-							   PreparableStatement = PreparableSQLDataStatement  
-							   | PreparableSQLSchemaStatement  
-							   | PreparableSQLTransactionStatement  
-							   | PreparableSQLControlStatement  
-							   | PreparableSQLSessionStatement  
-							   | PreparableImplementationDefinedStatement;;;
-							   PreparableSQLDataStatement = DeleteStatementSearched  
-							   | DynamicSingleRowSelectStatement  
-							   | InsertStatement  
-							   | DynamicSelectStatement  
-							   | UpdateStatementSearched  
-							   | MergeStatement  
-							   | PreparableDynamicDeleteStatementPositioned  
-							   | PreparableDynamicUpdateStatementPositioned;;;
-							   PreparableSQLSchemaStatement = SQLSchemaStatement;;;
-							   PreparableSQLTransactionStatement = SQLTransactionStatement;;;
-							   PreparableSQLControlStatement = SQLControlStatement;;;
-							   PreparableSQLSessionStatement = SQLSessionStatement;;;
-							   DynamicSelectStatement = CursorSpecification;;;
-							   PreparableImplementationDefinedStatement = nothing_p;;;
-							   CursorAttributes = +CursorAttribute;;;
-							   CursorAttribute = CursorSensitivity  
-							   | CursorScrollability  
-							   | CursorHoldability  
-							   | CursorReturnability;;;
-							   DeallocatePreparedStatement =(str_p("DEALLOCATE"))  >> "PREPARE"  >> SQLStatementName;;;
-							   DescribeStatement = DescribeInputStatement  
-							   | DescribeOutputStatement;;;
-							   DescribeInputStatement = ((str_p("DESCRIBE"))  >> "INPUT"  >> SQLStatementName >> UsingDescriptor >> !NestingOption);;;
-							   DescribeOutputStatement = ((str_p("DESCRIBE")) >> !(str_p("OUTPUT")) >> DescribedObject >> UsingDescriptor >> !NestingOption);;;
-							   NestingOption =(str_p("WITH"))  >> "NESTING"   
-							   | str_p("WITHOUT")   >> "NESTING" ;;;
-							   UsingDescriptor = ((str_p("USING")) >> !(str_p("SQL"))  >> "DESCRIPTOR"  >> DescriptorName);;;
-							   DescribedObject = SQLStatementName  
-							   | str_p("CURSOR")  >> ExtendedCursorName  >> "STRUCTURE" ;;;
-							   InputUsingClause = UsingArguments  
-							   | UsingInputDescriptor;;;
-							   UsingArguments = ((str_p("USING")) >> (UsingArgument%ch_p(',')));;;
-							   UsingArgument = GeneralValueSpecification;;;
-							   UsingInputDescriptor = UsingDescriptor;;;
-							   OutputUsingClause = IntoArguments  
-							   | IntoDescriptor;;;
-							   IntoArguments = ((str_p("INTO")) >> (IntoArgument%ch_p(',')));;;
-							   IntoArgument = TargetSpecification;;;
-							   IntoDescriptor = ((str_p("INTO")) >> !(str_p("SQL"))  >> "DESCRIPTOR"  >> DescriptorName);;;
-							   ExecuteStatement = ((str_p("EXECUTE")) >> SQLStatementName >> !ResultUsingClause >> !ParameterUsingClause);;;
-							   ResultUsingClause = OutputUsingClause;;;
-							   ParameterUsingClause = InputUsingClause;;;
-							   ExecuteImmediateStatement =(str_p("EXECUTE"))  >> "IMMEDIATE"  >> SQLStatementVariable;;;
-							   DynamicDeclareCursor = ((str_p("DECLARE")) >> CursorName >> !CursorSensitivity >> !CursorScrollability  >> "CURSOR"  >> !CursorHoldability >> !CursorReturnability  >> "FOR"  >> StatementName);;;
-							   AllocateCursorStatement =(str_p("ALLOCATE")) >> ExtendedCursorName >> CursorIntent;;;
-							   CursorIntent = StatementCursor  
-							   | ResultSetCursor;;;
-							   StatementCursor = !(CursorSensitivity >> !CursorScrollability  >> "CURSOR"  >> !CursorHoldability >> !CursorReturnability  >> "FOR"  >> ExtendedStatementName);;;
-							   ResultSetCursor =(str_p("FOR"))  >> "PROCEDURE"  >> SpecificRoutineDesignator;;;
-							   DynamicOpenStatement = ((str_p("OPEN")) >> DynamicCursorName >> !InputUsingClause);;;
-							   DynamicFetchStatement = ((str_p("FETCH")) >> !!(FetchOrientation  >> "FROM" ) >> DynamicCursorName >> OutputUsingClause);;;
-							   DynamicSingleRowSelectStatement = QuerySpecification;;;
-							   DynamicCloseStatement =(str_p("CLOSE")) >> DynamicCursorName;;;
-							   DynamicDeleteStatementPositioned =(str_p("DELETE"))  >> "FROM"  >> TargetTable  >> "WHERE"   >> "CURRENT"   >> "OF"  >> DynamicCursorName;;;
-							   DynamicUpdateStatementPositioned =(str_p("UPDATE")) >> TargetTable  >> "SET"  >> SetClauseList  >> "WHERE"   >> "CURRENT"   >> "OF"  >> DynamicCursorName;;;
-							   PreparableDynamicDeleteStatementPositioned = ((str_p("DELETE")) >> !(str_p("FROM")) >> TargetTable  >> "WHERE"   >> "CURRENT"   >> "OF"  >> !ScopeOption >> CursorName);;;
-							   PreparableDynamicUpdateStatementPositioned = ((str_p("UPDATE")) >> !TargetTable  >> "SET"  >> SetClauseList  >> "WHERE"   >> "CURRENT"   >> "OF"  >> !ScopeOption >> CursorName);;;
-							   EmbeddedSQLHostProgram = EmbeddedSQLAdaProgram  
-							   | EmbeddedSQLCProgram  
-							   | EmbeddedSQLCOBOLProgram  
-							   | EmbeddedSQLFortranProgram  
-							   | EmbeddedSQLMUMPSProgram  
-							   | EmbeddedSQLPascalProgram  
-							   | EmbeddedSQLPLIProgram;;;
-							   EmbeddedSQLStatement = (SQLPrefix >> StatementOrDeclaration >> !SQLTerminator);;;
-							   StatementOrDeclaration = DeclareCursor  
-							   | DynamicDeclareCursor  
-							   | TemporaryTableDeclaration  
-							   | EmbeddedAuthorizationDeclaration  
-							   | EmbeddedPathSpecification  
-							   | EmbeddedTransformGroupSpecification  
-							   | EmbeddedCollationSpecification  
-							   | EmbeddedExceptionDeclaration  
-							  // | HandlerDeclaration  //
-							   | SQLProcedureStatement;;;
-							   SQLPrefix =str_p("EXEC")  >> "SQL"   
-							   | ch_p('&' ) >> "SQL"   >> '(' ;;;
-							   SQLTerminator = str_p("ENDEXEC"  )
-							   | ';'   
-							   | ')' ;;;
-							   EmbeddedAuthorizationDeclaration =(str_p("DECLARE")) >> EmbeddedAuthorizationClause;;;
-							   EmbeddedAuthorizationClause =(str_p("SCHEMA")) >> SchemaName  
-							   | ((str_p("AUTHORIZATION")) >> EmbeddedAuthorizationIdentifier >> !((str_p("FOR"))  >> "STATIC"   >> "ONLY"   
-																								   | str_p("AND")   >> "DYNAMIC" ))  
-							   | ((str_p("SCHEMA")) >> SchemaName  >> "AUTHORIZATION"  >> EmbeddedAuthorizationIdentifier >> !((str_p("FOR"))  >> "STATIC"   >> "ONLY"   
-																															   | str_p("AND")   >> "DYNAMIC" ));;;
-							   EmbeddedAuthorizationIdentifier = ModuleAuthorizationIdentifier;;;
-							   EmbeddedPathSpecification = PathSpecification;;;
-							   EmbeddedTransformGroupSpecification = TransformGroupSpecification;;;
-							   EmbeddedCollationSpecification = ModuleCollations;;;
-							   EmbeddedSQLDeclareSection = (EmbeddedSQLBeginDeclare >> !EmbeddedCharacterSetDeclaration >> *HostVariableDefinition >> EmbeddedSQLEndDeclare)  
-							   | EmbeddedSQLMUMPSDeclare;;;
-							   EmbeddedCharacterSetDeclaration =(str_p("SQL"))  >> "NAMES"   >> "ARE"  >> CharacterSetSpecification;;;
-							   EmbeddedSQLBeginDeclare = (SQLPrefix  >> "BEGIN"   >> "DECLARE"   >> "SECTION"  >> !SQLTerminator);;;
-							   EmbeddedSQLEndDeclare = (SQLPrefix  >> "END"   >> "DECLARE"   >> "SECTION"  >> !SQLTerminator);;;
-							   EmbeddedSQLMUMPSDeclare = (SQLPrefix  >> "BEGIN"   >> "DECLARE"   >> "SECTION"  >> !EmbeddedCharacterSetDeclaration >> +HostVariableDefinition)  >> "END"   >> "DECLARE"   >> "SECTION"  >> SQLTerminator);;;
+			
+			CloseStatement =(str_p("CLOSE")) >> CursorName;;;
+			SelectStatementSingleRow = ((str_p("SELECT")) >> !SetQuantifier >> SelectList  >> "INTO"  >> SelectTargetList >> TableExpression);;;
+			SelectTargetList = ((TargetSpecification%ch_p(',')));;;
+			DeleteStatementPositioned =(str_p("DELETE"))  >> "FROM"  >> TargetTable  >> "WHERE"   >> "CURRENT"   >> "OF"  >> CursorName;;;
+			TargetTable = TableName  
+			| str_p("ONLY")   >> '('  >> TableName  >> ')' ;;;
+			DeleteStatementSearched = ((str_p("DELETE"))  >> "FROM"  >> TargetTable >> !(str_p("WHERE")) >> SearchCondition);;;
+			InsertStatement =(str_p("INSERT"))  >> "INTO"  >> InsertionTarget >> InsertColumnsAndSource;;;
+			InsertionTarget = TableName;;;
+			InsertColumnsAndSource = FromSubquery  
+			| FromConstructor  
+			| FromDefault;;;
+			FromSubquery = !(ch_p('(') >> InsertColumnList  >> ')'  >> !OverrideClause >> QueryExpression);;;
+			FromConstructor = !(ch_p('(') >> InsertColumnList  >> ')'  >> !OverrideClause >> ContextuallyTypedTableValueConstructor);;;
+			OverrideClause =(str_p("OVERRIDING"))  >> "USER"   >> "VALUE"   
+			| str_p("OVERRIDING")   >> "SYSTEM"   >> "VALUE" ;;;
+			FromDefault =(str_p("DEFAULT"))  >> "VALUES" ;;;
+			InsertColumnList = ColumnNameList;;;
+			MergeStatement = ((str_p("MERGE"))  >> "INTO"  >> TargetTable >> !!((str_p("AS")) >> MergeCorrelationName)  >> "USING"  >> TableReference  >> "ON"  >> SearchCondition >> MergeOperationSpecification);;;
+			MergeCorrelationName = CorrelationName;;;
+			MergeOperationSpecification = +MergeWhenClause;;;
+			MergeWhenClause = MergeWhenMatchedClause  
+			| MergeWhenNotMatchedClause;;;
+			MergeWhenMatchedClause =(str_p("WHEN"))  >> "MATCHED"   >> "THEN"  >> MergeUpdateSpecification;;;
+			MergeWhenNotMatchedClause =(str_p("WHEN"))  >> "NOT"   >> "MATCHED"   >> "THEN"  >> MergeInsertSpecification;;;
+			MergeUpdateSpecification =(str_p("UPDATE"))  >> "SET"  >> SetClauseList;;;
+			MergeInsertSpecification = ((str_p("INSERT")) >> !ch_p('(') >> InsertColumnList  >> ')'  >> !OverrideClause  >> "VALUES"  >> MergeInsertValueList);;;
+			MergeInsertValueList = (ch_p('(') >> (MergeInsertValueElement%ch_p(','))  >> ')' );;;
+			MergeInsertValueElement = ValueExpression  
+			| ContextuallyTypedValueSpecification;;;
+			UpdateStatementPositioned =(str_p("UPDATE")) >> TargetTable  >> "SET"  >> SetClauseList  >> "WHERE"   >> "CURRENT"   >> "OF"  >> CursorName;;;
+			UpdateStatementSearched = ((str_p("UPDATE")) >> TargetTable  >> "SET"  >> SetClauseList >> !(str_p("WHERE")) >> SearchCondition);;;
+			SetClauseList = ((SetClause%ch_p(',')));;;
+			SetClause = MultipleColumnAssignment  
+			| SetTarget  >> '='  >> UpdateSource;;;
+			SetTarget = UpdateTarget  			| MutatedSetClause;;;
+			MultipleColumnAssignment = SetTargetList  >> '='  >> AssignedRow;;;
+			SetTargetList = (ch_p('(') >> (SetTarget%ch_p(','))  >> ')' );;;
+			AssignedRow = ContextuallyTypedRowValueExpression;;;
+			UpdateTarget = ObjectColumn  
+			| ObjectColumn >> ch_p('[') >> SimpleValueSpecification >> ch_p(']');;;
+			ObjectColumn = ColumnName;;;
+			MutatedSetClause = MutatedTarget  >> '.'  >> MethodName;;;
+			MutatedTarget = ObjectColumn  
+			| MutatedSetClause;;;
+			UpdateSource = ValueExpression  
+			| ContextuallyTypedValueSpecification;;;
+			TemporaryTableDeclaration = ((str_p("DECLARE"))  >> "LOCAL"   >> "TEMPORARY"   >> "TABLE"  >> TableName >> TableElementList >> !(str_p("ON"))  >> "COMMIT"  >> TableCommitAction  >> "ROWS" );;;
+			FreeLocatorStatement = ((str_p("FREE"))  >> "LOCATOR"  >> (LocatorReference%ch_p(',')));;;
+			LocatorReference = HostParameterName  
+			| EmbeddedVariableName;;;
+			HoldLocatorStatement = ((str_p("HOLD"))  >> "LOCATOR"  >> (LocatorReference%ch_p(',')));;;
+			CallStatement =(str_p("CALL")) >> RoutineInvocation;;;
+			ReturnStatement =(str_p("RETURN")) >> ReturnValue;;;
+			ReturnValue = ValueExpression  
+			| str_p("NULL") ;;;
+			StartTransactionStatement = ((str_p("START"))  >> "TRANSACTION"  >> !((TransactionMode%ch_p(','))));;;
+			TransactionMode = IsolationLevel  
+			| TransactionAccessMode  
+			| DiagnosticsSize;;;
+			TransactionAccessMode =(str_p("READ"))  >> "ONLY"   
+			| str_p("READ")   >> "WRITE" ;;;
+			IsolationLevel =(str_p("ISOLATION"))  >> "LEVEL"  >> LevelOfIsolation;;;
+			LevelOfIsolation =(str_p("READ"))  >> "UNCOMMITTED"   
+			| str_p("READ")   >> "COMMITTED"   
+			| str_p("REPEATABLE")   >> "READ"   
+			| str_p("SERIALIZABLE") ;;;
+			DiagnosticsSize =(str_p("DIAGNOSTICS"))  >> "SIZE"  >> NumberOfConditions;;;
+			NumberOfConditions = SimpleValueSpecification;;;
+			SetTransactionStatement = ((str_p("SET")) >> !(str_p("LOCAL")) >> TransactionCharacteristics);;;
+			TransactionCharacteristics = ((str_p("TRANSACTION")) >> (TransactionMode%ch_p(',')));;;
+			SetConstraintsModeStatement = ((str_p("SET"))  >> "CONSTRAINTS"  >> ConstraintNameList  >> "DEFERRED"   
+										   | str_p("IMMEDIATE") );;;
+			ConstraintNameList =(str_p("ALL"))  
+			| ((ConstraintName%ch_p(',')));;;
+			SavepointStatement =(str_p("SAVEPOINT")) >> SavepointSpecifier;;;
+			SavepointSpecifier = SavepointName;;;
+			ReleaseSavepointStatement =(str_p("RELEASE"))  >> "SAVEPOINT"  >> SavepointSpecifier;;;
+			CommitStatement = ((str_p("COMMIT")) >> !(str_p("WORK")) >> !((str_p("AND")) >> !(str_p("NO"))  >> "CHAIN" ));;;
+			RollbackStatement = ((str_p("ROLLBACK")) >> !(str_p("WORK")) >> !((str_p("AND")) >> !(str_p("NO"))  >> "CHAIN" ) >> !SavepointClause);;;
+			SavepointClause =(str_p("TO"))  >> "SAVEPOINT"  >> SavepointSpecifier;;;
+			ConnectStatement =(str_p("CONNECT"))  >> "TO"  >> ConnectionTarget;;;
+			ConnectionTarget = (SQLServerName >> !(str_p("AS")) >> ConnectionName >> !(str_p("USER")) >> ConnectionUserName)  
+			| str_p("DEFAULT") ;;;
+			SetConnectionStatement =(str_p("SET")) >> "CONNECTION" >> ConnectionObject;;;
+			ConnectionObject =(str_p("DEFAULT"))  
+			| ConnectionName;;;
+			DisconnectStatement =(str_p("DISCONNECT")) >> DisconnectObject;;;
+			DisconnectObject = ConnectionObject  
+			| str_p("ALL")   
+			| str_p("CURRENT") ;;;
+			SetSessionCharacteristicsStatement =(str_p("SET"))  >> "SESSION"   >> "CHARACTERISTICS"   >> "AS"  >> SessionCharacteristicList;;;
+			SessionCharacteristicList = ((SessionCharacteristic%ch_p(',')));;;
+			SessionCharacteristic = TransactionCharacteristics;;;
+			SetSessionUserIdentifierStatement =(str_p("SET"))  >> "SESSION"   >> "AUTHORIZATION"  >> ValueSpecification;;;
+			SetRoleStatement =(str_p("SET"))  >> "ROLE"  >> RoleSpecification;;;
+			RoleSpecification = ValueSpecification  
+			| str_p("NONE") ;;;
+			SetLocalTimeZoneStatement =(str_p("SET"))  >> "TIME"   >> "ZONE"  >> SetTimeZoneValue;;;
+			SetTimeZoneValue = IntervalValueExpression  
+			| str_p("LOCAL") ;;;
+			SetCatalogStatement =(str_p("SET")) >> CatalogNameCharacteristic;;;
+			CatalogNameCharacteristic =(str_p("CATALOG")) >> ValueSpecification;;;
+			SetSchemaStatement =(str_p("SET")) >> SchemaNameCharacteristic;;;
+			SchemaNameCharacteristic =(str_p("SCHEMA")) >> ValueSpecification;;;
+			SetNamesStatement =(str_p("SET")) >> CharacterSetNameCharacteristic;;;
+			CharacterSetNameCharacteristic =(str_p("NAMES")) >> ValueSpecification;;;
+			SetPathStatement =(str_p("SET")) >> SQLPathCharacteristic;;;
+			SQLPathCharacteristic =(str_p("PATH")) >> ValueSpecification;;;
+			SetTransformGroupStatement =(str_p("SET")) >> TransformGroupCharacteristic;;;
+			TransformGroupCharacteristic =(str_p("DEFAULT"))  >> "TRANSFORM"   >> "GROUP"  >> ValueSpecification  
+			| str_p("TRANSFORM")   >> "GROUP"   >> "FOR"   >> "TYPE"  >> PathResolvedUserDefinedTypeName >> ValueSpecification;;;
+			SetSessionCollationStatement = ((str_p("SET"))  >> "COLLATION"  >> CollationSpecification >> !(str_p("FOR")) >> CharacterSetSpecificationList)  
+			| ((str_p("SET"))  >> "NO"   >> "COLLATION"  >> !(str_p("FOR")) >> CharacterSetSpecificationList);;;
+			CharacterSetSpecificationList = (CharacterSetSpecification %ch_p(','));;;
+			CollationSpecification = ValueSpecification;;;
+			AllocateDescriptorStatement = ((str_p("ALLOCATE")) >> !(str_p("SQL"))  >> "DESCRIPTOR"  >> DescriptorName >> !(str_p("WITH"))  >> "MAX"  >> Occurrences);;;
+			Occurrences = SimpleValueSpecification;;;
+			DeallocateDescriptorStatement = ((str_p("DEALLOCATE")) >> !(str_p("SQL"))  >> "DESCRIPTOR"  >> DescriptorName);;;
+			GetDescriptorStatement = ((str_p("GET")) >> !(str_p("SQL"))  >> "DESCRIPTOR"  >> DescriptorName >> GetDescriptorInformation);;;
+			GetDescriptorInformation = ((GetHeaderInformation%ch_p(',')))  
+			| ((str_p("VALUE")) >> ItemNumber >> (GetItemInformation%ch_p(',')));;;
+			GetHeaderInformation = SimpleTargetSpecification1  >> '='  >> HeaderItemName;;;
+			HeaderItemName =(str_p("COUNT"))  
+			| str_p("KEY_TYPE")   
+			| str_p("DYNAMIC_FUNCTION")   
+			| str_p("DYNAMIC_FUNCTION_CODE")   
+			| str_p("TOP_LEVEL_COUNT") ;;;
+			GetItemInformation = SimpleTargetSpecification2  >> '='  >> DescriptorItemName;;;
+			ItemNumber = SimpleValueSpecification;;;
+			SimpleTargetSpecification1 = SimpleTargetSpecification;;;
+			SimpleTargetSpecification2 = SimpleTargetSpecification;;;
+			DescriptorItemName =(str_p("CARDINALITY"))  
+			| str_p("CHARACTER_SET_CATALOG")   
+			| str_p("CHARACTER_SET_NAME")   
+			| str_p("CHARACTER_SET_SCHEMA")   
+			| str_p("COLLATION_CATALOG")   
+			| str_p("COLLATION_NAME")   
+			| str_p("COLLATION_SCHEMA")   
+			| str_p("DATA")   
+			| str_p("DATETIME_INTERVAL_CODE")   
+			| str_p("DATETIME_INTERVAL_PRECISION")   
+			| str_p("DEGREE")   
+			| str_p("INDICATOR")   
+			| str_p("KEY_MEMBER")   
+			| str_p("LENGTH")   
+			| str_p("LEVEL")   
+			| str_p("NAME")   
+			| str_p("NULLABLE")   
+			| str_p("OCTET_LENGTH")   
+			| str_p("PARAMETER_MODE")   
+			| str_p("PARAMETER_ORDINAL_POSITION")   
+			| str_p("PARAMETER_SPECIFIC_CATALOG")   
+			| str_p("PARAMETER_SPECIFIC_NAME")   
+			| str_p("PARAMETER_SPECIFIC_SCHEMA")   
+			| str_p("PRECISION")   
+			| str_p("RETURNED_CARDINALITY")   
+			| str_p("RETURNED_LENGTH")   
+			| str_p("RETURNED_OCTET_LENGTH")   
+			| str_p("SCALE")   
+			| str_p("SCOPE_CATALOG")   
+			| str_p("SCOPE_NAME")   
+			| str_p("SCOPE_SCHEMA")   
+			| str_p("TYPE")   
+			| str_p("UNNAMED")   
+			| str_p("USER_DEFINED_TYPE_CATALOG")   
+			| str_p("USER_DEFINED_TYPE_NAME")   
+			| str_p("USER_DEFINED_TYPE_SCHEMA")   
+			| str_p("USER_DEFINED_TYPE_CODE") ;;;
+			SetDescriptorStatement = ((str_p("SET")) >> !(str_p("SQL"))  >> "DESCRIPTOR"  >> DescriptorName >> SetDescriptorInformation);;;
+			SetDescriptorInformation = ((SetHeaderInformation%ch_p(',')))  
+			| ((str_p("VALUE")) >> ItemNumber >> (SetItemInformation%ch_p(',')));;;
+			SetHeaderInformation = HeaderItemName  >> '='  >> SimpleValueSpecification1;;;
+			SetItemInformation = DescriptorItemName  >> '='  >> SimpleValueSpecification2;;;
+			SimpleValueSpecification1 = SimpleValueSpecification;;;
+			SimpleValueSpecification2 = SimpleValueSpecification;;;
+			ItemNumber = SimpleValueSpecification;;;
+			PrepareStatement = ((str_p("PREPARE")) >> SQLStatementName >> !AttributesSpecification  >> "FROM"  >> SQLStatementVariable);;;
+			AttributesSpecification =(str_p("ATTRIBUTES")) >> AttributesVariable;;;
+			AttributesVariable = SimpleValueSpecification;;;
+			SQLStatementVariable = SimpleValueSpecification;;;
+			PreparableStatement = PreparableSQLDataStatement  
+			| PreparableSQLSchemaStatement  
+			| PreparableSQLTransactionStatement  
+			| PreparableSQLControlStatement  
+			| PreparableSQLSessionStatement  
+			| PreparableImplementationDefinedStatement;;;
+			PreparableSQLDataStatement = DeleteStatementSearched  
+			| DynamicSingleRowSelectStatement  
+			| InsertStatement  
+			| DynamicSelectStatement  
+			| UpdateStatementSearched  
+			| MergeStatement  
+			| PreparableDynamicDeleteStatementPositioned  
+			| PreparableDynamicUpdateStatementPositioned;;;
+			PreparableSQLSchemaStatement = SQLSchemaStatement;;;
+			PreparableSQLTransactionStatement = SQLTransactionStatement;;;
+			PreparableSQLControlStatement = SQLControlStatement;;;
+			PreparableSQLSessionStatement = SQLSessionStatement;;;
+			DynamicSelectStatement = CursorSpecification;;;
+			PreparableImplementationDefinedStatement = nothing_p;;;
+			CursorAttributes = +CursorAttribute;;;
+			CursorAttribute = CursorSensitivity  
+			| CursorScrollability  
+			| CursorHoldability  
+			| CursorReturnability;;;
+			DeallocatePreparedStatement =(str_p("DEALLOCATE"))  >> "PREPARE"  >> SQLStatementName;;;
+			DescribeStatement = DescribeInputStatement  
+			| DescribeOutputStatement;;;
+			DescribeInputStatement = ((str_p("DESCRIBE"))  >> "INPUT"  >> SQLStatementName >> UsingDescriptor >> !NestingOption);;;
+			DescribeOutputStatement = ((str_p("DESCRIBE")) >> !(str_p("OUTPUT")) >> DescribedObject >> UsingDescriptor >> !NestingOption);;;
+			NestingOption =(str_p("WITH"))  >> "NESTING"   
+			| str_p("WITHOUT")   >> "NESTING" ;;;
+			UsingDescriptor = ((str_p("USING")) >> !(str_p("SQL"))  >> "DESCRIPTOR"  >> DescriptorName);;;
+			DescribedObject = SQLStatementName  
+			| str_p("CURSOR")  >> ExtendedCursorName  >> "STRUCTURE" ;;;
+			InputUsingClause = UsingArguments  
+			| UsingInputDescriptor;;;
+			UsingArguments = ((str_p("USING")) >> (UsingArgument%ch_p(',')));;;
+			UsingArgument = GeneralValueSpecification;;;
+			UsingInputDescriptor = UsingDescriptor;;;
+			OutputUsingClause = IntoArguments  
+			| IntoDescriptor;;;
+			IntoArguments = ((str_p("INTO")) >> (IntoArgument%ch_p(',')));;;
+			IntoArgument = TargetSpecification;;;
+			IntoDescriptor = ((str_p("INTO")) >> !(str_p("SQL"))  >> "DESCRIPTOR"  >> DescriptorName);;;
+			ExecuteStatement = ((str_p("EXECUTE")) >> SQLStatementName >> !ResultUsingClause >> !ParameterUsingClause);;;
+			ResultUsingClause = OutputUsingClause;;;
+			ParameterUsingClause = InputUsingClause;;;
+			ExecuteImmediateStatement =(str_p("EXECUTE"))  >> "IMMEDIATE"  >> SQLStatementVariable;;;
+			DynamicDeclareCursor = ((str_p("DECLARE")) >> CursorName >> !CursorSensitivity >> !CursorScrollability  >> "CURSOR"  >> !CursorHoldability >> !CursorReturnability  >> "FOR"  >> StatementName);;;
+			AllocateCursorStatement =(str_p("ALLOCATE")) >> ExtendedCursorName >> CursorIntent;;;
+			CursorIntent = StatementCursor  
+			| ResultSetCursor;;;
+			StatementCursor = !(CursorSensitivity >> !CursorScrollability  >> "CURSOR"  >> !CursorHoldability >> !CursorReturnability  >> "FOR"  >> ExtendedStatementName);;;
+			ResultSetCursor =(str_p("FOR"))  >> "PROCEDURE"  >> SpecificRoutineDesignator;;;
+			DynamicOpenStatement = ((str_p("OPEN")) >> DynamicCursorName >> !InputUsingClause);;;
+			DynamicFetchStatement = ((str_p("FETCH")) >> !!(FetchOrientation  >> "FROM" ) >> DynamicCursorName >> OutputUsingClause);;;
+			DynamicSingleRowSelectStatement = QuerySpecification;;;
+			DynamicCloseStatement =(str_p("CLOSE")) >> DynamicCursorName;;;
+			DynamicDeleteStatementPositioned =(str_p("DELETE"))  >> "FROM"  >> TargetTable  >> "WHERE"   >> "CURRENT"   >> "OF"  >> DynamicCursorName;;;
+			DynamicUpdateStatementPositioned =(str_p("UPDATE")) >> TargetTable  >> "SET"  >> SetClauseList  >> "WHERE"   >> "CURRENT"   >> "OF"  >> DynamicCursorName;;;
+			PreparableDynamicDeleteStatementPositioned = ((str_p("DELETE")) >> !(str_p("FROM")) >> TargetTable  >> "WHERE"   >> "CURRENT"   >> "OF"  >> !ScopeOption >> CursorName);;;
+			PreparableDynamicUpdateStatementPositioned = ((str_p("UPDATE")) >> !TargetTable  >> "SET"  >> SetClauseList  >> "WHERE"   >> "CURRENT"   >> "OF"  >> !ScopeOption >> CursorName);;;
+			EmbeddedSQLHostProgram = EmbeddedSQLAdaProgram  
+			| EmbeddedSQLCProgram  
+			| EmbeddedSQLCOBOLProgram  
+			| EmbeddedSQLFortranProgram  
+			| EmbeddedSQLMUMPSProgram  
+			| EmbeddedSQLPascalProgram  
+			| EmbeddedSQLPLIProgram;;;
+			EmbeddedSQLStatement = (SQLPrefix >> StatementOrDeclaration >> !SQLTerminator);;;
+			StatementOrDeclaration = DeclareCursor  
+			| DynamicDeclareCursor  
+			| TemporaryTableDeclaration  
+			| EmbeddedAuthorizationDeclaration  
+			| EmbeddedPathSpecification  
+			| EmbeddedTransformGroupSpecification  
+			| EmbeddedCollationSpecification  
+			| EmbeddedExceptionDeclaration  
+			// | HandlerDeclaration  //
+			| SQLProcedureStatement;;;
+			SQLPrefix =str_p("EXEC")  >> "SQL"   
+			| ch_p('&' ) >> "SQL"   >> '(' ;;;
+			SQLTerminator = str_p("ENDEXEC"  )
+			| ';'   
+			| ')' ;;;
+			EmbeddedAuthorizationDeclaration =(str_p("DECLARE")) >> EmbeddedAuthorizationClause;;;
+			EmbeddedAuthorizationClause =(str_p("SCHEMA")) >> SchemaName  
+			| ((str_p("AUTHORIZATION")) >> EmbeddedAuthorizationIdentifier >> !((str_p("FOR"))  >> "STATIC"   >> "ONLY"   
+																				| str_p("AND")   >> "DYNAMIC" ))  
+			| ((str_p("SCHEMA")) >> SchemaName  >> "AUTHORIZATION"  >> EmbeddedAuthorizationIdentifier >> !((str_p("FOR"))  >> "STATIC"   >> "ONLY"   
+																											| str_p("AND")   >> "DYNAMIC" ));;;
+			EmbeddedAuthorizationIdentifier = ModuleAuthorizationIdentifier;;;
+			EmbeddedPathSpecification = PathSpecification;;;
+			EmbeddedTransformGroupSpecification = TransformGroupSpecification;;;
+			EmbeddedCollationSpecification = ModuleCollations;;;
+			EmbeddedSQLDeclareSection = (EmbeddedSQLBeginDeclare >> !EmbeddedCharacterSetDeclaration >> *HostVariableDefinition >> EmbeddedSQLEndDeclare)  
+			| EmbeddedSQLMUMPSDeclare;;;
+			EmbeddedCharacterSetDeclaration =(str_p("SQL"))  >> "NAMES"   >> "ARE"  >> CharacterSetSpecification;;;
+			EmbeddedSQLBeginDeclare = (SQLPrefix  >> "BEGIN"   >> "DECLARE"   >> "SECTION"  >> !SQLTerminator);;;
+			EmbeddedSQLEndDeclare = (SQLPrefix  >> "END"   >> "DECLARE"   >> "SECTION"  >> !SQLTerminator);;;
+			EmbeddedSQLMUMPSDeclare =nothing_p ;;;// (SQLPrefix  >> "BEGIN"   >> "DECLARE"   >> "SECTION"  >> !EmbeddedCharacterSetDeclaration >> +HostVariableDefinition)  >> "END"   >> "DECLARE"   >> "SECTION"  >> SQLTerminator);;;
 			HostVariableDefinition = AdaVariableDefinition  
 			| CVariableDefinition  
 			| COBOLVariableDefinition  
@@ -2513,7 +2516,12 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			EmbeddedExceptionDeclaration =(str_p("WHENEVER")) >> Condition >> ConditionAction;;;
 			Condition = SQLCondition;;;
 			SQLCondition = MajorCategory  
-			| ((str_p("SQLSTATE")) >> (SQLSTATEClassValue >> !,SQLSTATESubclassValue))  
+			| str_p("SQLSTATE")
+					>> SQLSTATEClassValue 
+					>> !(
+						 ch_p(',')
+						 >> SQLSTATESubclassValue
+						)
 			| str_p("CONSTRAINT")  >> ConstraintName;;;
 			MajorCategory =(str_p("SQLEXCEPTION"))  
 			| str_p("SQLWARNING")   
@@ -2539,15 +2547,17 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			AdaTypeSpecification = AdaQualifiedTypeSpecification  
 			| AdaUnqualifiedTypeSpecification  
 			| AdaDerivedTypeSpecification;;;
-			AdaQualifiedTypeSpecification = Interfaces.((str_p("SQL"))  >> '.'   >> "CHAR"  >> !((str_p("CHARACTER"))  >> "SET"  >> !(str_p("IS")) >> CharacterSetSpecification)  >> '('  >> 1 >> ".." >> Length  >> ')' )  
-			| InterfacesSQL  >> '.'   >> "SMALLINT"   
-			| Interfaces.(str_p("SQL"))  >> '.'   >> "INT"   
-			| InterfacesSQL  >> '.'   >> "BIGINT"   
-			| Interfaces.(str_p("SQL"))  >> '.'   >> "REAL"   
-			| InterfacesSQL  >> '.'  >> "DOUBLE_PRECISION"  
-			| Interfaces.(str_p("SQL"))  >> '.'   >> "BOOLEAN"   
-			| InterfacesSQL  >> '.'  >> "SQLSTATE_TYPE"  
-			| Interfaces.(str_p("SQL"))  >> '.'  >> "INDICATOR_TYPE";;;
+			AdaQualifiedTypeSpecification =nothing_p// Interfaces.((str_p("SQL"))  >> '.'   >> "CHAR"  >> !((str_p("CHARACTER"))  >> "SET"  >> !(str_p("IS")) >> CharacterSetSpecification)  >> '('  >> 1 >> ".." >> Length  >> ')' )  
+//			| InterfacesSQL  >> '.'   >> "SMALLINT"   
+//			| Interfaces.(str_p("SQL"))  >> '.'   >> "INT"   
+//			| InterfacesSQL  >> '.'   >> "BIGINT"   
+//			| Interfaces.(str_p("SQL"))  >> '.'   >> "REAL"   
+//			| InterfacesSQL  >> '.'  >> "DOUBLE_PRECISION"  
+//			| Interfaces.(str_p("SQL"))  >> '.'   >> "BOOLEAN"   
+//			| InterfacesSQL  >> '.'  >> "SQLSTATE_TYPE"  
+//			| Interfaces.(str_p("SQL"))  >> '.'  >> "INDICATOR_TYPE";;;
+			;;;
+			
 			AdaUnqualifiedTypeSpecification =(str_p("CHAR"))  >> '('  >> '1' >> ".." >> Length  >> ')'   
 			| str_p("SMALLINT")   
 			| str_p("INT")   
@@ -2592,10 +2602,8 @@ struct sql2003_parser : public grammar<sql2003_parser>
 								| "DOUBLE" >> CHostIdentifier >> !CInitialValue >> *((ch_p(',') >> CHostIdentifier >> !CInitialValue)));;;
 			CCharacterVariable = (CCharacterType >> !((str_p("CHARACTER"))  >> "SET"  >> !(str_p("IS")) >> CharacterSetSpecification) >> CHostIdentifier >> CArraySpecification >> !CInitialValue >> *((ch_p(',') >> CHostIdentifier >> CArraySpecification >> !CInitialValue)));;;
 			CCharacterType = str_p("CHAR")  
-			| "UNSIGNED"
-									  >> "CHAR"
-									  
-			| "UNSIGNED" >> "SHORT";;;
+			|str_p( "UNSIGNED")	>> (str_p("CHAR")|"SHORT")
+			;;;
 			CArraySpecification = ch_p('{') >> Length  >> '}' ;;;
 			CHostIdentifier = nothing_p;;;
 			CDerivedVariable = CVARCHARVariable  
@@ -2727,7 +2735,7 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			EmbeddedSQLPascalProgram = nothing_p;;;
 			PascalVariableDefinition = ((PascalHostIdentifier%ch_p(','))  >> ':'  >> PascalTypeSpecification  >> ';' );;;
 			PascalHostIdentifier = nothing_p;;;
-			PascalTypeSpecification = (str_p("PACKED")  >> "ARRAY"   >> '{'  >> 1 >> ".." >> Length  >> '}'   >> "OF"   >> "CHAR"  >> !((str_p("CHARACTER"))  >> "SET"  >> !(str_p("IS")) >> CharacterSetSpecification))  
+			PascalTypeSpecification = (str_p("PACKED")  >> "ARRAY"   >> '{'  >> '1' >> ".." >> Length  >> '}'   >> "OF"   >> "CHAR"  >> !((str_p("CHARACTER"))  >> "SET"  >> !(str_p("IS")) >> CharacterSetSpecification))  
 			| str_p("INTEGER")   
 			| str_p("REAL")   
 			| ((str_p("CHAR")) >> !((str_p("CHARACTER"))  >> "SET"  >> !(str_p("IS")) >> CharacterSetSpecification))  
@@ -4122,1273 +4130,1273 @@ struct sql2003_parser : public grammar<sql2003_parser>
 			BOOST_SPIRIT_DEBUG_RULE( ConditionInformationItemName );
 		}	
 		rule<	ScannerT >NondelimiterToken ,
-			SQLTerminalCharacter ,
- 			SqlSpecialCharacters ,
-			Token ,
+		SQLTerminalCharacter ,
+		SqlSpecialCharacters ,
+		Token ,
 		
-			RegularIdentifier ,
-			IdentifierBody ,
-			IdentifierPart ,
-			IdentifierStart ,
-			IdentifierExtend ,
-			LargeObjectLengthToken ,
-			Multiplier ,
-									  DelimitedIdentifier	,
-			UnicodeDelimitedIdentifier ,
-			UnicodeDelimiterBody ,
-			UnicodeIdentifierPart ,
-			UnicodeEscapeValue ,
-			Unicode4DigitEscapeValue ,
-			Unicode6DigitEscapeValue ,
- 			NondoublequoteCharacter ,
-			DoublequoteSymbol ,
-			DelimiterToken ,
-			NotEqualsOperator ,
-			GreaterThanOrEqualsOperator ,
-			LessThanOrEqualsOperator ,
-			ConcatenationOperator , 
-			Separator ,
-			Comment ,
-			SimpleComment ,
-			SimpleCommentIntroducer ,
-			BracketedComment ,
-			BracketedCommentIntroducer ,
-			BracketedCommentTerminator ,
-			BracketedCommentContents ,
-			CommentCharacter ,
-			KeyWord ,
-			NonReservedWord ,
-			ReservedWord ,
-			Literal ,
-			UnsignedLiteral ,
-			GeneralLiteral ,
-			CharacterStringLiteral ,
-			Introducer ,
-			CharacterRepresentation ,
-			NonquoteCharacter ,
-			QuoteSymbol ,
-			NationalCharacterStringLiteral ,
-			UnicodeCharacterStringLiteral ,
-			UnicodeRepresentation ,
-			BinaryStringLiteral ,
-			SignedNumericLiteral ,
-			UnsignedNumericLiteral ,
-			ExactNumericLiteral ,
-			ApproximateNumericLiteral ,
-			Mantissa ,
-			Exponent ,
-			SignedInteger ,
-			DatetimeLiteral ,
-			DateLiteral ,
-			TimeLiteral ,
-			TimestampLiteral ,
-			DateString ,
-			TimeString ,
-			TimestampString ,
-			TimeZoneInterval ,
-			DateValue ,
-			TimeValue ,
-			IntervalLiteral ,
-			IntervalString ,
-			UnquotedDateString ,
-			UnquotedTimeString ,
-			UnquotedTimestampString ,
-			UnquotedIntervalString ,
-			YearMonthLiteral ,
-			DayTimeLiteral ,
-			DayTimeInterval ,
-			TimeInterval ,
-			YearsValue ,
-			MonthsValue ,
-			DaysValue ,
-			HoursValue ,
-			MinutesValue ,
-			SecondsValue ,
-			SecondsIntegerValue ,
-			SecondsFraction ,
-			DatetimeValue ,
-			BooleanLiteral ,
-			Identifier ,
-			ActualIdentifier ,
-			SQLLanguageIdentifier ,
-			SQLLanguageIdentifierStart ,
-			SQLLanguageIdentifierPart ,
-			AuthorizationIdentifier ,
-			TableName ,
-			DomainName ,
-			SchemaName ,
-			CatalogName ,
-			SchemaQualifiedName ,
-			LocalOrSchemaQualifiedName ,
-			LocalOrSchemaQualifier ,
-			QualifiedIdentifier ,
-			ColumnName ,
-			CorrelationName ,
-			QueryName ,
-			SQLClientModuleName ,
-			ProcedureName ,
-			SchemaQualifiedRoutineName ,
-			MethodName ,
-			SpecificName ,
-			CursorName ,
-			LocalQualifiedName ,
-			LocalQualifier ,
-			HostParameterName ,
-			SQLParameterName ,
-			ConstraintName ,
-			ExternalRoutineName ,
-			TriggerName ,
-			CollationName ,
-			CharacterSetName ,
-			TransliterationName ,
-			TranscodingName ,
-			UserDefinedTypeName ,
-			SchemaResolvedUserDefinedTypeName ,
-			SchemaQualifiedTypeName ,
-			AttributeName ,
-			FieldName ,
-			SavepointName ,
-			SequenceGeneratorName ,
-			RoleName ,
-			UserIdentifier ,
-			ConnectionName ,
-			SQLServerName ,
-			ConnectionUserName ,
-			SQLStatementName ,
-			StatementName ,
-			ExtendedStatementName ,
-			DynamicCursorName ,
-			ExtendedCursorName ,
-			DescriptorName ,
-			ScopeOption ,
-			WindowName ,
-			DataType ,
-			PredefinedType ,
-			CharacterStringType ,
-			NationalCharacterStringType ,
-			BinaryLargeObjectStringType ,
-			NumericType ,
-			ExactNumericType ,
-			ApproximateNumericType ,
-			Length ,
-			LargeObjectLength ,
-			CharLengthUnits ,
-			Precision ,
-			Scale ,
-			BooleanType ,
-			DatetimeType ,
-			WithOrWithoutTimeZone ,
-			TimePrecision ,
-			TimestampPrecision ,
-			TimeFractionalSecondsPrecision ,
-			IntervalType ,
-			RowType ,
-			RowTypeBody ,
-			ReferenceType ,
-			ScopeClause ,
-			ReferencedType ,
-			PathResolvedUserDefinedTypeName ,
- 			CollectionType ,
-			ArrayType ,
-			MultisetType ,
-			FieldDefinition ,
-			ValueExpressionPrimary ,
-			ParenthesizedValueExpression ,
-			NonparenthesizedValueExpressionPrimary ,
-			ValueSpecification ,
-			UnsignedValueSpecification ,
-			GeneralValueSpecification ,
-			SimpleValueSpecification ,
-			TargetSpecification ,
-			SimpleTargetSpecification ,
-			HostParameterSpecification ,
-			DynamicParameterSpecification ,
-			EmbeddedVariableSpecification ,
-			IndicatorVariable ,
-			IndicatorParameter ,
-			TargetArrayElementSpecification ,
-			TargetArrayReference ,
-			CurrentCollationSpecification ,
-			ContextuallyTypedValueSpecification ,
-			ImplicitlyTypedValueSpecification ,
-			NullSpecification ,
-			EmptySpecification ,
-			DefaultSpecification ,
-			IdentifierChain ,
-			BasicIdentifierChain ,
-			ColumnReference ,
-			SQLParameterReference ,
-			SetFunctionSpecification ,
-			GroupingOperation ,
-			WindowFunction ,
-			WindowFunctionType ,
-			RankFunctionType ,
-			WindowNameOrSpecification ,
-			InLineWindowSpecification ,
-			CaseExpression ,
-			CaseAbbreviation ,
-			CaseSpecification ,
-			SimpleCase ,
-			SearchedCase ,
-			SimpleWhenClause ,
-			SearchedWhenClause ,
-			ElseClause ,
-			CaseOperand ,
-			WhenOperand ,
-			Result ,
-			ResultExpression ,
-			CastSpecification ,
-			CastOperand ,
-			CastTarget ,
-			NextValueExpression ,
-			FieldReference ,
-			SubtypeTreatment ,
-			SubtypeOperand ,
-			TargetSubtype ,
-			MethodInvocation ,
-			DirectInvocation ,
-			GeneralizedInvocation ,
-			MethodSelection ,
-			ConstructorMethodSelection ,
-			StaticMethodInvocation ,
-			StaticMethodSelection ,
-			NewSpecification ,
-			NewInvocation ,
-			AttributeOrMethodReference ,
-			DereferenceOperator ,
-			DereferenceOperation ,
-			MethodReference ,
-			ReferenceResolution ,
-			ArrayElementReference ,
-			MultisetElementReference ,
-			ValueExpression ,
-			CommonValueExpression ,
-			UserDefinedTypeValueExpression ,
-			ReferenceValueExpression ,
-			CollectionValueExpression ,
-			CollectionValueConstructor ,
-			NumericValueExpression ,
-			Term ,
-			Factor ,
-			NumericPrimary ,
-			NumericValueFunction ,
-			PositionExpression ,
-			StringPositionExpression ,
-			BlobPositionExpression ,
-			LengthExpression ,
-			CharLengthExpression ,
-			OctetLengthExpression ,
-			ExtractExpression ,
-			ExtractField ,
-			TimeZoneField ,
-			ExtractSource ,
-			CardinalityExpression ,
-			AbsoluteValueExpression ,
-			ModulusExpression ,
-			NaturalLogarithm ,
-			ExponentialFunction ,
-			PowerFunction ,
-			NumericValueExpressionBase ,
-			NumericValueExpressionExponent ,
-			SquareRoot ,
-			FloorFunction ,
-			CeilingFunction ,
-			WidthBucketFunction ,
-			WidthBucketOperand ,
-			WidthBucketBound1 ,
-			WidthBucketBound2 ,
-			WidthBucketCount ,
-			StringValueExpression ,
-			CharacterValueExpression ,
-			Concatenation ,
-			CharacterFactor ,
-			CharacterPrimary ,
-			BlobValueExpression ,
-			BlobFactor ,
-			BlobPrimary ,
-			BlobConcatenation ,
-			StringValueFunction ,
-			CharacterValueFunction ,
-			CharacterSubstringFunction ,
-			RegularExpressionSubstringFunction ,
-			Fold ,
-			Transcoding ,
-			CharacterTransliteration ,
-			TrimFunction ,
-			TrimOperands ,
-			TrimSource ,
-			TrimSpecification ,
-			TrimCharacter ,
-			CharacterOverlayFunction ,
-			NormalizeFunction ,
-			SpecificTypeMethod ,
-			BlobValueFunction ,
-			BlobSubstringFunction ,
-			BlobTrimFunction ,
-			BlobTrimOperands ,
-			BlobTrimSource ,
-			TrimOctet ,
-			BlobOverlayFunction ,
-			StartPosition ,
-			StringLength ,
-			DatetimeValueExpression ,
-			DatetimeTerm ,
-			DatetimeFactor ,
-			DatetimePrimary ,
-			TimeZone ,
-			TimeZoneSpecifier ,
-			DatetimeValueFunction ,
-			CurrentDateValueFunction ,
-			CurrentTimeValueFunction ,
-			CurrentLocalTimeValueFunction ,
-			CurrentTimestampValueFunction ,
-			CurrentLocalTimestampValueFunction ,
-			IntervalValueExpression ,
-			IntervalTerm ,
-			IntervalFactor ,
-			IntervalPrimary ,
-			IntervalValueExpression1 ,
-			IntervalTerm1 ,
-			IntervalTerm2 ,
-			IntervalValueFunction ,
-			IntervalAbsoluteValueFunction ,
-			BooleanValueExpression ,
-			BooleanTerm ,
-			BooleanFactor ,
-			BooleanTest ,
-			TruthValue ,
-			BooleanPrimary ,
-			BooleanPredicand ,
-			ParenthesizedBooleanValueExpression ,
-			ArrayValueExpression ,
-			ArrayConcatenation ,
-			ArrayValueExpression1 ,
-			ArrayFactor ,
-			ArrayValueConstructor ,
-			ArrayValueConstructorByEnumeration ,
-			ArrayElementList ,
-			ArrayElement ,
-			ArrayValueConstructorByQuery ,
-			MultisetValueExpression ,
-			MultisetTerm ,
-			MultisetPrimary ,
-			MultisetValueFunction ,
-			MultisetSetFunction ,
-			MultisetValueConstructor ,
-			MultisetValueConstructorByEnumeration ,
-			MultisetElementList ,
-			MultisetElement ,
-			MultisetValueConstructorByQuery ,
-			TableValueConstructorByQuery ,
-			RowValueConstructor ,
-			ExplicitRowValueConstructor ,
-			RowValueConstructorElementList ,
-			RowValueConstructorElement ,
-			ContextuallyTypedRowValueConstructor ,
-			ContextuallyTypedRowValueConstructorElementList ,
-			ContextuallyTypedRowValueConstructorElement ,
-			RowValueConstructorPredicand ,
-			RowValueExpression ,
-			TableRowValueExpression ,
-			ContextuallyTypedRowValueExpression ,
-			RowValuePredicand ,
-			RowValueSpecialCase ,
-			TableValueConstructor ,
-			RowValueExpressionList ,
-			ContextuallyTypedTableValueConstructor ,
-			ContextuallyTypedRowValueExpressionList ,
-			TableExpression ,
-			FromClause ,
-			TableReferenceList ,
-			TableReference ,
-			TablePrimaryOrJoinedTable ,
-			SampleClause ,
-			SampleMethod ,
-			RepeatableClause ,
-			SamplePercentage ,
-			RepeatArgument ,
-			TablePrimary ,
-			OnlySpec ,
-			LateralDerivedTable ,
-			CollectionDerivedTable ,
-			TableFunctionDerivedTable ,
-			DerivedTable ,
-			TableOrQueryName ,
-			DerivedColumnList ,
-			ColumnNameList ,
-			JoinedTable ,
-			CrossJoin ,
-			QualifiedJoin ,
-			NaturalJoin ,
-			UnionJoin ,
-			JoinSpecification ,
-			JoinCondition ,
-			NamedColumnsJoin ,
-			JoinType ,
-			OuterJoinType ,
-			JoinColumnList ,
-			WhereClause ,
-			GroupByClause ,
-			GroupingElementList ,
-			GroupingElement ,
-			OrdinaryGroupingSet ,
-			GroupingColumnReference ,
-			GroupingColumnReferenceList ,
-			RollupList ,
-			OrdinaryGroupingSetList ,
-			CubeList ,
-			GroupingSetsSpecification ,
-			GroupingSetList ,
-			GroupingSet ,
-			EmptyGroupingSet ,
-			HavingClause ,
-			WindowClause ,
-			WindowDefinitionList ,
-			WindowDefinition ,
-			NewWindowName ,
-			WindowSpecification ,
-			WindowSpecificationDetails ,
-			ExistingWindowName ,
-			WindowPartitionClause ,
-			WindowPartitionColumnReferenceList ,
-			WindowPartitionColumnReference ,
-			WindowOrderClause ,
-			WindowFrameClause ,
-			WindowFrameUnits ,
-			WindowFrameExtent ,
-			WindowFrameStart ,
-			WindowFramePreceding ,
-			WindowFrameBetween ,
-			WindowFrameBound1 ,
-			WindowFrameBound2 ,
-			WindowFrameBound ,
-			WindowFrameFollowing ,
-			WindowFrameExclusion ,
-			QuerySpecification ,
-			SelectList ,
-			SelectSublist ,
-			QualifiedAsterisk ,
-			AsteriskedIdentifierChain ,
-			AsteriskedIdentifier ,
-			DerivedColumn ,
-			AsClause ,
-			AllFieldsReference ,
-			AllFieldsColumnNameList ,
-			QueryExpression ,
-			WithClause ,
-			WithList ,
-			WithListElement ,
-			WithColumnList ,
-			QueryExpressionBody ,
-			NonJoinQueryExpression ,
-			QueryTerm ,
-			NonJoinQueryTerm ,
-			QueryPrimary ,
-			NonJoinQueryPrimary ,
-			SimpleTable ,
-			ExplicitTable ,
-			CorrespondingSpec ,
-			CorrespondingColumnList ,
-			SearchOrCycleClause ,
-			SearchClause ,
-			RecursiveSearchOrder ,
-			SequenceColumn ,
-			CycleClause ,
-			CycleColumnList ,
-			CycleColumn ,
-			CycleMarkColumn ,
-			PathColumn ,
-			CycleMarkValue ,
-			NonCycleMarkValue ,
-			ScalarSubquery ,
-			RowSubquery ,
-			TableSubquery ,
-			Subquery ,
-			Predicate ,
-			ComparisonPredicate ,
-			ComparisonPredicatePart2 ,
-			CompOp ,
-			BetweenPredicate ,
-			BetweenPredicatePart2 ,
-			InPredicate ,
-			InPredicatePart2 ,
-			InPredicateValue ,
-			InValueList ,
-			LikePredicate ,
-			CharacterLikePredicate ,
-			CharacterLikePredicatePart2 ,
-			CharacterPattern ,
-			EscapeCharacter ,
-			OctetLikePredicate ,
-			OctetLikePredicatePart2 ,
-			OctetPattern ,
-			EscapeOctet ,
-			SimilarPredicate ,
-			SimilarPredicatePart2 ,
-			SimilarPattern ,
-			RegularExpression ,
-			RegularTerm ,
-			RegularFactor ,
-			RepeatFactor ,
-			UpperLimit ,
-			LowValue ,
-			HighValue ,
-			RegularPrimary ,
-			CharacterSpecifier ,
-			NonEscapedCharacter ,
-			EscapedCharacter ,
-			RegularCharacterSet ,
-			CharacterEnumerationInclude ,
-			CharacterEnumerationExclude ,
-			CharacterEnumeration ,
-			RegularCharacterSetIdentifier ,
-			NullPredicate ,
-			NullPredicatePart2 ,
-			QuantifiedComparisonPredicate ,
-			QuantifiedComparisonPredicatePart2 ,
-			Quantifier ,
-			All ,
-			Some ,
-			ExistsPredicate ,
-			UniquePredicate ,
-			NormalizedPredicate ,
-			MatchPredicate ,
-			MatchPredicatePart2 ,
-			OverlapsPredicate ,
-			OverlapsPredicatePart1 ,
-			OverlapsPredicatePart2 ,
-			RowValuePredicand1 ,
-			RowValuePredicand2 ,
-			DistinctPredicate ,
-			DistinctPredicatePart2 ,
-			RowValuePredicand3 ,
-			RowValuePredicand4 ,
-			MemberPredicate ,
-			MemberPredicatePart2 ,
-			SubmultisetPredicate ,
-			SubmultisetPredicatePart2 ,
-			SetPredicate ,
-			SetPredicatePart2 ,
-			TypePredicate ,
-			TypePredicatePart2 ,
-			TypeList ,
-			UserDefinedTypeSpecification ,
-			InclusiveUserDefinedTypeSpecification ,
-			ExclusiveUserDefinedTypeSpecification ,
-			SearchCondition ,
-			IntervalQualifier ,
-			StartField ,
-			EndField ,
-			SingleDatetimeField ,
-			PrimaryDatetimeField ,
-			NonSecondPrimaryDatetimeField ,
-			IntervalFractionalSecondsPrecision ,
-			IntervalLeadingFieldPrecision ,
-			LanguageClause ,
-			LanguageName ,
-			PathSpecification ,
-			SchemaNameList ,
-			RoutineInvocation ,
-			RoutineName ,
-			SQLArgumentList ,
-			SQLArgument ,
-			GeneralizedExpression ,
-			CharacterSetSpecification ,
-			StandardCharacterSetName ,
-			ImplementationDefinedCharacterSetName ,
-			UserDefinedCharacterSetName ,
-			SpecificRoutineDesignator ,
-			RoutineType ,
-			MemberName ,
-			MemberNameAlternatives ,
-			DataTypeList ,
-			CollateClause ,
-			ConstraintNameDefinition ,
-			ConstraintCharacteristics ,
-			ConstraintCheckTime ,
-			AggregateFunction ,
-			GeneralSetFunction ,
-			SetFunctionType ,
-			ComputationalOperation ,
-			SetQuantifier ,
-			FilterClause ,
-			BinarySetFunction ,
-			BinarySetFunctionType ,
-			DependentVariableExpression ,
-			IndependentVariableExpression ,
-			OrderedSetFunction ,
-			HypotheticalSetFunction ,
-			WithinGroupSpecification ,
-			HypotheticalSetFunctionValueExpressionList ,
-			InverseDistributionFunction ,
-			InverseDistributionFunctionArgument ,
-			InverseDistributionFunctionType ,
-			SortSpecificationList ,
-			SortSpecification ,
-			SortKey ,
-			OrderingSpecification ,
-			NullOrdering ,
-			SchemaDefinition ,
-			SchemaCharacterSetOrPath ,
-			SchemaNameClause ,
-			SchemaAuthorizationIdentifier ,
-			SchemaCharacterSetSpecification ,
-			SchemaPathSpecification ,
-			SchemaElement ,
-			DropSchemaStatement ,
-			DropBehavior ,
-			TableDefinition ,
-			TableContentsSource ,
-			TableScope ,
-			GlobalOrLocal ,
-			TableCommitAction ,
-			TableElementList ,
-			TableElement ,
-			SelfReferencingColumnSpecification ,
-			ReferenceGeneration ,
-			SelfReferencingColumnName ,
-			ColumnOptions ,
-			ColumnOptionList ,
-			SubtableClause ,
-			SupertableClause ,
-			SupertableName ,
-			LikeClause ,
-			LikeOptions ,
-			IdentityOption ,
-			ColumnDefaultOption ,
-			AsSubqueryClause ,
-			WithOrWithoutData ,
-			ColumnDefinition ,
-			ColumnConstraintDefinition ,
-			ColumnConstraint ,
-			ReferenceScopeCheck ,
-			ReferenceScopeCheckAction ,
-			IdentityColumnSpecification ,
-			GenerationClause ,
-			GenerationRule ,
-			GenerationExpression ,
-			DefaultClause ,
-			DefaultOption ,
-			TableConstraintDefinition ,
-			TableConstraint ,
-			UniqueConstraintDefinition ,
-			UniqueSpecification ,
-			UniqueColumnList ,
-			ReferentialConstraintDefinition ,
-			ReferencesSpecification ,
-			MatchType ,
-			ReferencingColumns ,
-			ReferencedTableAndColumns ,
-			ReferenceColumnList ,
-			ReferentialTriggeredAction ,
-			UpdateRule ,
-			DeleteRule ,
-			ReferentialAction ,
-			CheckConstraintDefinition ,
-			AlterTableStatement ,
-			AlterTableAction ,
-			AddColumnDefinition ,
-			AlterColumnDefinition ,
-			AlterColumnAction ,
-			SetColumnDefaultClause ,
-			DropColumnDefaultClause ,
-			AddColumnScopeClause ,
-			DropColumnScopeClause ,
-			AlterIdentityColumnSpecification ,
-			AlterIdentityColumnOption ,
-			DropColumnDefinition ,
-			AddTableConstraintDefinition ,
-			DropTableConstraintDefinition ,
-			DropTableStatement ,
-			ViewDefinition ,
-			ViewSpecification ,
-			RegularViewSpecification ,
-			ReferenceableViewSpecification ,
-			SubviewClause ,
-			ViewElementList ,
-			ViewElement ,
-			ViewColumnOption ,
-			LevelsClause ,
-			ViewColumnList ,
-			DropViewStatement ,
-			DomainDefinition ,
-			DomainConstraint ,
-			AlterDomainStatement ,
-			AlterDomainAction ,
-			SetDomainDefaultClause ,
-			DropDomainDefaultClause ,
-			AddDomainConstraintDefinition ,
-			DropDomainConstraintDefinition ,
-			DropDomainStatement ,
-			CharacterSetDefinition ,
-			CharacterSetSource ,
-			DropCharacterSetStatement ,
-			CollationDefinition ,
-			ExistingCollationName ,
-			PadCharacteristic ,
-			DropCollationStatement ,
-			TransliterationDefinition ,
-			SourceCharacterSetSpecification ,
-			TargetCharacterSetSpecification ,
-			TransliterationSource ,
-			ExistingTransliterationName ,
-			TransliterationRoutine ,
-			DropTransliterationStatement ,
-			AssertionDefinition ,
-			DropAssertionStatement ,
-			TriggerDefinition ,
-			TriggerActionTime ,
-			TriggerEvent ,
-			TriggerColumnList ,
-			TriggeredAction ,
-			TriggeredSQLStatement ,
-			OldOrNewValuesAliasList ,
-			OldOrNewValuesAlias ,
-			OldValuesTableAlias ,
-			NewValuesTableAlias ,
-			OldValuesCorrelationName ,
-			NewValuesCorrelationName ,
-			DropTriggerStatement ,
-			UserDefinedTypeDefinition ,
-			UserDefinedTypeBody ,
-			UserDefinedTypeOptionList ,
-			UserDefinedTypeOption ,
-			SubtypeClause ,
-			SupertypeName ,
-			Representation ,
-			MemberList ,
-			Member ,
-			InstantiableClause ,
-			Finality ,
-			ReferenceTypeSpecification ,
-			UserDefinedRepresentation ,
-			DerivedRepresentation ,
-			SystemGeneratedRepresentation ,
-			RefCastOption ,
-			CastToRef ,
-			CastToRefIdentifier ,
-			CastToType ,
-			CastToTypeIdentifier ,
-			ListOfAttributes ,
-			CastOption ,
-			CastToDistinct ,
-			CastToDistinctIdentifier ,
-			CastToSource ,
-			CastToSourceIdentifier ,
-			MethodSpecificationList ,
-			MethodSpecification ,
-			OriginalMethodSpecification ,
-			OverridingMethodSpecification ,
-			PartialMethodSpecification ,
-			SpecificMethodName ,
-			MethodCharacteristics ,
-			MethodCharacteristic ,
-			AttributeDefinition ,
-			AttributeDefault ,
-			AlterTypeStatement ,
-			AlterTypeAction ,
-			AddAttributeDefinition ,
-			DropAttributeDefinition ,
-			AddOriginalMethodSpecification ,
-			AddOverridingMethodSpecification ,
-			DropMethodSpecification ,
-			SpecificMethodSpecificationDesignator ,
-			DropDataTypeStatement ,
-			SQLInvokedRoutine ,
-			SchemaRoutine ,
-			SchemaProcedure ,
-			SchemaFunction ,
-			SQLInvokedProcedure ,
-			SQLInvokedFunction ,
-			SQLParameterDeclarationList ,
-			SQLParameterDeclaration ,
-			ParameterMode ,
-			ParameterType ,
-			LocatorIndication ,
-			FunctionSpecification ,
-			MethodSpecificationDesignator ,
-			RoutineCharacteristics ,
-			RoutineCharacteristic ,
-			SavepointLevelIndication ,
-			DynamicResultSetsCharacteristic ,
-			ParameterStyleClause ,
-			DispatchClause ,
-			ReturnsClause ,
-			ReturnsType ,
-			ReturnsTableType ,
-			TableFunctionColumnList ,
-			TableFunctionColumnListElement ,
-			ResultCast ,
-			ResultCastFromType ,
-			ReturnsDataType ,
-			RoutineBody ,
-			SQLRoutineSpec ,
-			RightsClause ,
-			SQLRoutineBody ,
-			ExternalBodyReference ,
-			ExternalSecurityClause ,
-			ParameterStyle ,
-			DeterministicCharacteristic ,
-			SQLDataAccessIndication ,
-			NullCallClause ,
-			MaximumDynamicResultSets ,
-			TransformGroupSpecification ,
-			SingleGroupSpecification ,
-			MultipleGroupSpecification ,
-			GroupSpecification ,
-			AlterRoutineStatement ,
-			AlterRoutineCharacteristics ,
-			AlterRoutineCharacteristic ,
-			AlterRoutineBehavior ,
-			DropRoutineStatement ,
-			UserDefinedCastDefinition ,
-			CastFunction ,
-			SourceDataType ,
-			TargetDataType ,
-			DropUserDefinedCastStatement ,
-			UserDefinedOrderingDefinition ,
-			OrderingForm ,
-			EqualsOrderingForm ,
-			FullOrderingForm ,
-			OrderingCategory ,
-			RelativeCategory ,
-			MapCategory ,
-			StateCategory ,
-			RelativeFunctionSpecification ,
-			MapFunctionSpecification ,
-			DropUserDefinedOrderingStatement ,
-			TransformDefinition ,
-			TransformGroup ,
-			GroupName ,
-			TransformElementList ,
-			TransformElement ,
-			ToSql ,
-			FromSql ,
-			ToSqlFunction ,
-			FromSqlFunction ,
-			AlterTransformStatement ,
-			AlterGroup ,
-			AlterTransformActionList ,
-			AlterTransformAction ,
-			AddTransformElementList ,
-			DropTransformElementList ,
-			TransformKind ,
-			DropTransformStatement ,
-			TransformsToBeDropped ,
-			TransformGroupElement ,
-			SequenceGeneratorDefinition ,
-			SequenceGeneratorOptions ,
-			SequenceGeneratorOption ,
-			CommonSequenceGeneratorOptions ,
-			CommonSequenceGeneratorOption ,
-			BasicSequenceGeneratorOption ,
-			SequenceGeneratorDataTypeOption ,
-			SequenceGeneratorStartWithOption ,
-			SequenceGeneratorStartValue ,
-			SequenceGeneratorIncrementByOption ,
-			SequenceGeneratorIncrement ,
-			SequenceGeneratorMaxvalueOption ,
-			SequenceGeneratorMaxValue ,
-			SequenceGeneratorMinvalueOption ,
-			SequenceGeneratorMinValue ,
-			SequenceGeneratorCycleOption ,
-			AlterSequenceGeneratorStatement ,
-			AlterSequenceGeneratorOptions ,
-			AlterSequenceGeneratorOption ,
-			AlterSequenceGeneratorRestartOption ,
-			SequenceGeneratorRestartValue ,
-			DropSequenceGeneratorStatement ,
-			GrantStatement ,
-			GrantPrivilegeStatement ,
-			Privileges ,
-			ObjectName ,
-			ObjectPrivileges ,
-			Action ,
-			PrivilegeMethodList ,
-			PrivilegeColumnList ,
-			Grantee ,
-			Grantor ,
-			RoleDefinition ,
-			GrantRoleStatement ,
-			RoleGranted ,
-			DropRoleStatement ,
-			RevokeStatement ,
-			RevokePrivilegeStatement ,
-			RevokeOptionExtension ,
-			RevokeRoleStatement ,
-			RoleRevoked ,
-			SQLClientModuleDefinition ,
-			ModuleAuthorizationClause ,
-			ModuleAuthorizationIdentifier ,
-			ModulePathSpecification ,
-			ModuleTransformGroupSpecification ,
-			ModuleCollations ,
-			ModuleCollationSpecification ,
- 			ModuleContents ,
-			ModuleNameClause ,
-			ModuleCharacterSetSpecification ,
-			ExternallyInvokedProcedure ,
-			HostParameterDeclarationList ,
-			HostParameterDeclaration ,
-			HostParameterDataType ,
-			StatusParameter ,
-			SQLProcedureStatement ,
-			SQLExecutableStatement ,
-			SQLSchemaStatement ,
-			SQLSchemaDefinitionStatement ,
-			SQLSchemaManipulationStatement ,
-			SQLDataStatement ,
-			SQLDataChangeStatement ,
-			SQLControlStatement ,
-			SQLTransactionStatement ,
-			SQLConnectionStatement ,
-			SQLSessionStatement ,
-			SQLDiagnosticsStatement ,
-			SQLDynamicStatement ,
-			SQLDynamicDataStatement ,
-			SystemDescriptorStatement ,
-			DeclareCursor ,
-			CursorSensitivity ,
-			CursorScrollability ,
-			CursorHoldability ,
-			CursorReturnability ,
-			CursorSpecification ,
-			UpdatabilityClause ,
-			OrderByClause ,
-			OpenStatement ,
-			FetchStatement ,
-			FetchOrientation ,
-			FetchTargetList ,
-			CloseStatement ,
-			SelectStatementSingleRow ,
-			SelectTargetList ,
-			DeleteStatementPositioned ,
-			TargetTable ,
-			DeleteStatementSearched ,
-			InsertStatement ,
-			InsertionTarget ,
-			InsertColumnsAndSource ,
-			FromSubquery ,
-			FromConstructor ,
-			OverrideClause ,
-			FromDefault ,
-			InsertColumnList ,
-			MergeStatement ,
-			MergeCorrelationName ,
-			MergeOperationSpecification ,
-			MergeWhenClause ,
-			MergeWhenMatchedClause ,
-			MergeWhenNotMatchedClause ,
-			MergeUpdateSpecification ,
-			MergeInsertSpecification ,
-			MergeInsertValueList ,
-			MergeInsertValueElement ,
-			UpdateStatementPositioned ,
-			UpdateStatementSearched ,
-			SetClauseList ,
-			SetClause ,
-			SetTarget ,
-			MultipleColumnAssignment ,
-			SetTargetList ,
-			AssignedRow ,
-			UpdateTarget ,
-			ObjectColumn ,
-			MutatedSetClause ,
-			MutatedTarget ,
-			UpdateSource ,
-			TemporaryTableDeclaration ,
-			FreeLocatorStatement ,
-			LocatorReference ,
-			HoldLocatorStatement ,
-			CallStatement ,
-			ReturnStatement ,
-			ReturnValue ,
-			StartTransactionStatement ,
-			TransactionMode ,
-			TransactionAccessMode ,
-			IsolationLevel ,
-			LevelOfIsolation ,
-			DiagnosticsSize ,
-			NumberOfConditions ,
-			SetTransactionStatement ,
-			TransactionCharacteristics ,
-			SetConstraintsModeStatement ,
-			ConstraintNameList ,
-			SavepointStatement ,
-			SavepointSpecifier ,
-			ReleaseSavepointStatement ,
-			CommitStatement ,
-			RollbackStatement ,
-			SavepointClause ,
-			ConnectStatement ,
-			ConnectionTarget ,
-			SetConnectionStatement ,
-			ConnectionObject ,
-			DisconnectStatement ,
-			DisconnectObject ,
-			SetSessionCharacteristicsStatement ,
-			SessionCharacteristicList ,
-			SessionCharacteristic ,
-			SetSessionUserIdentifierStatement ,
-			SetRoleStatement ,
-			RoleSpecification ,
-			SetLocalTimeZoneStatement ,
-			SetTimeZoneValue ,
-			SetCatalogStatement ,
-			CatalogNameCharacteristic ,
-			SetSchemaStatement ,
-			SchemaNameCharacteristic ,
-			SetNamesStatement ,
-			CharacterSetNameCharacteristic ,
-			SetPathStatement ,
-			SQLPathCharacteristic ,
-			SetTransformGroupStatement ,
-			TransformGroupCharacteristic ,
-			SetSessionCollationStatement ,
-			CharacterSetSpecificationList ,
-			CollationSpecification ,
-			AllocateDescriptorStatement ,
-			Occurrences ,
-			DeallocateDescriptorStatement ,
-			GetDescriptorStatement ,
-			GetDescriptorInformation ,
-			GetHeaderInformation ,
-			HeaderItemName ,
-			GetItemInformation ,
- 			SimpleTargetSpecification1 ,
-			SimpleTargetSpecification2 ,
-			DescriptorItemName ,
-			SetDescriptorStatement ,
-			SetDescriptorInformation ,
-			SetHeaderInformation ,
-			SetItemInformation ,
-			SimpleValueSpecification1 ,
-			SimpleValueSpecification2 ,
-			ItemNumber ,
-			PrepareStatement ,
-			AttributesSpecification ,
-			AttributesVariable ,
-			SQLStatementVariable ,
-			PreparableStatement ,
-			PreparableSQLDataStatement ,
-			PreparableSQLSchemaStatement ,
-			PreparableSQLTransactionStatement ,
-			PreparableSQLControlStatement ,
-			PreparableSQLSessionStatement ,
-			DynamicSelectStatement ,
-			PreparableImplementationDefinedStatement ,
-			CursorAttributes ,
-			CursorAttribute ,
-			DeallocatePreparedStatement ,
-			DescribeStatement ,
-			DescribeInputStatement ,
-			DescribeOutputStatement ,
-			NestingOption ,
-			UsingDescriptor ,
-			DescribedObject ,
-			InputUsingClause ,
-			UsingArguments ,
-			UsingArgument ,
-			UsingInputDescriptor ,
-			OutputUsingClause ,
-			IntoArguments ,
-			IntoArgument ,
-			IntoDescriptor ,
-			ExecuteStatement ,
-			ResultUsingClause ,
-			ParameterUsingClause ,
-			ExecuteImmediateStatement ,
-			DynamicDeclareCursor ,
-			AllocateCursorStatement ,
-			CursorIntent ,
-			StatementCursor ,
-			ResultSetCursor ,
-			DynamicOpenStatement ,
-			DynamicFetchStatement ,
-			DynamicSingleRowSelectStatement ,
-			DynamicCloseStatement ,
-			DynamicDeleteStatementPositioned ,
-			DynamicUpdateStatementPositioned ,
-			PreparableDynamicDeleteStatementPositioned ,
-			PreparableDynamicUpdateStatementPositioned ,
-			EmbeddedSQLHostProgram ,
-			EmbeddedSQLStatement ,
-			StatementOrDeclaration ,
-			SQLPrefix ,
-			SQLTerminator ,
-			EmbeddedAuthorizationDeclaration ,
-			EmbeddedAuthorizationClause ,
-			EmbeddedAuthorizationIdentifier ,
-			EmbeddedPathSpecification ,
-			EmbeddedTransformGroupSpecification ,
-			EmbeddedCollationSpecification ,
-			EmbeddedSQLDeclareSection ,
-			EmbeddedCharacterSetDeclaration ,
-			EmbeddedSQLBeginDeclare ,
-			EmbeddedSQLEndDeclare ,
-			EmbeddedSQLMUMPSDeclare ,
-			HostVariableDefinition ,
-			EmbeddedVariableName ,
-			HostIdentifier ,
-			EmbeddedExceptionDeclaration ,
-			Condition ,
-			SQLCondition ,
-			MajorCategory ,
-			SQLSTATEClassValue ,
-			SQLSTATESubclassValue ,
-			SQLSTATEChar ,
-			ConditionAction ,
-			GoTo ,
-			GotoTarget ,
-			HostLabelIdentifier ,
-			HostPLILabelVariable ,
-			EmbeddedSQLAdaProgram ,
-			AdaVariableDefinition ,
-			AdaInitialValue ,
-			AdaAssignmentOperator ,
-			AdaHostIdentifier ,
-			AdaTypeSpecification ,
-			AdaQualifiedTypeSpecification ,
-			AdaUnqualifiedTypeSpecification ,
-			AdaDerivedTypeSpecification ,
-			AdaCLOBVariable ,
-			AdaCLOBLocatorVariable ,
-			AdaBLOBVariable ,
-			AdaBLOBLocatorVariable ,
-			AdaUserDefinedTypeVariable ,
-			AdaUserDefinedTypeLocatorVariable ,
-			AdaREFVariable ,
-			AdaArrayLocatorVariable ,
-			AdaMultisetLocatorVariable ,
-			EmbeddedSQLCProgram ,
-			CVariableDefinition ,
-			CVariableSpecification ,
-			CStorageClass ,
-			CClassModifier ,
-			CNumericVariable ,
-			CCharacterVariable ,
-			CCharacterType ,
-			CArraySpecification ,
-			CHostIdentifier ,
-			CDerivedVariable ,
-			CVARCHARVariable ,
-			CNCHARVariable ,
-			CNCHARVARYINGVariable ,
-			CCLOBVariable ,
-			CNCLOBVariable ,
-			CUserDefinedTypeVariable ,
-			CBLOBVariable ,
-			CCLOBLocatorVariable ,
-			CBLOBLocatorVariable ,
-			CArrayLocatorVariable ,
-			CMultisetLocatorVariable ,
-			CUserDefinedTypeLocatorVariable ,
-			CREFVariable ,
-			CInitialValue ,
-			EmbeddedSQLCOBOLProgram ,
-			COBOLVariableDefinition ,
-			COBOLHostIdentifier ,
-			COBOLTypeSpecification ,
-			COBOLDerivedTypeSpecification ,
-			COBOLCharacterType ,
-			COBOLNationalCharacterType ,
-			COBOLCLOBVariable ,
-			COBOLNCLOBVariable ,
-			COBOLBLOBVariable ,
-			COBOLUserDefinedTypeVariable ,
-			COBOLCLOBLocatorVariable ,
-			COBOLBLOBLocatorVariable ,
-			COBOLArrayLocatorVariable ,
-			COBOLMultisetLocatorVariable ,
-			COBOLUserDefinedTypeLocatorVariable ,
-			COBOLREFVariable ,
-			COBOLNumericType ,
-			COBOLNinesSpecification ,
-			COBOLIntegerType ,
-			COBOLBinaryInteger ,
-			COBOLNines ,
-			EmbeddedSQLFortranProgram ,
-			FortranVariableDefinition ,
-			FortranHostIdentifier ,
-			FortranTypeSpecification ,
-			FortranDerivedTypeSpecification ,
-			FortranCLOBVariable ,
-			FortranBLOBVariable ,
-			FortranUserDefinedTypeVariable ,
-			FortranCLOBLocatorVariable ,
-			FortranBLOBLocatorVariable ,
-			FortranUserDefinedTypeLocatorVariable ,
-			FortranArrayLocatorVariable ,
-			FortranMultisetLocatorVariable ,
-			FortranREFVariable ,
-			EmbeddedSQLMUMPSProgram ,
-			MUMPSVariableDefinition ,
-			MUMPSCharacterVariable ,
-			MUMPSHostIdentifier ,
-			MUMPSLengthSpecification ,
-			MUMPSNumericVariable ,
-			MUMPSTypeSpecification ,
-			MUMPSDerivedTypeSpecification ,
-			MUMPSCLOBVariable ,
-			MUMPSBLOBVariable ,
-			MUMPSUserDefinedTypeVariable ,
-			MUMPSCLOBLocatorVariable ,
-			MUMPSBLOBLocatorVariable ,
-			MUMPSUserDefinedTypeLocatorVariable ,
-			MUMPSArrayLocatorVariable ,
-			MUMPSMultisetLocatorVariable ,
-			MUMPSREFVariable ,
-			EmbeddedSQLPascalProgram ,
-			PascalVariableDefinition ,
-			PascalHostIdentifier ,
-			PascalTypeSpecification ,
-			PascalDerivedTypeSpecification ,
-			PascalCLOBVariable ,
-			PascalBLOBVariable ,
-			PascalCLOBLocatorVariable ,
-			PascalUserDefinedTypeVariable ,
-			PascalBLOBLocatorVariable ,
-			PascalUserDefinedTypeLocatorVariable ,
-			PascalArrayLocatorVariable ,
-			PascalMultisetLocatorVariable ,
-			PascalREFVariable ,
-			EmbeddedSQLPLIProgram ,
-			PLIVariableDefinition ,
-			PLIHostIdentifier ,
-			PLITypeSpecification ,
-			PLIDerivedTypeSpecification ,
-			PLICLOBVariable ,
-			PLIBLOBVariable ,
-			PLIUserDefinedTypeVariable ,
-			PLICLOBLocatorVariable ,
-			PLIBLOBLocatorVariable ,
-			PLIUserDefinedTypeLocatorVariable ,
-			PLIArrayLocatorVariable ,
-			PLIMultisetLocatorVariable ,
-			PLIREFVariable ,
-			PLITypeFixedDecimal ,
-			PLITypeFixedBinary ,
-			PLITypeFloatBinary ,
-			DirectSQLStatement ,
-			DirectlyExecutableStatement ,
-			DirectSQLDataStatement ,
-			DirectImplementationDefinedStatement ,
-			DirectSelectStatementMultipleRows ,
-			GetDiagnosticsStatement ,
-			SQLDiagnosticsInformation ,
-			StatementInformation ,
-			StatementInformationItem ,
-			StatementInformationItemName ,
-			ConditionInformation ,
+		RegularIdentifier ,
+		IdentifierBody ,
+		IdentifierPart ,
+		IdentifierStart ,
+		IdentifierExtend ,
+		LargeObjectLengthToken ,
+		Multiplier ,
+		DelimitedIdentifier	,
+		UnicodeDelimitedIdentifier ,
+		UnicodeDelimiterBody ,
+		UnicodeIdentifierPart ,
+		UnicodeEscapeValue ,
+		Unicode4DigitEscapeValue ,
+		Unicode6DigitEscapeValue ,
+		NondoublequoteCharacter ,
+		DoublequoteSymbol ,
+		DelimiterToken ,
+		NotEqualsOperator ,
+		GreaterThanOrEqualsOperator ,
+		LessThanOrEqualsOperator ,
+		ConcatenationOperator , 
+		Separator ,
+		Comment ,
+		SimpleComment ,
+		SimpleCommentIntroducer ,
+		BracketedComment ,
+		BracketedCommentIntroducer ,
+		BracketedCommentTerminator ,
+		BracketedCommentContents ,
+		CommentCharacter ,
+		KeyWord ,
+		NonReservedWord ,
+		ReservedWord ,
+		Literal ,
+		UnsignedLiteral ,
+		GeneralLiteral ,
+		CharacterStringLiteral ,
+		Introducer ,
+		CharacterRepresentation ,
+		NonquoteCharacter ,
+		QuoteSymbol ,
+		NationalCharacterStringLiteral ,
+		UnicodeCharacterStringLiteral ,
+		UnicodeRepresentation ,
+		BinaryStringLiteral ,
+		SignedNumericLiteral ,
+		UnsignedNumericLiteral ,
+		ExactNumericLiteral ,
+		ApproximateNumericLiteral ,
+		Mantissa ,
+		Exponent ,
+		SignedInteger ,
+		DatetimeLiteral ,
+		DateLiteral ,
+		TimeLiteral ,
+		TimestampLiteral ,
+		DateString ,
+		TimeString ,
+		TimestampString ,
+		TimeZoneInterval ,
+		DateValue ,
+		TimeValue ,
+		IntervalLiteral ,
+		IntervalString ,
+		UnquotedDateString ,
+		UnquotedTimeString ,
+		UnquotedTimestampString ,
+		UnquotedIntervalString ,
+		YearMonthLiteral ,
+		DayTimeLiteral ,
+		DayTimeInterval ,
+		TimeInterval ,
+		YearsValue ,
+		MonthsValue ,
+		DaysValue ,
+		HoursValue ,
+		MinutesValue ,
+		SecondsValue ,
+		SecondsIntegerValue ,
+		SecondsFraction ,
+		DatetimeValue ,
+		BooleanLiteral ,
+		Identifier ,
+		ActualIdentifier ,
+		SQLLanguageIdentifier ,
+		SQLLanguageIdentifierStart ,
+		SQLLanguageIdentifierPart ,
+		AuthorizationIdentifier ,
+		TableName ,
+		DomainName ,
+		SchemaName ,
+		CatalogName ,
+		SchemaQualifiedName ,
+		LocalOrSchemaQualifiedName ,
+		LocalOrSchemaQualifier ,
+		QualifiedIdentifier ,
+		ColumnName ,
+		CorrelationName ,
+		QueryName ,
+		SQLClientModuleName ,
+		ProcedureName ,
+		SchemaQualifiedRoutineName ,
+		MethodName ,
+		SpecificName ,
+		CursorName ,
+		LocalQualifiedName ,
+		LocalQualifier ,
+		HostParameterName ,
+		SQLParameterName ,
+		ConstraintName ,
+		ExternalRoutineName ,
+		TriggerName ,
+		CollationName ,
+		CharacterSetName ,
+		TransliterationName ,
+		TranscodingName ,
+		UserDefinedTypeName ,
+		SchemaResolvedUserDefinedTypeName ,
+		SchemaQualifiedTypeName ,
+		AttributeName ,
+		FieldName ,
+		SavepointName ,
+		SequenceGeneratorName ,
+		RoleName ,
+		UserIdentifier ,
+		ConnectionName ,
+		SQLServerName ,
+		ConnectionUserName ,
+		SQLStatementName ,
+		StatementName ,
+		ExtendedStatementName ,
+		DynamicCursorName ,
+		ExtendedCursorName ,
+		DescriptorName ,
+		ScopeOption ,
+		WindowName ,
+		DataType ,
+		PredefinedType ,
+		CharacterStringType ,
+		NationalCharacterStringType ,
+		BinaryLargeObjectStringType ,
+		NumericType ,
+		ExactNumericType ,
+		ApproximateNumericType ,
+		Length ,
+		LargeObjectLength ,
+		CharLengthUnits ,
+		Precision ,
+		Scale ,
+		BooleanType ,
+		DatetimeType ,
+		WithOrWithoutTimeZone ,
+		TimePrecision ,
+		TimestampPrecision ,
+		TimeFractionalSecondsPrecision ,
+		IntervalType ,
+		RowType ,
+		RowTypeBody ,
+		ReferenceType ,
+		ScopeClause ,
+		ReferencedType ,
+		PathResolvedUserDefinedTypeName ,
+		CollectionType ,
+		ArrayType ,
+		MultisetType ,
+		FieldDefinition ,
+		ValueExpressionPrimary ,
+		ParenthesizedValueExpression ,
+		NonparenthesizedValueExpressionPrimary ,
+		ValueSpecification ,
+		UnsignedValueSpecification ,
+		GeneralValueSpecification ,
+		SimpleValueSpecification ,
+		TargetSpecification ,
+		SimpleTargetSpecification ,
+		HostParameterSpecification ,
+		DynamicParameterSpecification ,
+		EmbeddedVariableSpecification ,
+		IndicatorVariable ,
+		IndicatorParameter ,
+		TargetArrayElementSpecification ,
+		TargetArrayReference ,
+		CurrentCollationSpecification ,
+		ContextuallyTypedValueSpecification ,
+		ImplicitlyTypedValueSpecification ,
+		NullSpecification ,
+		EmptySpecification ,
+		DefaultSpecification ,
+		IdentifierChain ,
+		BasicIdentifierChain ,
+		ColumnReference ,
+		SQLParameterReference ,
+		SetFunctionSpecification ,
+		GroupingOperation ,
+		WindowFunction ,
+		WindowFunctionType ,
+		RankFunctionType ,
+		WindowNameOrSpecification ,
+		InLineWindowSpecification ,
+		CaseExpression ,
+		CaseAbbreviation ,
+		CaseSpecification ,
+		SimpleCase ,
+		SearchedCase ,
+		SimpleWhenClause ,
+		SearchedWhenClause ,
+		ElseClause ,
+		CaseOperand ,
+		WhenOperand ,
+		Result ,
+		ResultExpression ,
+		CastSpecification ,
+		CastOperand ,
+		CastTarget ,
+		NextValueExpression ,
+		FieldReference ,
+		SubtypeTreatment ,
+		SubtypeOperand ,
+		TargetSubtype ,
+		MethodInvocation ,
+		DirectInvocation ,
+		GeneralizedInvocation ,
+		MethodSelection ,
+		ConstructorMethodSelection ,
+		StaticMethodInvocation ,
+		StaticMethodSelection ,
+		NewSpecification ,
+		NewInvocation ,
+		AttributeOrMethodReference ,
+		DereferenceOperator ,
+		DereferenceOperation ,
+		MethodReference ,
+		ReferenceResolution ,
+		ArrayElementReference ,
+		MultisetElementReference ,
+		ValueExpression ,
+		CommonValueExpression ,
+		UserDefinedTypeValueExpression ,
+		ReferenceValueExpression ,
+		CollectionValueExpression ,
+		CollectionValueConstructor ,
+		NumericValueExpression ,
+		Term ,
+		Factor ,
+		NumericPrimary ,
+		NumericValueFunction ,
+		PositionExpression ,
+		StringPositionExpression ,
+		BlobPositionExpression ,
+		LengthExpression ,
+		CharLengthExpression ,
+		OctetLengthExpression ,
+		ExtractExpression ,
+		ExtractField ,
+		TimeZoneField ,
+		ExtractSource ,
+		CardinalityExpression ,
+		AbsoluteValueExpression ,
+		ModulusExpression ,
+		NaturalLogarithm ,
+		ExponentialFunction ,
+		PowerFunction ,
+		NumericValueExpressionBase ,
+		NumericValueExpressionExponent ,
+		SquareRoot ,
+		FloorFunction ,
+		CeilingFunction ,
+		WidthBucketFunction ,
+		WidthBucketOperand ,
+		WidthBucketBound1 ,
+		WidthBucketBound2 ,
+		WidthBucketCount ,
+		StringValueExpression ,
+		CharacterValueExpression ,
+		Concatenation ,
+		CharacterFactor ,
+		CharacterPrimary ,
+		BlobValueExpression ,
+		BlobFactor ,
+		BlobPrimary ,
+		BlobConcatenation ,
+		StringValueFunction ,
+		CharacterValueFunction ,
+		CharacterSubstringFunction ,
+		RegularExpressionSubstringFunction ,
+		Fold ,
+		Transcoding ,
+		CharacterTransliteration ,
+		TrimFunction ,
+		TrimOperands ,
+		TrimSource ,
+		TrimSpecification ,
+		TrimCharacter ,
+		CharacterOverlayFunction ,
+		NormalizeFunction ,
+		SpecificTypeMethod ,
+		BlobValueFunction ,
+		BlobSubstringFunction ,
+		BlobTrimFunction ,
+		BlobTrimOperands ,
+		BlobTrimSource ,
+		TrimOctet ,
+		BlobOverlayFunction ,
+		StartPosition ,
+		StringLength ,
+		DatetimeValueExpression ,
+		DatetimeTerm ,
+		DatetimeFactor ,
+		DatetimePrimary ,
+		TimeZone ,
+		TimeZoneSpecifier ,
+		DatetimeValueFunction ,
+		CurrentDateValueFunction ,
+		CurrentTimeValueFunction ,
+		CurrentLocalTimeValueFunction ,
+		CurrentTimestampValueFunction ,
+		CurrentLocalTimestampValueFunction ,
+		IntervalValueExpression ,
+		IntervalTerm ,
+		IntervalFactor ,
+		IntervalPrimary ,
+		IntervalValueExpression1 ,
+		IntervalTerm1 ,
+		IntervalTerm2 ,
+		IntervalValueFunction ,
+		IntervalAbsoluteValueFunction ,
+		BooleanValueExpression ,
+		BooleanTerm ,
+		BooleanFactor ,
+		BooleanTest ,
+		TruthValue ,
+		BooleanPrimary ,
+		BooleanPredicand ,
+		ParenthesizedBooleanValueExpression ,
+		ArrayValueExpression ,
+		ArrayConcatenation ,
+		ArrayValueExpression1 ,
+		ArrayFactor ,
+		ArrayValueConstructor ,
+		ArrayValueConstructorByEnumeration ,
+		ArrayElementList ,
+		ArrayElement ,
+		ArrayValueConstructorByQuery ,
+		MultisetValueExpression ,
+		MultisetTerm ,
+		MultisetPrimary ,
+		MultisetValueFunction ,
+		MultisetSetFunction ,
+		MultisetValueConstructor ,
+		MultisetValueConstructorByEnumeration ,
+		MultisetElementList ,
+		MultisetElement ,
+		MultisetValueConstructorByQuery ,
+		TableValueConstructorByQuery ,
+		RowValueConstructor ,
+		ExplicitRowValueConstructor ,
+		RowValueConstructorElementList ,
+		RowValueConstructorElement ,
+		ContextuallyTypedRowValueConstructor ,
+		ContextuallyTypedRowValueConstructorElementList ,
+		ContextuallyTypedRowValueConstructorElement ,
+		RowValueConstructorPredicand ,
+		RowValueExpression ,
+		TableRowValueExpression ,
+		ContextuallyTypedRowValueExpression ,
+		RowValuePredicand ,
+		RowValueSpecialCase ,
+		TableValueConstructor ,
+		RowValueExpressionList ,
+		ContextuallyTypedTableValueConstructor ,
+		ContextuallyTypedRowValueExpressionList ,
+		TableExpression ,
+		FromClause ,
+		TableReferenceList ,
+		TableReference ,
+		TablePrimaryOrJoinedTable ,
+		SampleClause ,
+		SampleMethod ,
+		RepeatableClause ,
+		SamplePercentage ,
+		RepeatArgument ,
+		TablePrimary ,
+		OnlySpec ,
+		LateralDerivedTable ,
+		CollectionDerivedTable ,
+		TableFunctionDerivedTable ,
+		DerivedTable ,
+		TableOrQueryName ,
+		DerivedColumnList ,
+		ColumnNameList ,
+		JoinedTable ,
+		CrossJoin ,
+		QualifiedJoin ,
+		NaturalJoin ,
+		UnionJoin ,
+		JoinSpecification ,
+		JoinCondition ,
+		NamedColumnsJoin ,
+		JoinType ,
+		OuterJoinType ,
+		JoinColumnList ,
+		WhereClause ,
+		GroupByClause ,
+		GroupingElementList ,
+		GroupingElement ,
+		OrdinaryGroupingSet ,
+		GroupingColumnReference ,
+		GroupingColumnReferenceList ,
+		RollupList ,
+		OrdinaryGroupingSetList ,
+		CubeList ,
+		GroupingSetsSpecification ,
+		GroupingSetList ,
+		GroupingSet ,
+		EmptyGroupingSet ,
+		HavingClause ,
+		WindowClause ,
+		WindowDefinitionList ,
+		WindowDefinition ,
+		NewWindowName ,
+		WindowSpecification ,
+		WindowSpecificationDetails ,
+		ExistingWindowName ,
+		WindowPartitionClause ,
+		WindowPartitionColumnReferenceList ,
+		WindowPartitionColumnReference ,
+		WindowOrderClause ,
+		WindowFrameClause ,
+		WindowFrameUnits ,
+		WindowFrameExtent ,
+		WindowFrameStart ,
+		WindowFramePreceding ,
+		WindowFrameBetween ,
+		WindowFrameBound1 ,
+		WindowFrameBound2 ,
+		WindowFrameBound ,
+		WindowFrameFollowing ,
+		WindowFrameExclusion ,
+		QuerySpecification ,
+		SelectList ,
+		SelectSublist ,
+		QualifiedAsterisk ,
+		AsteriskedIdentifierChain ,
+		AsteriskedIdentifier ,
+		DerivedColumn ,
+		AsClause ,
+		AllFieldsReference ,
+		AllFieldsColumnNameList ,
+		QueryExpression ,
+		WithClause ,
+		WithList ,
+		WithListElement ,
+		WithColumnList ,
+		QueryExpressionBody ,
+		NonJoinQueryExpression ,
+		QueryTerm ,
+		NonJoinQueryTerm ,
+		QueryPrimary ,
+		NonJoinQueryPrimary ,
+		SimpleTable ,
+		ExplicitTable ,
+		CorrespondingSpec ,
+		CorrespondingColumnList ,
+		SearchOrCycleClause ,
+		SearchClause ,
+		RecursiveSearchOrder ,
+		SequenceColumn ,
+		CycleClause ,
+		CycleColumnList ,
+		CycleColumn ,
+		CycleMarkColumn ,
+		PathColumn ,
+		CycleMarkValue ,
+		NonCycleMarkValue ,
+		ScalarSubquery ,
+		RowSubquery ,
+		TableSubquery ,
+		Subquery ,
+		Predicate ,
+		ComparisonPredicate ,
+		ComparisonPredicatePart2 ,
+		CompOp ,
+		BetweenPredicate ,
+		BetweenPredicatePart2 ,
+		InPredicate ,
+		InPredicatePart2 ,
+		InPredicateValue ,
+		InValueList ,
+		LikePredicate ,
+		CharacterLikePredicate ,
+		CharacterLikePredicatePart2 ,
+		CharacterPattern ,
+		EscapeCharacter ,
+		OctetLikePredicate ,
+		OctetLikePredicatePart2 ,
+		OctetPattern ,
+		EscapeOctet ,
+		SimilarPredicate ,
+		SimilarPredicatePart2 ,
+		SimilarPattern ,
+		RegularExpression ,
+		RegularTerm ,
+		RegularFactor ,
+		RepeatFactor ,
+		UpperLimit ,
+		LowValue ,
+		HighValue ,
+		RegularPrimary ,
+		CharacterSpecifier ,
+		NonEscapedCharacter ,
+		EscapedCharacter ,
+		RegularCharacterSet ,
+		CharacterEnumerationInclude ,
+		CharacterEnumerationExclude ,
+		CharacterEnumeration ,
+		RegularCharacterSetIdentifier ,
+		NullPredicate ,
+		NullPredicatePart2 ,
+		QuantifiedComparisonPredicate ,
+		QuantifiedComparisonPredicatePart2 ,
+		Quantifier ,
+		All ,
+		Some ,
+		ExistsPredicate ,
+		UniquePredicate ,
+		NormalizedPredicate ,
+		MatchPredicate ,
+		MatchPredicatePart2 ,
+		OverlapsPredicate ,
+		OverlapsPredicatePart1 ,
+		OverlapsPredicatePart2 ,
+		RowValuePredicand1 ,
+		RowValuePredicand2 ,
+		DistinctPredicate ,
+		DistinctPredicatePart2 ,
+		RowValuePredicand3 ,
+		RowValuePredicand4 ,
+		MemberPredicate ,
+		MemberPredicatePart2 ,
+		SubmultisetPredicate ,
+		SubmultisetPredicatePart2 ,
+		SetPredicate ,
+		SetPredicatePart2 ,
+		TypePredicate ,
+		TypePredicatePart2 ,
+		TypeList ,
+		UserDefinedTypeSpecification ,
+		InclusiveUserDefinedTypeSpecification ,
+		ExclusiveUserDefinedTypeSpecification ,
+		SearchCondition ,
+		IntervalQualifier ,
+		StartField ,
+		EndField ,
+		SingleDatetimeField ,
+		PrimaryDatetimeField ,
+		NonSecondPrimaryDatetimeField ,
+		IntervalFractionalSecondsPrecision ,
+		IntervalLeadingFieldPrecision ,
+		LanguageClause ,
+		LanguageName ,
+		PathSpecification ,
+		SchemaNameList ,
+		RoutineInvocation ,
+		RoutineName ,
+		SQLArgumentList ,
+		SQLArgument ,
+		GeneralizedExpression ,
+		CharacterSetSpecification ,
+		StandardCharacterSetName ,
+		ImplementationDefinedCharacterSetName ,
+		UserDefinedCharacterSetName ,
+		SpecificRoutineDesignator ,
+		RoutineType ,
+		MemberName ,
+		MemberNameAlternatives ,
+		DataTypeList ,
+		CollateClause ,
+		ConstraintNameDefinition ,
+		ConstraintCharacteristics ,
+		ConstraintCheckTime ,
+		AggregateFunction ,
+		GeneralSetFunction ,
+		SetFunctionType ,
+		ComputationalOperation ,
+		SetQuantifier ,
+		FilterClause ,
+		BinarySetFunction ,
+		BinarySetFunctionType ,
+		DependentVariableExpression ,
+		IndependentVariableExpression ,
+		OrderedSetFunction ,
+		HypotheticalSetFunction ,
+		WithinGroupSpecification ,
+		HypotheticalSetFunctionValueExpressionList ,
+		InverseDistributionFunction ,
+		InverseDistributionFunctionArgument ,
+		InverseDistributionFunctionType ,
+		SortSpecificationList ,
+		SortSpecification ,
+		SortKey ,
+		OrderingSpecification ,
+		NullOrdering ,
+		SchemaDefinition ,
+		SchemaCharacterSetOrPath ,
+		SchemaNameClause ,
+		SchemaAuthorizationIdentifier ,
+		SchemaCharacterSetSpecification ,
+		SchemaPathSpecification ,
+		SchemaElement ,
+		DropSchemaStatement ,
+		DropBehavior ,
+		TableDefinition ,
+		TableContentsSource ,
+		TableScope ,
+		GlobalOrLocal ,
+		TableCommitAction ,
+		TableElementList ,
+		TableElement ,
+		SelfReferencingColumnSpecification ,
+		ReferenceGeneration ,
+		SelfReferencingColumnName ,
+		ColumnOptions ,
+		ColumnOptionList ,
+		SubtableClause ,
+		SupertableClause ,
+		SupertableName ,
+		LikeClause ,
+		LikeOptions ,
+		IdentityOption ,
+		ColumnDefaultOption ,
+		AsSubqueryClause ,
+		WithOrWithoutData ,
+		ColumnDefinition ,
+		ColumnConstraintDefinition ,
+		ColumnConstraint ,
+		ReferenceScopeCheck ,
+		ReferenceScopeCheckAction ,
+		IdentityColumnSpecification ,
+		GenerationClause ,
+		GenerationRule ,
+		GenerationExpression ,
+		DefaultClause ,
+		DefaultOption ,
+		TableConstraintDefinition ,
+		TableConstraint ,
+		UniqueConstraintDefinition ,
+		UniqueSpecification ,
+		UniqueColumnList ,
+		ReferentialConstraintDefinition ,
+		ReferencesSpecification ,
+		MatchType ,
+		ReferencingColumns ,
+		ReferencedTableAndColumns ,
+		ReferenceColumnList ,
+		ReferentialTriggeredAction ,
+		UpdateRule ,
+		DeleteRule ,
+		ReferentialAction ,
+		CheckConstraintDefinition ,
+		AlterTableStatement ,
+		AlterTableAction ,
+		AddColumnDefinition ,
+		AlterColumnDefinition ,
+		AlterColumnAction ,
+		SetColumnDefaultClause ,
+		DropColumnDefaultClause ,
+		AddColumnScopeClause ,
+		DropColumnScopeClause ,
+		AlterIdentityColumnSpecification ,
+		AlterIdentityColumnOption ,
+		DropColumnDefinition ,
+		AddTableConstraintDefinition ,
+		DropTableConstraintDefinition ,
+		DropTableStatement ,
+		ViewDefinition ,
+		ViewSpecification ,
+		RegularViewSpecification ,
+		ReferenceableViewSpecification ,
+		SubviewClause ,
+		ViewElementList ,
+		ViewElement ,
+		ViewColumnOption ,
+		LevelsClause ,
+		ViewColumnList ,
+		DropViewStatement ,
+		DomainDefinition ,
+		DomainConstraint ,
+		AlterDomainStatement ,
+		AlterDomainAction ,
+		SetDomainDefaultClause ,
+		DropDomainDefaultClause ,
+		AddDomainConstraintDefinition ,
+		DropDomainConstraintDefinition ,
+		DropDomainStatement ,
+		CharacterSetDefinition ,
+		CharacterSetSource ,
+		DropCharacterSetStatement ,
+		CollationDefinition ,
+		ExistingCollationName ,
+		PadCharacteristic ,
+		DropCollationStatement ,
+		TransliterationDefinition ,
+		SourceCharacterSetSpecification ,
+		TargetCharacterSetSpecification ,
+		TransliterationSource ,
+		ExistingTransliterationName ,
+		TransliterationRoutine ,
+		DropTransliterationStatement ,
+		AssertionDefinition ,
+		DropAssertionStatement ,
+		TriggerDefinition ,
+		TriggerActionTime ,
+		TriggerEvent ,
+		TriggerColumnList ,
+		TriggeredAction ,
+		TriggeredSQLStatement ,
+		OldOrNewValuesAliasList ,
+		OldOrNewValuesAlias ,
+		OldValuesTableAlias ,
+		NewValuesTableAlias ,
+		OldValuesCorrelationName ,
+		NewValuesCorrelationName ,
+		DropTriggerStatement ,
+		UserDefinedTypeDefinition ,
+		UserDefinedTypeBody ,
+		UserDefinedTypeOptionList ,
+		UserDefinedTypeOption ,
+		SubtypeClause ,
+		SupertypeName ,
+		Representation ,
+		MemberList ,
+		Member ,
+		InstantiableClause ,
+		Finality ,
+		ReferenceTypeSpecification ,
+		UserDefinedRepresentation ,
+		DerivedRepresentation ,
+		SystemGeneratedRepresentation ,
+		RefCastOption ,
+		CastToRef ,
+		CastToRefIdentifier ,
+		CastToType ,
+		CastToTypeIdentifier ,
+		ListOfAttributes ,
+		CastOption ,
+		CastToDistinct ,
+		CastToDistinctIdentifier ,
+		CastToSource ,
+		CastToSourceIdentifier ,
+		MethodSpecificationList ,
+		MethodSpecification ,
+		OriginalMethodSpecification ,
+		OverridingMethodSpecification ,
+		PartialMethodSpecification ,
+		SpecificMethodName ,
+		MethodCharacteristics ,
+		MethodCharacteristic ,
+		AttributeDefinition ,
+		AttributeDefault ,
+		AlterTypeStatement ,
+		AlterTypeAction ,
+		AddAttributeDefinition ,
+		DropAttributeDefinition ,
+		AddOriginalMethodSpecification ,
+		AddOverridingMethodSpecification ,
+		DropMethodSpecification ,
+		SpecificMethodSpecificationDesignator ,
+		DropDataTypeStatement ,
+		SQLInvokedRoutine ,
+		SchemaRoutine ,
+		SchemaProcedure ,
+		SchemaFunction ,
+		SQLInvokedProcedure ,
+		SQLInvokedFunction ,
+		SQLParameterDeclarationList ,
+		SQLParameterDeclaration ,
+		ParameterMode ,
+		ParameterType ,
+		LocatorIndication ,
+		FunctionSpecification ,
+		MethodSpecificationDesignator ,
+		RoutineCharacteristics ,
+		RoutineCharacteristic ,
+		SavepointLevelIndication ,
+		DynamicResultSetsCharacteristic ,
+		ParameterStyleClause ,
+		DispatchClause ,
+		ReturnsClause ,
+		ReturnsType ,
+		ReturnsTableType ,
+		TableFunctionColumnList ,
+		TableFunctionColumnListElement ,
+		ResultCast ,
+		ResultCastFromType ,
+		ReturnsDataType ,
+		RoutineBody ,
+		SQLRoutineSpec ,
+		RightsClause ,
+		SQLRoutineBody ,
+		ExternalBodyReference ,
+		ExternalSecurityClause ,
+		ParameterStyle ,
+		DeterministicCharacteristic ,
+		SQLDataAccessIndication ,
+		NullCallClause ,
+		MaximumDynamicResultSets ,
+		TransformGroupSpecification ,
+		SingleGroupSpecification ,
+		MultipleGroupSpecification ,
+		GroupSpecification ,
+		AlterRoutineStatement ,
+		AlterRoutineCharacteristics ,
+		AlterRoutineCharacteristic ,
+		AlterRoutineBehavior ,
+		DropRoutineStatement ,
+		UserDefinedCastDefinition ,
+		CastFunction ,
+		SourceDataType ,
+		TargetDataType ,
+		DropUserDefinedCastStatement ,
+		UserDefinedOrderingDefinition ,
+		OrderingForm ,
+		EqualsOrderingForm ,
+		FullOrderingForm ,
+		OrderingCategory ,
+		RelativeCategory ,
+		MapCategory ,
+		StateCategory ,
+		RelativeFunctionSpecification ,
+		MapFunctionSpecification ,
+		DropUserDefinedOrderingStatement ,
+		TransformDefinition ,
+		TransformGroup ,
+		GroupName ,
+		TransformElementList ,
+		TransformElement ,
+		ToSql ,
+		FromSql ,
+		ToSqlFunction ,
+		FromSqlFunction ,
+		AlterTransformStatement ,
+		AlterGroup ,
+		AlterTransformActionList ,
+		AlterTransformAction ,
+		AddTransformElementList ,
+		DropTransformElementList ,
+		TransformKind ,
+		DropTransformStatement ,
+		TransformsToBeDropped ,
+		TransformGroupElement ,
+		SequenceGeneratorDefinition ,
+		SequenceGeneratorOptions ,
+		SequenceGeneratorOption ,
+		CommonSequenceGeneratorOptions ,
+		CommonSequenceGeneratorOption ,
+		BasicSequenceGeneratorOption ,
+		SequenceGeneratorDataTypeOption ,
+		SequenceGeneratorStartWithOption ,
+		SequenceGeneratorStartValue ,
+		SequenceGeneratorIncrementByOption ,
+		SequenceGeneratorIncrement ,
+		SequenceGeneratorMaxvalueOption ,
+		SequenceGeneratorMaxValue ,
+		SequenceGeneratorMinvalueOption ,
+		SequenceGeneratorMinValue ,
+		SequenceGeneratorCycleOption ,
+		AlterSequenceGeneratorStatement ,
+		AlterSequenceGeneratorOptions ,
+		AlterSequenceGeneratorOption ,
+		AlterSequenceGeneratorRestartOption ,
+		SequenceGeneratorRestartValue ,
+		DropSequenceGeneratorStatement ,
+		GrantStatement ,
+		GrantPrivilegeStatement ,
+		Privileges ,
+		ObjectName ,
+		ObjectPrivileges ,
+		Action ,
+		PrivilegeMethodList ,
+		PrivilegeColumnList ,
+		Grantee ,
+		Grantor ,
+		RoleDefinition ,
+		GrantRoleStatement ,
+		RoleGranted ,
+		DropRoleStatement ,
+		RevokeStatement ,
+		RevokePrivilegeStatement ,
+		RevokeOptionExtension ,
+		RevokeRoleStatement ,
+		RoleRevoked ,
+		SQLClientModuleDefinition ,
+		ModuleAuthorizationClause ,
+		ModuleAuthorizationIdentifier ,
+		ModulePathSpecification ,
+		ModuleTransformGroupSpecification ,
+		ModuleCollations ,
+		ModuleCollationSpecification ,
+		ModuleContents ,
+		ModuleNameClause ,
+		ModuleCharacterSetSpecification ,
+		ExternallyInvokedProcedure ,
+		HostParameterDeclarationList ,
+		HostParameterDeclaration ,
+		HostParameterDataType ,
+		StatusParameter ,
+		SQLProcedureStatement ,
+		SQLExecutableStatement ,
+		SQLSchemaStatement ,
+		SQLSchemaDefinitionStatement ,
+		SQLSchemaManipulationStatement ,
+		SQLDataStatement ,
+		SQLDataChangeStatement ,
+		SQLControlStatement ,
+		SQLTransactionStatement ,
+		SQLConnectionStatement ,
+		SQLSessionStatement ,
+		SQLDiagnosticsStatement ,
+		SQLDynamicStatement ,
+		SQLDynamicDataStatement ,
+		SystemDescriptorStatement ,
+		DeclareCursor ,
+		CursorSensitivity ,
+		CursorScrollability ,
+		CursorHoldability ,
+		CursorReturnability ,
+		CursorSpecification ,
+		UpdatabilityClause ,
+		OrderByClause ,
+		OpenStatement ,
+		FetchStatement ,
+		FetchOrientation ,
+		FetchTargetList ,
+		CloseStatement ,
+		SelectStatementSingleRow ,
+		SelectTargetList ,
+		DeleteStatementPositioned ,
+		TargetTable ,
+		DeleteStatementSearched ,
+		InsertStatement ,
+		InsertionTarget ,
+		InsertColumnsAndSource ,
+		FromSubquery ,
+		FromConstructor ,
+		OverrideClause ,
+		FromDefault ,
+		InsertColumnList ,
+		MergeStatement ,
+		MergeCorrelationName ,
+		MergeOperationSpecification ,
+		MergeWhenClause ,
+		MergeWhenMatchedClause ,
+		MergeWhenNotMatchedClause ,
+		MergeUpdateSpecification ,
+		MergeInsertSpecification ,
+		MergeInsertValueList ,
+		MergeInsertValueElement ,
+		UpdateStatementPositioned ,
+		UpdateStatementSearched ,
+		SetClauseList ,
+		SetClause ,
+		SetTarget ,
+		MultipleColumnAssignment ,
+		SetTargetList ,
+		AssignedRow ,
+		UpdateTarget ,
+		ObjectColumn ,
+		MutatedSetClause ,
+		MutatedTarget ,
+		UpdateSource ,
+		TemporaryTableDeclaration ,
+		FreeLocatorStatement ,
+		LocatorReference ,
+		HoldLocatorStatement ,
+		CallStatement ,
+		ReturnStatement ,
+		ReturnValue ,
+		StartTransactionStatement ,
+		TransactionMode ,
+		TransactionAccessMode ,
+		IsolationLevel ,
+		LevelOfIsolation ,
+		DiagnosticsSize ,
+		NumberOfConditions ,
+		SetTransactionStatement ,
+		TransactionCharacteristics ,
+		SetConstraintsModeStatement ,
+		ConstraintNameList ,
+		SavepointStatement ,
+		SavepointSpecifier ,
+		ReleaseSavepointStatement ,
+		CommitStatement ,
+		RollbackStatement ,
+		SavepointClause ,
+		ConnectStatement ,
+		ConnectionTarget ,
+		SetConnectionStatement ,
+		ConnectionObject ,
+		DisconnectStatement ,
+		DisconnectObject ,
+		SetSessionCharacteristicsStatement ,
+		SessionCharacteristicList ,
+		SessionCharacteristic ,
+		SetSessionUserIdentifierStatement ,
+		SetRoleStatement ,
+		RoleSpecification ,
+		SetLocalTimeZoneStatement ,
+		SetTimeZoneValue ,
+		SetCatalogStatement ,
+		CatalogNameCharacteristic ,
+		SetSchemaStatement ,
+		SchemaNameCharacteristic ,
+		SetNamesStatement ,
+		CharacterSetNameCharacteristic ,
+		SetPathStatement ,
+		SQLPathCharacteristic ,
+		SetTransformGroupStatement ,
+		TransformGroupCharacteristic ,
+		SetSessionCollationStatement ,
+		CharacterSetSpecificationList ,
+		CollationSpecification ,
+		AllocateDescriptorStatement ,
+		Occurrences ,
+		DeallocateDescriptorStatement ,
+		GetDescriptorStatement ,
+		GetDescriptorInformation ,
+		GetHeaderInformation ,
+		HeaderItemName ,
+		GetItemInformation ,
+		SimpleTargetSpecification1 ,
+		SimpleTargetSpecification2 ,
+		DescriptorItemName ,
+		SetDescriptorStatement ,
+		SetDescriptorInformation ,
+		SetHeaderInformation ,
+		SetItemInformation ,
+		SimpleValueSpecification1 ,
+		SimpleValueSpecification2 ,
+		ItemNumber ,
+		PrepareStatement ,
+		AttributesSpecification ,
+		AttributesVariable ,
+		SQLStatementVariable ,
+		PreparableStatement ,
+		PreparableSQLDataStatement ,
+		PreparableSQLSchemaStatement ,
+		PreparableSQLTransactionStatement ,
+		PreparableSQLControlStatement ,
+		PreparableSQLSessionStatement ,
+		DynamicSelectStatement ,
+		PreparableImplementationDefinedStatement ,
+		CursorAttributes ,
+		CursorAttribute ,
+		DeallocatePreparedStatement ,
+		DescribeStatement ,
+		DescribeInputStatement ,
+		DescribeOutputStatement ,
+		NestingOption ,
+		UsingDescriptor ,
+		DescribedObject ,
+		InputUsingClause ,
+		UsingArguments ,
+		UsingArgument ,
+		UsingInputDescriptor ,
+		OutputUsingClause ,
+		IntoArguments ,
+		IntoArgument ,
+		IntoDescriptor ,
+		ExecuteStatement ,
+		ResultUsingClause ,
+		ParameterUsingClause ,
+		ExecuteImmediateStatement ,
+		DynamicDeclareCursor ,
+		AllocateCursorStatement ,
+		CursorIntent ,
+		StatementCursor ,
+		ResultSetCursor ,
+		DynamicOpenStatement ,
+		DynamicFetchStatement ,
+		DynamicSingleRowSelectStatement ,
+		DynamicCloseStatement ,
+		DynamicDeleteStatementPositioned ,
+		DynamicUpdateStatementPositioned ,
+		PreparableDynamicDeleteStatementPositioned ,
+		PreparableDynamicUpdateStatementPositioned ,
+		EmbeddedSQLHostProgram ,
+		EmbeddedSQLStatement ,
+		StatementOrDeclaration ,
+		SQLPrefix ,
+		SQLTerminator ,
+		EmbeddedAuthorizationDeclaration ,
+		EmbeddedAuthorizationClause ,
+		EmbeddedAuthorizationIdentifier ,
+		EmbeddedPathSpecification ,
+		EmbeddedTransformGroupSpecification ,
+		EmbeddedCollationSpecification ,
+		EmbeddedSQLDeclareSection ,
+		EmbeddedCharacterSetDeclaration ,
+		EmbeddedSQLBeginDeclare ,
+		EmbeddedSQLEndDeclare ,
+		EmbeddedSQLMUMPSDeclare ,
+		HostVariableDefinition ,
+		EmbeddedVariableName ,
+		HostIdentifier ,
+		EmbeddedExceptionDeclaration ,
+		Condition ,
+		SQLCondition ,
+		MajorCategory ,
+		SQLSTATEClassValue ,
+		SQLSTATESubclassValue ,
+		SQLSTATEChar ,
+		ConditionAction ,
+		GoTo ,
+		GotoTarget ,
+		HostLabelIdentifier ,
+		HostPLILabelVariable ,
+		EmbeddedSQLAdaProgram ,
+		AdaVariableDefinition ,
+		AdaInitialValue ,
+		AdaAssignmentOperator ,
+		AdaHostIdentifier ,
+		AdaTypeSpecification ,
+		AdaQualifiedTypeSpecification ,
+		AdaUnqualifiedTypeSpecification ,
+		AdaDerivedTypeSpecification ,
+		AdaCLOBVariable ,
+		AdaCLOBLocatorVariable ,
+		AdaBLOBVariable ,
+		AdaBLOBLocatorVariable ,
+		AdaUserDefinedTypeVariable ,
+		AdaUserDefinedTypeLocatorVariable ,
+		AdaREFVariable ,
+		AdaArrayLocatorVariable ,
+		AdaMultisetLocatorVariable ,
+		EmbeddedSQLCProgram ,
+		CVariableDefinition ,
+		CVariableSpecification ,
+		CStorageClass ,
+		CClassModifier ,
+		CNumericVariable ,
+		CCharacterVariable ,
+		CCharacterType ,
+		CArraySpecification ,
+		CHostIdentifier ,
+		CDerivedVariable ,
+		CVARCHARVariable ,
+		CNCHARVariable ,
+		CNCHARVARYINGVariable ,
+		CCLOBVariable ,
+		CNCLOBVariable ,
+		CUserDefinedTypeVariable ,
+		CBLOBVariable ,
+		CCLOBLocatorVariable ,
+		CBLOBLocatorVariable ,
+		CArrayLocatorVariable ,
+		CMultisetLocatorVariable ,
+		CUserDefinedTypeLocatorVariable ,
+		CREFVariable ,
+		CInitialValue ,
+		EmbeddedSQLCOBOLProgram ,
+		COBOLVariableDefinition ,
+		COBOLHostIdentifier ,
+		COBOLTypeSpecification ,
+		COBOLDerivedTypeSpecification ,
+		COBOLCharacterType ,
+		COBOLNationalCharacterType ,
+		COBOLCLOBVariable ,
+		COBOLNCLOBVariable ,
+		COBOLBLOBVariable ,
+		COBOLUserDefinedTypeVariable ,
+		COBOLCLOBLocatorVariable ,
+		COBOLBLOBLocatorVariable ,
+		COBOLArrayLocatorVariable ,
+		COBOLMultisetLocatorVariable ,
+		COBOLUserDefinedTypeLocatorVariable ,
+		COBOLREFVariable ,
+		COBOLNumericType ,
+		COBOLNinesSpecification ,
+		COBOLIntegerType ,
+		COBOLBinaryInteger ,
+		COBOLNines ,
+		EmbeddedSQLFortranProgram ,
+		FortranVariableDefinition ,
+		FortranHostIdentifier ,
+		FortranTypeSpecification ,
+		FortranDerivedTypeSpecification ,
+		FortranCLOBVariable ,
+		FortranBLOBVariable ,
+		FortranUserDefinedTypeVariable ,
+		FortranCLOBLocatorVariable ,
+		FortranBLOBLocatorVariable ,
+		FortranUserDefinedTypeLocatorVariable ,
+		FortranArrayLocatorVariable ,
+		FortranMultisetLocatorVariable ,
+		FortranREFVariable ,
+		EmbeddedSQLMUMPSProgram ,
+		MUMPSVariableDefinition ,
+		MUMPSCharacterVariable ,
+		MUMPSHostIdentifier ,
+		MUMPSLengthSpecification ,
+		MUMPSNumericVariable ,
+		MUMPSTypeSpecification ,
+		MUMPSDerivedTypeSpecification ,
+		MUMPSCLOBVariable ,
+		MUMPSBLOBVariable ,
+		MUMPSUserDefinedTypeVariable ,
+		MUMPSCLOBLocatorVariable ,
+		MUMPSBLOBLocatorVariable ,
+		MUMPSUserDefinedTypeLocatorVariable ,
+		MUMPSArrayLocatorVariable ,
+		MUMPSMultisetLocatorVariable ,
+		MUMPSREFVariable ,
+		EmbeddedSQLPascalProgram ,
+		PascalVariableDefinition ,
+		PascalHostIdentifier ,
+		PascalTypeSpecification ,
+		PascalDerivedTypeSpecification ,
+		PascalCLOBVariable ,
+		PascalBLOBVariable ,
+		PascalCLOBLocatorVariable ,
+		PascalUserDefinedTypeVariable ,
+		PascalBLOBLocatorVariable ,
+		PascalUserDefinedTypeLocatorVariable ,
+		PascalArrayLocatorVariable ,
+		PascalMultisetLocatorVariable ,
+		PascalREFVariable ,
+		EmbeddedSQLPLIProgram ,
+		PLIVariableDefinition ,
+		PLIHostIdentifier ,
+		PLITypeSpecification ,
+		PLIDerivedTypeSpecification ,
+		PLICLOBVariable ,
+		PLIBLOBVariable ,
+		PLIUserDefinedTypeVariable ,
+		PLICLOBLocatorVariable ,
+		PLIBLOBLocatorVariable ,
+		PLIUserDefinedTypeLocatorVariable ,
+		PLIArrayLocatorVariable ,
+		PLIMultisetLocatorVariable ,
+		PLIREFVariable ,
+		PLITypeFixedDecimal ,
+		PLITypeFixedBinary ,
+		PLITypeFloatBinary ,
+		DirectSQLStatement ,
+		DirectlyExecutableStatement ,
+		DirectSQLDataStatement ,
+		DirectImplementationDefinedStatement ,
+		DirectSelectStatementMultipleRows ,
+		GetDiagnosticsStatement ,
+		SQLDiagnosticsInformation ,
+		StatementInformation ,
+		StatementInformationItem ,
+		StatementInformationItemName ,
+		ConditionInformation ,
 		ConditionNumber,
-			ConditionInformationItem ,
-			ConditionInformationItemName , 	OverlapsPredicatePart,Query								  
-			;
-			rule<ScannerT> const& start() const
-			{
-				return Query;
-			}
+		ConditionInformationItem ,
+		ConditionInformationItemName , 	OverlapsPredicatePart,Query								  
+		;
+		rule<ScannerT> const& start() const
+		{
+			return Query;
+		}
  	};
 	
 };
- 
+
