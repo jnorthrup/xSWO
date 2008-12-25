@@ -27,7 +27,8 @@ $(info using  $(OSTYPE))
 #posix typically is and also default `lib%.so lib%.a'
 ifeq ($(OSTYPE),Darwin)
 override .LIBPATTERNS:=lib%.dylib lib%.a
-override LINKFLAGS:= -dynamiclib  -Wl,-single_module 
+#override LINKFLAGS:= -dynamiclib  -Wl,-single_module 
+override LINKFLAGS:= -r
 
 #llvm-ld says no
 #-current_version' '$(VER)
@@ -145,7 +146,7 @@ TOOL_LIB_MODULES+= $(LIB_STATIC)
 
 TOOL_FINAL = $(PACKAGE_NAME)
 
-$(TOOL_FINAL): main.o $(TOOL_LIB_MODULES) #$(LIB_FINAL) 
+$(TOOL_FINAL): main.o $(TOOL_LIB_MODULES)  # $(LIB_FINAL) 
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
 
 .PHONY: tool

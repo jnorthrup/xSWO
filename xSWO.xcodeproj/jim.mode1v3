@@ -308,7 +308,7 @@
 									<real>237</real>
 								</array>
 								<key>RubberWindowFrame</key>
-								<string>1706 377 1046 1147 1050 324 1920 1200 </string>
+								<string>656 31 1046 1147 0 0 1920 1178 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXSmartGroupTreeModule</string>
@@ -389,7 +389,7 @@
 									<real>237</real>
 								</array>
 								<key>RubberWindowFrame</key>
-								<string>1706 377 1046 1147 1050 324 1920 1200 </string>
+								<string>656 31 1046 1147 0 0 1920 1178 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXSmartGroupTreeModule</string>
@@ -421,12 +421,12 @@
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>38CBCC8E0EC11C64005CC82F</string>
+										<string>384B09B90F03F50300094CD3</string>
 										<key>history</key>
 										<array>
 											<string>38C1F0DA0E76697100FCDC3F</string>
 											<string>380142C50EB8478B007CCEF6</string>
-											<string>38CBCC740EB9A779005CC82F</string>
+											<string>38CBCC8E0EC11C64005CC82F</string>
 										</array>
 										<key>prevStack</key>
 										<array>
@@ -445,7 +445,7 @@
 								<key>Frame</key>
 								<string>{{0, 0}, {787, 728}}</string>
 								<key>RubberWindowFrame</key>
-								<string>1706 377 1046 1147 1050 324 1920 1200 </string>
+								<string>656 31 1046 1147 0 0 1920 1178 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
@@ -470,12 +470,12 @@
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>38CBCC8F0EC11C64005CC82F</string>
+										<string>384B09BA0F03F50300094CD3</string>
 										<key>history</key>
 										<array>
 											<string>38C1F0DA0E76697100FCDC3F</string>
 											<string>380142D50EB8502E007CCEF6</string>
-											<string>38CBCC5A0EB97601005CC82F</string>
+											<string>38CBCC8F0EC11C64005CC82F</string>
 										</array>
 										<key>prevStack</key>
 										<array>
@@ -494,7 +494,7 @@
 								<key>Frame</key>
 								<string>{{0, 733}, {787, 221}}</string>
 								<key>RubberWindowFrame</key>
-								<string>1706 377 1046 1147 1050 324 1920 1200 </string>
+								<string>656 31 1046 1147 0 0 1920 1178 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
@@ -516,7 +516,7 @@
 								<key>Frame</key>
 								<string>{{0, 959}, {787, 147}}</string>
 								<key>RubberWindowFrame</key>
-								<string>1706 377 1046 1147 1050 324 1920 1200 </string>
+								<string>656 31 1046 1147 0 0 1920 1178 </string>
 							</dict>
 							<key>Module</key>
 							<string>XCDetailModule</string>
@@ -543,11 +543,11 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>38CBCC770EB9A779005CC82F</string>
-				<string>38CBCC780EB9A779005CC82F</string>
+				<string>384B09BB0F03F50300094CD3</string>
+				<string>384B09BC0F03F50300094CD3</string>
 				<string>1CE0B1FE06471DED0097A5F4</string>
 				<string>1CE0B1FE06471DED0097A5F4</string>
-				<string>38CBCC790EB9A779005CC82F</string>
+				<string>384B09BD0F03F50300094CD3</string>
 				<string>1CE0B20306471E060097A5F4</string>
 				<string>1CE0B20306471E060097A5F4</string>
 				<string>1CE0B20506471E060097A5F4</string>
@@ -697,10 +697,9 @@
 	<key>WindowOrderList</key>
 	<array>
 		<string>/Users/jim/work/xSWO/xSWO.xcodeproj</string>
-		<string>38AB2A5C0E7328A30092C680</string>
 	</array>
 	<key>WindowString</key>
-	<string>1706 377 1046 1147 1050 324 1920 1200 </string>
+	<string>656 31 1046 1147 0 0 1920 1178 </string>
 	<key>WindowToolsV3</key>
 	<array>
 		<dict>
