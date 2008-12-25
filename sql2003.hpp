@@ -98,10 +98,8 @@ struct sql2003_parser: public grammar<sql2003_parser> {
 																						  "CONSTRAINT_NAME") | str_p("CONSTRAINT_SCHEMA") | str_p(
 																													  "CONSTRUCTORS") | str_p("CONTAINS") | str_p("CONVERT")
 		    | str_p("CORR") | str_p("COUNT") | str_p("COVAR_POP")
-		    | str_p("COVAR_SAMP") | str_p("CUME_DIST") | str_p(
-								       "CURRENT_COLLATION") | str_p("CURSOR_NAME") | str_p("DATA")
-		    | str_p("DATETIME_INTERVAL_CODE") | str_p(
-							      "DATETIME_INTERVAL_PRECISION") | str_p("DEFAULTS") | str_p(
+		    | str_p("COVAR_SAMP") | str_p("CUME_DIST") | str_p( "CURRENT_COLLATION") | str_p("CURSOR_NAME") | str_p("DATA")
+		    | str_p("DATETIME_INTERVAL_CODE") | str_p(       "DATETIME_INTERVAL_PRECISION") | str_p("DEFAULTS") | str_p(
 															 "DEFERRABLE") | str_p("DEFERRED") | str_p("DEFINED")
 		    | str_p("DEFINER") | str_p("DEGREE") | str_p("DENSE_RANK")
 		    | str_p("DEPTH") | str_p("DERIVED") | str_p("DESC")
@@ -4537,4 +4535,4 @@ struct sql2003_parser: public grammar<sql2003_parser> {
 	};
 
 };
-
+ 

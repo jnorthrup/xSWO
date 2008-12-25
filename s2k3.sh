@@ -19,7 +19,7 @@ s,\W*\n*\W*, ,p
 }
 '|
 tr -s '\r\t\ ' '\n' |
-sort -fu|
+sort -fur|
 grep -v '^.$'|
 grep -v '[\>\)\!\|\=]' |
 xargs  echo 
