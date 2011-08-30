@@ -76,6 +76,8 @@ INCLUDES += $(I3:%=-I${PWD}/%)
 %.cpp : %.lpp
 	$(LEX) -o $@  $<
 
+	
+	
 
 #the gcc commands to make DEPS used in .d rules
 #if -M[M]D is also in the build-clause without -E it update .d's as needed
@@ -149,6 +151,10 @@ TOOL_FINAL = $(PACKAGE_NAME)
 $(TOOL_FINAL): main.o $(TOOL_LIB_MODULES)  # $(LIB_FINAL) 
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
 
+quadbag.exe : quadbag.o
+	$(CXX) $(CXXFLAGS)   -o $@ $^ $(LDFLAGS)
+
+
 .PHONY: tool
 
 
@@ -208,7 +214,10 @@ BISON_HH=location.hh stack.hh position.hh
 
 tool: $(DEPS) $(LIB_FINAL) $(TOOL_FINAL)
 
-all: dep lib tool test valgrind
+all: dep quadbag.exe
+
+#all: dep lib tool test valgrind quadbag.exe
+
 
 .PHONY: all tool test valgrind
 
