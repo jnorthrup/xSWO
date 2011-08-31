@@ -1,5 +1,7 @@
 #include "quadbag.hpp"
 
+#include<boost/tokenizer.hpp>
+
 using namespace xModel;
 															 
 int main(int argc,const char**argv){
@@ -12,23 +14,28 @@ int main(int argc,const char**argv){
     args.push_back(argv[c]);
 
 
-#pragma omp parallel num_threads(3)
-  {
-   
-#pragma omp for
-    for(int i=0;i<args.size();i++)
+  
+   {
+#pragma omp parrallel  for schedule(static,12)
+     for(int i=0;i<args.size();i++)
       {
 
 	string iter(args[i]);
-      std::cout << iter <<'\n'; 
-      std::ifstream infile((iter).c_str());
-      char       buf[2048];
-      while(infile.good())
-	infile.getline(buf,2048);
-      
-      infile.close();
+	std::cout << iter <<'\n'; 
+	std::ifstream infile((iter).c_str()); 
+
+
+	    string line;
+	while(infile >> line){
+ 	  {
+
+    std::cout << "[" <<  line << "] ";
+ 	    
+	  }
+	}
+	infile.close();
      
-    } 
+      } 
   }
   
 }
