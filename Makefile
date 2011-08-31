@@ -12,7 +12,7 @@ TEE?=tee
 SED?=sed
 #LIBS
 DEBUG?=-g
-OPT=-O4
+OPT=-O4 -fpermissive
 #DEFS?=-DYYTEXT_POINTER=1
 #WARN?=-W -Wall -Wextra -Wnon-virtual-dtor
 BASENAME ?= basename
