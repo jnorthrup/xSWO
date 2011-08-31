@@ -47,7 +47,7 @@ namespace xModel{
     Literal s,  p ,  o,c;
 	
 	
-    quad(const Literal &s2=Literal(),const Literal &p2=Literal(),const string &o2=Literal(),const string &c2=Literal()):s(s2),p(p2),o(o2),c(c2){};
+    quad(const Literal &s2=Literal(),const Literal &p2=Literal(),const Literal & o2=Literal(),const Literal &c2=Literal()):s(s2),p(p2),o(o2),c(c2){};
 	
     const Literal &subject  () const  {return s;};
     const Literal &predicate() const  {return p;};

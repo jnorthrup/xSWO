@@ -153,7 +153,7 @@ TOOL_FINAL = $(PACKAGE_NAME)
 $(TOOL_FINAL): main.o $(TOOL_LIB_MODULES)  # $(LIB_FINAL) 
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
 
-quadbag.exe : quadbag.o
+%.exe : %.o
 	$(CXX) $(CXXFLAGS)   -o $@ $^ $(LDFLAGS)
 
 
@@ -216,7 +216,7 @@ BISON_HH=location.hh stack.hh position.hh
 
 tool: $(DEPS) $(LIB_FINAL) $(TOOL_FINAL)
 
-all: dep quadbag.exe
+all: dep quadbag.exe hatsort.exe
 
 #all: dep lib tool test valgrind quadbag.exe
 
