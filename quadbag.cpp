@@ -24,7 +24,7 @@ int main(int argc,const char**argv){
       {
 
 	string iter(args[i]);
-	std::cout << iter <<'\n'; 
+	std::cerr << iter <<'\n'; 
 	std::ifstream infile((iter).c_str()); 
 
 
@@ -38,7 +38,7 @@ int main(int argc,const char**argv){
 	      c=(line);
 	    b=keys.insert(c);
 	    if(b){
-	      cerr << c << endl;
+	      //cerr << c << endl;
 	      ctr++;
 	    }
 	    
@@ -47,6 +47,9 @@ int main(int argc,const char**argv){
 	infile.close();
      
       } 
+  }
+  for(hat_set<std::string>::iterator iter=keys.begin();iter!=keys.end();++iter){
+    cout << *iter <<endl ; 
   }
   
 }
