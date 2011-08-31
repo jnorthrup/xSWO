@@ -31,14 +31,16 @@ int main(int argc,const char**argv){
 	string line;
 	while(infile >>  line  ){
  	  {
-	    
-	    string c;
-	    int a=line.find_first_not_of('<');
-		   int b=line.find_last_not_of('>');
-		   c.assign(   (const string&)line,a,b-a);
+	    string c;bool b;
+	    if(line[0]=='<')
+	      c=line.substr(1,line.find_last_not_of('>'));
+	    else
+	      c=(line);
 	    b=keys.insert(c);
-	    ctr++;
-	    if(b)cerr << c << endl;
+	    if(b){
+	      cerr << c << endl;
+	      ctr++;
+	    }
 	    
 	  }
 	}
