@@ -12,7 +12,7 @@ int main(int argc,const char**argv){
     args.push_back(argv[c]);
 
 
-#pragma omp parallel num_threads(36)
+#pragma omp parallel num_threads(3)
   {
    
 #pragma omp for
