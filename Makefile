@@ -12,7 +12,7 @@ TEE?=tee
 SED?=sed
 #LIBS
 DEBUG?=-g
-#OPT=-O4
+OPT=-O4
 #DEFS?=-DYYTEXT_POINTER=1
 #WARN?=-W -Wall -Wextra -Wnon-virtual-dtor
 BASENAME ?= basename
@@ -86,12 +86,14 @@ TOONOISEY=-ansi
 ifeq ($(OSTYPE),Linux)
 X64FLAGS += -fPIC
 endif
-CFLAGS += $(DEFS) $(OPT) $(DEBUG) $(WARN) $(INCLUDES) -pipe
+OMPFLAGS=-fopenmp
+CFLAGS += $(DEFS) $(OPT) $(DEBUG) $(WARN) $(INCLUDES) $(OMPFLAGS) -pipe 
 CXXFLAGS += $(CFLAGS) $(X64FLAGS)
 
 ### absolutely neccessry for c++ linking ###
 LD = $(CXX)
-LDFLAGS += $(LIB_MODULES)
+OMPLINK =  -lgomp
+LDFLAGS += $(LIB_MODULES) $(OMPLINK)
 VER=0.1
 
 #some progressive macports
@@ -191,15 +193,15 @@ release:
 # Clean - rm everything we remember to rm.
 .PHONY: clean cleaner
 clean:
-	$(RM) */*.bak *.bak                        \
+	$(RM) */*.bak *.bak   *.exe                        \
 	$(TESTS) $(TEST_RESULTS) $(VALGRIND)	   \
 	$(TOOL_BIN) $(TOOL_FINAL)                  \
 	$(LIB_FINAL) $(LIB_OBJ)
 	
 
 cleaner: clean
-	$(RM) *~ */*.d *.d $(BISON_HH:%=*/%)	    \
-	$(BISON_OBJ:.o=.hpp) $(BISON_OBJ:.o=.cpp)   \
+	$(RM) *~ */*.d *.d $(BISON_HH:%=*/%)  		\
+	$(BISON_OBJ:.o=.hpp) $(BISON_OBJ:.o=.cpp)   	\
 	$(FLEX_OBJ:.o=.cpp)
 	-$(FIND) build Debug Release -delete	
 

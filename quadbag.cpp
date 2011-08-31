@@ -11,17 +11,24 @@ int main(int argc,const char**argv){
   for (int c=1;c<argc;++c)
     args.push_back(argv[c]);
 
-  for(std::vector<std::string>::iterator iter=args.begin();iter!=args.end();++iter){   
-    std::cout << *iter <<'\n'; 
-    std::ifstream infile((*iter).c_str());
-    while(infile.good()){char buf[2024];
 
-      infile.     getline (buf,2024);
-      string line(buf);
-    }
-    infile.close();
+#pragma omp parallel num_threads(36)
+  {
+   
+#pragma omp for
+    for(int i=0;i<args.size();i++)
+      {
+
+	string iter(args[i]);
+      std::cout << iter <<'\n'; 
+      std::ifstream infile((iter).c_str());
+      char       buf[2048];
+      while(infile.good())
+	infile.getline(buf,2048);
+      
+      infile.close();
+     
+    } 
   }
   
-  
-
 }
