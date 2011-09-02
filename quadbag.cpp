@@ -7,18 +7,17 @@ using namespace stx;
 #include<iostream>
 int main(int argc,const char**argv){ 
   hat_trie<std::string>keys;
-  typedef 
-  hat_trie<string>::_node_pointer  hat_tag;
+  typedef hat_trie<string>::_node_pointer  hat_tag;
   quad<string>::log_quad_context log;
-  quad<hat_tag>::log_quad_context log2;
+
   vector<string>row;
-  vector<hat_tag>row2;
+
   
   std::vector<std::string>args(argc);
   for (int c=1;c<argc;++c)
     args.push_back(argv[c]); 
   {
-#pragma omp parallel for
+
 
       for(int i=0;i<args.size();i++)      {
 	
@@ -27,22 +26,19 @@ int main(int argc,const char**argv){
 
 	string line;
 	vector <string> row;	
-	vector <hat_tag> row2;
 
 	while(infile >>  line  ){
  	  {
 	    string c( line[0]=='<' ? line.substr(1,line.find_last_not_of('>')):  (line)); 
 
-	     std::pair< bool,hat_tag> p = keys.insert_(c);
+	      keys.insert(c);
 	      row.push_back(c);
-	      row2.push_back(p.second);
 	     
 	    
 	    if(c=="."){	       
-	       
-	      log.push_back(quad<string>(row[0],row[1],row[2],row[3]));/*
-	      log2.push_back(quad<hat_tag>(row2[0],row2[1],row2[2],row2[3]) );	  */    
-	      row.clear();row2.clear();
+	      	      if(row.size()>3)	
+	      log.push_back(quad<string>(row[0],row[1],row[2],row[3]));  
+	      row.clear();
 	    }
 	  }
 	}
