@@ -94,15 +94,15 @@ OMPLINK =  -lgomp
 LDFLAGS += $(LIB_MODULES) $(OMPLINK)
 VER=0.1
 
-ifeq ('clang++' , $(CXX))
+ifeq (clang,$(CC))
 #some progressive macports
 CC=clang -fno-color-diagnostics
 CXX=clang++ -fno-color-diagnostics
-LLVMCFLAGS = `llvm-config-2.9 --cflags` -O4 
+LLVMCFLAGS = $(shell llvm-config --cflags )
 
 #keyframe llvm # gcc -v -x c++ /dev/null -fsyntax-only
  
-LLVMCXXFLAGS = `llvm-config-2.9 --cxxflags ` -O4 /usr/include/c++/4.6 \
+LLVMCXXFLAGS = $(shell llvm-config --cxxflags )  -O4 -I /usr/include/c++/4.6 \
  -I /usr/include/c++/4.6/x86_64-linux-gnu/.			  \
  -I /usr/include/c++/4.6/backward				  \
  -I /usr/lib/gcc/x86_64-linux-gnu/4.6.1/include			  \
@@ -111,8 +111,8 @@ LLVMCXXFLAGS = `llvm-config-2.9 --cxxflags ` -O4 /usr/include/c++/4.6 \
  
  
 
-LLVMLDFLAGS = ` llvm-config-2.9 --ldflags --libs ` 
-LLVMLIBS= ` llvm-config-2.9 --libs`
+LLVMLDFLAGS = $( llvm-config --ldflags --libs ) 
+LLVMLIBS= $( llvm-config --libs)
 endif
 
 # ... you get the idea...

@@ -68,7 +68,7 @@
 
 #include "array_hash.h"
 #include "hat_trie_node.h"
-
+using namespace std;
 namespace stx {
 
 /**
@@ -212,7 +212,11 @@ struct hat_trie {
  
         unsigned char type;
         _node_base *p;
-
+	
+    const bool operator < ( const _node_pointer &t2) const {
+      return (type!=t2.type)?(type<t2.type):
+	(p!=t2.p);
+    }; 
         _node_pointer(unsigned char type = 0, _node_base *p = NULL) :
                 type(type), p(p) { }
 
@@ -369,7 +373,56 @@ struct hat_trie {
         const std::string &word = ref(key);
         return insert(word.c_str());
     }
+    /**
+     * Inserts a word into the trie.
+     *
+     * Uses C-strings instead of C++ strings. This function is no more
+     * efficient than the string version. It is provided for convenience.
+     *
+     * @param word  word to insert
+     * @return  true if @a word is inserted into the trie, false if @a word
+     *          was already in the trie
+     */
+    std::pair<bool,_node_pointer> insert_(const string&word) {
+        const char *pos = word.c_str();
+        _node_pointer n = _locate(pos);
+        if (*pos == '\0') {
+            // word was found in the trie's structure. Mark its location
+            // as the end of a word.
+            if (n.p->word() == false) {
+                n.p->set_word(true);
+                ++_size;
+                return   pair <bool,_node_pointer>(true,n);
+            }
+            return pair <bool,_node_pointer>(false,n);
 
+        } else {
+            // word was not found in the trie's structure. Either make a
+            // new container for it or insert it into an already
+            // existing container.
+            _container *c = NULL;
+            if (n.type == NODE_POINTER) {
+                // Make a new container for word.
+                _node *p = (_node *) n.p;
+                int index = *pos;
+                c = new _container(index, _ah_traits);
+
+                // Insert the new container into the trie structure.
+                c->_parent = p;
+                p->_children[index] = c;
+                p->_types[index] = CONTAINER_POINTER;
+                ++pos;
+            } else if (n.type == CONTAINER_POINTER) {
+                // The container for s already exists.
+                c = (_container *) n.p;
+            }
+
+            // Insert the rest of word into the container.
+             _insert(c, pos);
+	     n=_locate(pos);
+	     return  pair <bool,_node_pointer>  (true,n);
+        }
+    }
     /**
      * Inserts a word into the trie.
      *

@@ -3,13 +3,17 @@
 
 using namespace xModel;
 using namespace stx;
-       														 
+#include<fstream>											 
+#include<iostream>
 int main(int argc,const char**argv){ 
-  hat_set <std::string>keys;
-  typedef hat_set <std::string>::iterator hat_tag;
-  typedef quad<hat_tag>   hat_quad ; 
+  hat_trie<std::string>keys;
+  typedef 
+  hat_trie<string>::_node_pointer  hat_tag;
+  quad<string>::log_quad_context log;
+  quad<hat_tag>::log_quad_context log2;
+  vector<string>row;
+  vector<hat_tag>row2;
   
-  hat_quad::log_quad_context log;
   std::vector<std::string>args(argc);
   for (int c=1;c<argc;++c)
     args.push_back(argv[c]); 
@@ -22,26 +26,23 @@ int main(int argc,const char**argv){
 	std::ifstream infile((args[i]).c_str());  
 
 	string line;
-	vector <hat_tag> row;
+	vector <string> row;	
+	vector <hat_tag> row2;
+
 	while(infile >>  line  ){
  	  {
 	    string c( line[0]=='<' ? line.substr(1,line.find_last_not_of('>')):  (line)); 
 
-	    //first million insert-always.
-	    //todo: monotonic performing pair<iterator,bool> insert(key)
-	    //todo: (implement or verify) global cached cursor for the trie 
-
-	      hat_tag t (keys.size()<1000000 ? keys.end():keys.find(c)); 
-	    if(t==keys.end()){
-	      keys.insert(c);  
-	      t=keys.find(c);
-	    }
-	    row.push_back(t);
+	     std::pair< bool,hat_tag> p = keys.insert_(c);
+	      row.push_back(c);
+	      row2.push_back(p.second);
+	     
 	    
 	    if(c=="."){	       
-	      hat_quad hq(row[0],row[1],row[2],row[3]);
-	      log.push_back(hq);	      
-	      row.clear();
+	       
+	      log.push_back(quad<string>(row[0],row[1],row[2],row[3]));/*
+	      log2.push_back(quad<hat_tag>(row2[0],row2[1],row2[2],row2[3]) );	  */    
+	      row.clear();row2.clear();
 	    }
 	  }
 	}
