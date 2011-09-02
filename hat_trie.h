@@ -194,10 +194,9 @@ const std::string &ref(const std::pair<std::string, T> &p) {
 /**
  * Trie-based data structure for managing sorted strings.
  */
-template <class T>
-class hat_trie {
-
-  private:
+template <typename T>
+struct hat_trie {
+ 
     // types node_base values could point to. This is stored in
     // one bit, so the only valid values are 0 and 1
     enum { NODE_POINTER = 0, CONTAINER_POINTER = 1 };
@@ -209,9 +208,8 @@ class hat_trie {
 
     // pairs node_base pointers with their type (whether they point to
     // nodes or containers)
-    class _node_pointer {
-
-      public:
+    struct _node_pointer {
+ 
         unsigned char type;
         _node_base *p;
 
@@ -227,15 +225,14 @@ class hat_trie {
         bool operator!=(const _node_pointer &rhs)
         { return !operator==(rhs); }
     };
-
-  public:
+ 
     // STL types
     typedef size_t           size_type;
     typedef std::string      key_type;
     typedef T                value_type;
     typedef std::less<char>  key_compare;
 
-    class iterator;
+    struct iterator;
     typedef iterator const_iterator;
 
     /**
@@ -429,7 +426,7 @@ class hat_trie {
      *                     to the trie. All words in the range
      *                     [first, last) are added
      */
-    template <class input_iterator>
+    template <typename input_iterator>
     void insert(input_iterator first, const input_iterator &last) {
         while (first != last) {
             insert(*first);
@@ -585,11 +582,11 @@ class hat_trie {
      * ugly, but they have to be constructed incrementally because of
      * the large amount of state they maintain.
      */
-    class iterator : public std::iterator<std::bidirectional_iterator_tag,
+    struct iterator : public std::iterator<std::bidirectional_iterator_tag,
                                           const key_type> {
-        friend class hat_trie;
+     
 
-      public:
+ 
         /**
          * Default constructor.
          */
@@ -697,8 +694,7 @@ class hat_trie {
         bool operator!=(const iterator &rhs) {
             return !operator==(rhs);
         }
-
-      private:
+ 
         // Current position in the trie
         _node_pointer _position;
 
@@ -739,8 +735,7 @@ class hat_trie {
         }
 
     };
-
-  private:
+ 
     hat_trie_traits _traits;
     array_hash_traits _ah_traits;
     _node *_root;  // pointer to the root of the trie
@@ -1051,39 +1046,41 @@ hat_trie<T>::_print(
 // COMPARISON OPERATORS
 // --------------------
 
-template <class T>
+template <typename T>
 bool
 operator<(const stx::hat_trie<T> &lhs,
           const stx::hat_trie<T> &rhs) {
     return std::lexicographical_compare(lhs.begin(), lhs.end(),
                                         rhs.begin(), rhs.end());
 }
-template <class T>
+template <typename T>
 bool
 operator==(const stx::hat_trie<T> &lhs,
            const stx::hat_trie<T> &rhs) {
     return lhs.size() == rhs.size() &&
            std::equal(lhs.begin(), lhs.end(), rhs.begin());
 }
-template <class T>
+template <typename T>
 bool
 operator>(const stx::hat_trie<T> &lhs,
           const stx::hat_trie<T> &rhs) {
     return rhs < lhs;
 }
-template <class T>
+
+template <typename T>
 bool
 operator<=(const stx::hat_trie<T> &lhs,
            const stx::hat_trie<T> &rhs) {
     return !(rhs < lhs);
 }
-template <class T>
+template <typename T>
 bool
 operator>=(const stx::hat_trie<T> &lhs,
            const stx::hat_trie<T> &rhs) {
     return !(lhs < rhs);
 }
-template <class T>
+
+template <typename T>
 bool
 operator!=(const stx::hat_trie<T> &lhs,
            const stx::hat_trie<T> &rhs) {

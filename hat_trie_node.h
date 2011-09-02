@@ -18,10 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see .
  */
-
-#ifndef HAT_TRIE_NODE_H
-#define HAT_TRIE_NODE_H
-
+#pragma once
 #include <bitset>
 
 #include "array_hash.h"
@@ -32,18 +29,14 @@ namespace stx {
 const int HT_ALPHABET_SIZE = 128;
 
 // forward declarations
-class hat_trie_traits;
-template <class T> class hat_trie;
+class hat_trie_traits; 
 class hat_trie_container;
 class hat_trie_node;
 
 /**
  * Base class for hat trie node types.
  */
-class hat_trie_node_base {
-    friend class hat_trie<std::string>;
-
-  private:
+struct hat_trie_node_base { 
     typedef hat_trie_node _node;
     typedef hat_trie_container _container;
 
@@ -57,8 +50,7 @@ class hat_trie_node_base {
 
     // modifiers
     virtual void set_word(bool b) = 0;
-
-  protected:
+ 
     char _ch;
     _node *_parent;
 };
@@ -66,8 +58,8 @@ class hat_trie_node_base {
 /**
  * HAT-trie container type.
  */
-class hat_trie_container : public hat_trie_node_base {
-    friend class hat_trie<std::string>;
+struct hat_trie_container : public hat_trie_node_base {
+   
 
   public:
     hat_trie_container(char ch = '\0',
@@ -97,8 +89,7 @@ class hat_trie_container : public hat_trie_node_base {
         return _store.insert(p);
     }
     void set_word(bool b) { _word = b; }
-
-  private:
+ 
     bool _word;
     array_hash<std::string> _store;
 };
@@ -106,13 +97,11 @@ class hat_trie_container : public hat_trie_node_base {
 /**
  * HAT-trie node type.
  */
-class hat_trie_node : public hat_trie_node_base {
-    friend class hat_trie<std::string>;
-
-  private:
+struct  hat_trie_node : public hat_trie_node_base { 
+ 
     typedef hat_trie_node_base _node_base;
 
-  public:
+ 
     hat_trie_node(char ch = '\0') : _node_base(ch) {
         for (int i = 0; i < HT_ALPHABET_SIZE; ++i) {
             _children[i] = NULL;
@@ -130,13 +119,10 @@ class hat_trie_node : public hat_trie_node_base {
 
     // modifiers
     void set_word(bool b) { _types[HT_ALPHABET_SIZE] = b; }
-
-  private:
+ 
     std::bitset<HT_ALPHABET_SIZE + 1> _types;  // extra bit is an end of word flag
     _node_base *_children[HT_ALPHABET_SIZE];  // untyped pointers to children
 };
 
 }  // namespace stx
-
-#endif // HAT_TRIE_NODE_H
-
+ 

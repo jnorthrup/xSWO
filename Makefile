@@ -85,7 +85,7 @@ X64FLAGS += -fPIC
 endif
 OMPFLAGS=-fopenmp
 CFLAGS += $(DEFS) $(OPT) $(DEBUG) $(WARN) $(INCLUDES) $(OMPFLAGS) -pipe 
-CXXFLAGS += $(CFLAGS) $(X64FLAGS)
+CXXFLAGS += $(CFLAGS) $(X64FLAGS) -std=c++0x
 
 
 ### absolutely neccessry for c++ linking ###
@@ -96,29 +96,28 @@ VER=0.1
 
 ifeq ('clang++' , $(CXX))
 #some progressive macports
-CC=clang
-CXX=clang++ 
-LLVMCFLAGS = ` llvm-config --cflags` -O4
+CC=clang -fno-color-diagnostics
+CXX=clang++ -fno-color-diagnostics
+LLVMCFLAGS = `llvm-config-2.9 --cflags` -O4 
 
 #keyframe llvm # gcc -v -x c++ /dev/null -fsyntax-only
  
-LLVMCXXFLAGS = `llvm-config --cxxflags ` -O4  -I/usr/include/c++/4.5   \
-  -I/usr/include/c++/4.5/x86_64-linux-gnu			       \
-  -I/usr/include/c++/4.5/backward				       \
-  -I/usr/local/include						       \
-  -I/usr/lib/x86_64-linux-gnu/gcc/x86_64-linux-gnu/4.5.2/include       \
-  -I/usr/lib/x86_64-linux-gnu/gcc/x86_64-linux-gnu/4.5.2/include-fixed \
-  -I/usr/include/x86_64-linux-gnu				       \
-  -I/usr/include
+LLVMCXXFLAGS = `llvm-config-2.9 --cxxflags ` -O4 /usr/include/c++/4.6 \
+ -I /usr/include/c++/4.6/x86_64-linux-gnu/.			  \
+ -I /usr/include/c++/4.6/backward				  \
+ -I /usr/lib/gcc/x86_64-linux-gnu/4.6.1/include			  \
+ -I /usr/lib/gcc/x86_64-linux-gnu/4.6.1/include-fixed		  \
+ -I /usr/include/x86_64-linux-gnu			 
+ 
  
 
-LLVMLDFLAGS = ` llvm-config --ldflags --libs ` 
-LLVMLIBS= ` llvm-config --libs`
+LLVMLDFLAGS = ` llvm-config-2.9 --ldflags --libs ` 
+LLVMLIBS= ` llvm-config-2.9 --libs`
 endif
 
 # ... you get the idea...
 CFLAGS	+= $(LLVMCFLAGS)
-CXXFLAGS += $(LLVMCXXFLAGS) -std=gnu++98
+CXXFLAGS += $(LLVMCXXFLAGS)
 LDFLAGS	+= $(LLVMLDFLAGS)
 LIB_MODULES+= -L$(PWD)
 

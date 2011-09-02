@@ -93,7 +93,7 @@
 namespace stx {
 
 /// Forward declaration of the hat_set class.
-template <class T> class hat_set;
+template <typename T> struct hat_set;
 
 /**
  * HAT-trie set class that implements (most of) the STL set interface.
@@ -102,13 +102,11 @@ template <class T> class hat_set;
  * any other template parameter will result in a compile-time error.
  */
 template <>
-class hat_set<std::string> {
-
-  private:
-    typedef hat_trie<std::string> hat_trie;
-    typedef hat_set<std::string>  _self;
-
-  public:
+struct hat_set<std::string> {
+ 
+    typedef struct hat_trie<std::string> hat_trie;
+    typedef struct hat_set<std::string>  _self;
+ 
     // STL types
     typedef hat_trie::size_type         size_type;
     typedef hat_trie::key_type          key_type;

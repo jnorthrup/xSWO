@@ -1,33 +1,12 @@
 #pragma once
-
-#include <boost/archive/xml_iarchive.hpp>
-#include <boost/archive/xml_oarchive.hpp>
-#include <boost/serialization/nvp.hpp>
-#include <boost/serialization/utility.hpp>
-#include <boost/serialization/set.hpp> 
-#include <boost/serialization/vector.hpp>
-#include <boost/serialization/version.hpp>  
+ 
 #include <boost/multi_index/hashed_index.hpp> 
 #include <boost/multi_index/key_extractors.hpp> 
 #include <boost/multi_index/member.hpp> 
 #include <boost/multi_index/ordered_index.hpp> 
 #include <boost/multi_index/sequenced_index.hpp> 
 #include <boost/multi_index_container.hpp>   
-
-#include <iomanip>
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <cstdio> // remove
-#include <algorithm>
-#include <functional>
-#include <iomanip> 
-#include <iterator>
-#include <map> 
-#include <set> 
-#include <sstream> 
-#include <string> 
-#include <utility> 
+  
 
 #pragma warning(   once : 4561  )
 
@@ -56,22 +35,10 @@ namespace xModel{
 	
     const bool operator < ( const quad&t2) const {
       return (s!=t2.s)?(s<t2.s):
-	(p!=t2.p)?(p<t2.p):				
-	(o<t2.o);
-    };
-    friend class boost::serialization::access;
-    /**
-       serialization using boost xml serialization name-value pairs.
-       @param version defaults a subversion changeset in which the routine was first committed.  
-    */
-    template<class Archive>
-    void serialize(Archive & ar, const unsigned int version=0)	{
-      ar & make_nvp("s", s);
-      ar & make_nvp("p", p);
-      ar & make_nvp("o", o);	
-      ar & make_nvp("c", c);
-
-    };
+	(p!=t2.p)?(p<t2.p):
+	(o!=t2.o)?(o<t2.o):
+	(c<t2.c);
+    }; 
     /** a set-like context for quads.  performs sorting and folding.				
      */
     typedef multi_index_container
