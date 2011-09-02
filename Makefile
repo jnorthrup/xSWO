@@ -76,9 +76,6 @@ INCLUDES += $(I3:%=-I${PWD}/%)
 %.cpp : %.lpp
 	$(LEX) -o $@  $<
 
-	
-	
-
 #the gcc commands to make DEPS used in .d rules
 #if -M[M]D is also in the build-clause without -E it update .d's as needed
 TOONOISEY=-ansi
@@ -90,21 +87,39 @@ OMPFLAGS=-fopenmp
 CFLAGS += $(DEFS) $(OPT) $(DEBUG) $(WARN) $(INCLUDES) $(OMPFLAGS) -pipe 
 CXXFLAGS += $(CFLAGS) $(X64FLAGS)
 
+
 ### absolutely neccessry for c++ linking ###
 LD = $(CXX)
 OMPLINK =  -lgomp
 LDFLAGS += $(LIB_MODULES) $(OMPLINK)
 VER=0.1
 
+ifeq ('clang++' , $(CXX))
 #some progressive macports
-#CC=llvm-gcc
-#CXX=llvm-g++
-#LLVMCFLAGS = ` llvm-config --cflags` -O4
-#LLVMCXXFLAGS = ` llvm-config --cxxflags` -O4
-#LLVMLDFLAGS = ` llvm-config --ldflags --libs `
-#LLVMLIBS= ` llvm-config --libs`
+CC=clang
+CXX=clang++ 
+LLVMCFLAGS = ` llvm-config --cflags` -O4
+
+#keyframe llvm # gcc -v -x c++ /dev/null -fsyntax-only
+ 
+LLVMCXXFLAGS = `llvm-config --cxxflags ` -O4  -I/usr/include/c++/4.5   \
+  -I/usr/include/c++/4.5/x86_64-linux-gnu			       \
+  -I/usr/include/c++/4.5/backward				       \
+  -I/usr/local/include						       \
+  -I/usr/lib/x86_64-linux-gnu/gcc/x86_64-linux-gnu/4.5.2/include       \
+  -I/usr/lib/x86_64-linux-gnu/gcc/x86_64-linux-gnu/4.5.2/include-fixed \
+  -I/usr/include/x86_64-linux-gnu				       \
+  -I/usr/include
+ 
+
+LLVMLDFLAGS = ` llvm-config --ldflags --libs ` 
+LLVMLIBS= ` llvm-config --libs`
+endif
+
 # ... you get the idea...
 CFLAGS	+= $(LLVMCFLAGS)
+CXXFLAGS += $(LLVMCXXFLAGS) -std=gnu++98
+LDFLAGS	+= $(LLVMLDFLAGS)
 LIB_MODULES+= -L$(PWD)
 
 PACKAGE_NAME?=$(shell $(BASENAME) $(PWD))
@@ -197,7 +212,6 @@ clean:
 	$(TESTS) $(TEST_RESULTS) $(VALGRIND)	   \
 	$(TOOL_BIN) $(TOOL_FINAL)                  \
 	$(LIB_FINAL) $(LIB_OBJ)
-	
 
 cleaner: clean
 	$(RM) *~ */*.d *.d $(BISON_HH:%=*/%)  		\

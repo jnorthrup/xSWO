@@ -7,7 +7,7 @@ using namespace stx;
 int main(int argc,const char**argv){ 
   hat_set <std::string>keys;
   typedef  hat_set <std::string>::iterator hat_tag;
-  quad<  string >:: normalized_quad_context  qc();
+  quad<    >:: normalized_quad_context  qc();
  
   std::vector<std::string>args(argc);
   for (int c=1;c<argc;++c)
@@ -18,6 +18,7 @@ int main(int argc,const char**argv){
       for(int i=0;i<args.size();i++)      {
 	
 	vector< string>qr ;
+	vector<quad< > >cache;
 	string iter(args[i]);
 	std::cerr << iter <<'\n'; 
 	std::ifstream infile((iter).c_str());  
@@ -35,13 +36,16 @@ int main(int argc,const char**argv){
 		  keys.insert(*iter);  
 		};
 		
-		qc.insert(&	quad<string>(qr[0],qr[1],qr[2],qr[3]));
+		cache.push_back(quad<string>(qr[0],qr[1],qr[2],qr[3]));
 	      }
 	      qr.clear();
 	    }
 	  }
 	}
 	infile.close(); 
+	for(	vector<quad< > >::iterator iter=cache.begin();iter!=cache.end();++iter){
+	  qc.insert( (const quad&)iter);
+	}
       } 
   }
  
