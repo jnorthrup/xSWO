@@ -10,7 +10,6 @@
 
 #pragma warning(   once : 4561  )
 
-#pragma once
 
 using namespace boost::serialization;//multi_index;
 using namespace boost::multi_index;
