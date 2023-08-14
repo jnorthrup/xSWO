@@ -1,6 +1,8 @@
-curl http://savage.net.au/SQL/sql-2003-2.bnf | 
+curl https://raw.githubusercontent.com/ronsavage/SQL/master/sql-2003-2.bnf |
+#curl http://savage.net.au/SQL/sql-2003-2.bnf | 
 #tr '\r\n\t' ' '  |
-# tr '	' ' ' < /sql-2003-2.bnf  |
+# tr '
+	' ' ' < /sql-2003-2.bnf  |
 sed -r -e '
 /^--/,/^--\//M  bcmt
 b
